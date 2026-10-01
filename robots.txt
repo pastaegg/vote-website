@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://votebettertogether.com/sitemap.xml

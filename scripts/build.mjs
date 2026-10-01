@@ -1,0 +1,246 @@
+#!/usr/bin/env node
+/* Builds votebettertogether.com: static HTML pages, no scripts, no trackers.
+
+     node scripts/build.mjs                         rebuild from src/
+     node scripts/build.mjs ../vote-bettertogether-rn
+       first copies the app's canonical legal text
+       (www/app/i18n/legal/en.js) into src/legal-en.js, then rebuilds
+
+   The Privacy Policy, Terms and Support pages use the same English legal text
+   the app shows, so the website and the app never say different things.
+   Whenever that file changes in the app, run the second form and commit.
+   Only the website sections in WEB below are written here (sign-in, this
+   website, contact). */
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const appRepo = process.argv[2];
+if (appRepo) {
+  const src = path.resolve(appRepo, 'www/app/i18n/legal/en.js');
+  fs.copyFileSync(src, path.join(root, 'src/legal-en.js'));
+  console.log(`Copied legal text from ${src}`);
+}
+const legal = (await import(pathToFileURL(path.join(root, 'src/legal-en.js')).href + `?t=${Date.now()}`)).default;
+
+const SITE = 'https://votebettertogether.com';
+const NAME = 'Vote: Better Together';
+const EMAIL = 'ahmetfceren@gmail.com';
+const YEAR = 2026;
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const slug = s => s.toLowerCase().normalize('NFKD').replace(/[‘’“”"']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
+
+const MARK = `<svg viewBox="0 0 48 32" aria-hidden="true"><circle cx="17" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="31" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
+
+function layout({ file, title, description, current = '', body }) {
+  const url = SITE + '/' + file.replace(/index\.html$/, '');
+  const fullTitle = title ? `${title} · ${NAME}` : `${NAME} · People help people find people`;
+  const link = (href, label, cls = '') =>
+    `<a href="${href}"${cls ? ` class="${cls}"` : ''}${current === href ? ' aria-current="page"' : ''}>${label}</a>`;
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(fullTitle)}</title>
+<meta name="description" content="${esc(description)}">
+<link rel="canonical" href="${url}">
+<meta name="theme-color" content="#0B0A0F">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${NAME}">
+<meta property="og:title" content="${esc(title || NAME)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${SITE}/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="sky" aria-hidden="true"><div class="stars"></div></div>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="${NAME}, home"><img src="/assets/img/icon-192.png" alt="" width="32" height="32"><span>Vote<small>Better Together</small></span></a>
+    <nav class="nav" aria-label="Main">
+      ${link('/#how', 'How it works', 'hide-sm')}
+      ${link('/privacy/', 'Privacy')}
+      ${link('/terms/', 'Terms')}
+      ${link('/support/', 'Support')}
+    </nav>
+  </div>
+</header>
+<main id="main">
+${body}
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div>© ${YEAR} ${NAME} · <a href="mailto:${EMAIL}">${EMAIL}</a></div>
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="/terms/">Terms of Use</a>
+      <a href="/support/">Support</a>
+      <a href="/delete-account/">Delete your account</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
+`;
+}
+
+/* A document page: header, table of contents, then parts of sections. */
+function docPage({ file, title, description, lead, current, intro = '', parts, after = '' }) {
+  const used = new Set();
+  const id = h => { let s = slug(h) || 'section', n = s, i = 2; while (used.has(n)) n = `${s}-${i++}`; used.add(n); return n; };
+  const toc = [];
+  const html = parts.map(part => {
+    const rows = part.rows.map(([h, p]) => {
+      const sid = id(h);
+      toc.push([sid, h]);
+      return `<section id="${sid}"><h2>${esc(h)}</h2>${p.startsWith('<') ? p : `<p>${esc(p)}</p>`}</section>`;
+    }).join('\n');
+    return `${part.title ? `<h2 class="part">${esc(part.title)}</h2>` : ''}${part.lead ? `<p class="part-lead">${esc(part.lead)}</p>` : ''}\n${rows}`;
+  }).join('\n');
+  const body = `<header class="doc-head"><div class="wrap">
+  <p class="eyebrow">${NAME}</p>
+  <h1>${esc(title)}</h1>
+  <p class="lead">${lead}</p>
+  <div class="meta"><span>Version ${esc(legal.version)}</span><span>Same text as in the app</span><span>For people 18 and older</span></div>
+</div></header>
+<div class="doc"><div class="wrap">
+${intro}
+<nav class="toc" aria-label="On this page"><b>On this page</b><ol>${toc.map(([sid, h]) => `<li><a href="#${sid}">${esc(h)}</a></li>`).join('')}</ol></nav>
+${html}
+${after}
+</div></div>`;
+  return layout({ file, title, description, current, body });
+}
+
+/* Website-only sections. Everything else on these pages is the app's text. */
+const WEB = {
+  privacyIntro: [
+    ['Who we are', `<p>${NAME} (“Vote”) is a dating app where the community reads pairs of people and strong reads can become introductions. This policy explains what Vote stores, who can see it and how you stay in control. Questions or requests about your privacy: <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`],
+    ['In short', `<ul><li>Vote shows your city, never your coordinates, and keeps location rounded to about 1&nbsp;km.</li><li>No ads, no advertising identifiers, no tracking across other apps or websites, and no analytics companies.</li><li>Nobody sees who read, proposed or followed them: only anonymous counts.</li><li>Photos are private, and each link to one expires within minutes.</li><li>You can export your data or delete your account at any time from Settings.</li></ul>`]
+  ],
+  privacyOutro: [
+    ['Signing in with Apple or Google', `<p>If you sign in with Apple or Google, Vote receives what you allow that provider to share: an identifier for your account, your e-mail address and your name (Google may also include a link to your profile picture, which Vote doesn’t use). Vote uses them only to create your account and sign you in, and suggests your first name for your profile, which you can change. Vote never receives your Apple or Google password and has no access to anything else in those accounts, such as contacts, e-mail, files or calendars. Google user data is never sold, never used for advertising and never shared except with Vote’s hosting provider so you can sign in.</p>`],
+    ['Age', `<p>Vote is only for people 18 and older, and your birth date is checked when you join. If you think someone under 18 is using Vote, report their profile in the app (“May be under 18”) or write to <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`],
+    ['This website', '<p>votebettertogether.com sets no cookies and uses no analytics, ads or trackers. It is hosted on GitHub Pages, which may keep technical logs such as IP addresses to keep the service secure.</p>'],
+    ['Changes to this policy', '<p>When this policy changes, its version changes and the app shows you the new text. This page always shows the current version.</p>'],
+    ['Contact', `<p>Privacy questions, or a request about your data when you can’t use the app: <a href="mailto:${EMAIL}">${EMAIL}</a>. To delete your account, see <a href="/delete-account/">Delete your account</a>.</p>`]
+  ],
+  termsOutro: [
+    ['Privacy', '<p>How Vote handles your information is described in the <a href="/privacy/">Privacy Policy</a>.</p>'],
+    ['Changes to these terms', '<p>When these terms change, their version changes and the app shows you the new text. This page always shows the current version.</p>'],
+    ['Contact', `<p>Questions about these terms: <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`]
+  ]
+};
+
+const pages = {};
+
+pages['index.html'] = layout({
+  file: 'index.html',
+  description: 'Vote is a dating app where the community reads pairs of people. When enough people see the same thing, it can become an introduction, and nobody is connected unless both say yes.',
+  body: read('home.html').replaceAll('{{MARK}}', MARK)
+});
+
+pages['privacy/index.html'] = docPage({
+  file: 'privacy/index.html',
+  title: 'Privacy Policy',
+  current: '/privacy/',
+  description: 'What Vote stores, who can see it, and how you export or delete your data.',
+  lead: 'What Vote stores, who can see it, and how you stay in control.',
+  parts: [
+    { rows: WEB.privacyIntro },
+    { title: 'What Vote stores', lead: 'For a real account, everything below is stored by Vote on its hosting provider, Supabase.', rows: legal.privacyStored.production },
+    { title: 'Who sees what, and your choices', rows: legal.docs.privacy.body },
+    { title: 'More about your privacy', rows: WEB.privacyOutro }
+  ]
+});
+
+pages['terms/index.html'] = docPage({
+  file: 'terms/index.html',
+  title: 'Terms of Use',
+  current: '/terms/',
+  description: 'The terms for using Vote: Better Together, including subscriptions and the community guidelines.',
+  lead: 'The terms for using Vote, and the community guidelines everyone agrees to.',
+  parts: [
+    { title: 'Terms', rows: legal.docs.terms.body },
+    { title: legal.docs.guidelines.title, rows: legal.docs.guidelines.body },
+    { title: 'Also', rows: WEB.termsOutro }
+  ]
+});
+
+pages['support/index.html'] = docPage({
+  file: 'support/index.html',
+  title: 'Support',
+  current: '/support/',
+  description: 'Get help with Vote: account, sign-in, safety, reporting someone, appeals and deleting your account.',
+  lead: 'The fastest way to reach a person is in the app. If you can’t open it, write to us.',
+  intro: `<div class="cards">
+  <a href="mailto:${EMAIL}"><b>E-mail us</b><span>${EMAIL}</span></a>
+  <a href="/delete-account/"><b>Delete your account</b><span>In the app, or by e-mail</span></a>
+  <a href="/privacy/"><b>Privacy Policy</b><span>What Vote stores and who sees it</span></a>
+  <a href="/terms/"><b>Terms of Use</b><span>Including subscriptions and refunds</span></a>
+</div>`,
+  parts: [
+    { rows: legal.docs.support.body },
+    { title: 'Staying safe', rows: [
+      ['Keep it on Vote', 'Chat here until you’re comfortable. Be wary of anyone who rushes you off the app.'],
+      ['Meet in public', 'For first dates, choose a public place and tell a friend where you’ll be.'],
+      ['Never send money', 'Report anyone who asks for money, gift cards or crypto.'],
+      ['Trust your instincts', 'You can unmatch, block or report at any time. We never tell the other person who reported them.']
+    ] },
+    { title: 'Contact', rows: [
+      ['If you can’t use the app', `<p>Write to <a href="mailto:${EMAIL}">${EMAIL}</a>. Send it from the e-mail address of your Vote account if you can, or tell us how you sign in (Apple, Google or e-mail), so we can find your account.</p>`]
+    ] }
+  ]
+});
+
+pages['delete-account/index.html'] = layout({
+  file: 'delete-account/index.html',
+  title: 'Delete your account',
+  current: '',
+  description: 'How to delete your Vote: Better Together account and data, in the app or by e-mail, and what is deleted or kept.',
+  body: read('delete-account.html').replaceAll('{{EMAIL}}', EMAIL).replaceAll('{{NAME}}', NAME).replaceAll('{{VERSION}}', esc(legal.version))
+});
+
+pages['404.html'] = layout({
+  file: '404.html',
+  title: 'Page not found',
+  description: 'This page doesn’t exist.',
+  body: `<section class="closing" style="border-top:0"><div class="wrap"><div class="mark">${MARK}</div><h2>Nothing here.</h2><p class="lead">This page doesn’t exist, or it moved.</p><div class="cta"><a class="btn solid" href="/">Go home</a><a class="btn" href="/support/">Support</a></div></div></section>`
+});
+
+for (const [file, html] of Object.entries(pages)) {
+  const out = path.join(root, file);
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.writeFileSync(out, html);
+}
+
+const urls = ['', 'privacy/', 'terms/', 'support/', 'delete-account/'];
+fs.writeFileSync(path.join(root, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url><loc>${SITE}/${u}</loc></url>`).join('\n')}
+</urlset>
+`);
+fs.writeFileSync(path.join(root, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+fs.writeFileSync(path.join(root, 'site.webmanifest'), JSON.stringify({
+  name: NAME, short_name: 'Vote', start_url: '/', display: 'browser', background_color: '#0B0A0F', theme_color: '#0B0A0F',
+  icons: [{ src: '/assets/img/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/assets/img/icon-512.png', sizes: '512x512', type: 'image/png' }]
+}, null, 2) + '\n');
+
+console.log(`Built ${Object.keys(pages).length} pages (legal text version ${legal.version})`);

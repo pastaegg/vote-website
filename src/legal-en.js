@@ -1,0 +1,86 @@
+/* The legal documents in English — the canonical, binding text.
+
+   Translations of these documents are shown only once a qualified reviewer
+   has approved them (see ./index.js and docs/I18N.md §Legal). Until then every
+   language shows this English text, with a note in the person's language
+   saying so. Never machine-translate this file into another language and
+   present it as reviewed.
+
+   Bump `version` whenever the text changes; the app shows it under each
+   document. */
+export default {
+  version: '2026-10-06',
+  /* What is stored, and where, differs between the preview (everything on
+     this device, a simulated community) and a real account (Vote's servers).
+     Each says only what that mode actually does (K04). */
+  storage: {
+    preview: [['Preview build', 'This preview runs on your device with a simulated community. Nothing you do in it is sent to Vote’s servers, and the people in it are not real.']],
+    production: [['Your account', 'Your sign-in (Apple, Google or email), profile, settings and photos are stored on Vote’s servers so the app works and you can sign in again on any device.']]
+  },
+  privacyStored: {
+    preview: [['On this device', 'The preview keeps your profile, photos and activity in this app’s storage on your device only. Signing out erases it.']],
+    production: [
+      ['What Vote stores', 'Your sign-in identity; your profile, photos and settings; likes, passes and notes; matches and messages, photos you send in chat, phrases you saved with the earlier “Saved phrases” feature and the conversations in which you turned on “The sky between you”; your birth time and place if you add them and your Daily Orbits of the last 30 days; your own answers after a date; your reads of pairs and any changes to them, the pairs you follow or propose; introductions and your answers to them; blocks and reports; notifications, and when you last opened “What your votes led to” on the Vote tab (the day and the time, not what it showed); whether you vote on pairs nearby or worldwide; the requests you send to Vote’s support team and their answers; if you subscribe, the subscription records the App Store reports; how many likes and votes you have used in the current window; and, so that the people with the fewest possible pairs are paired first, about how many people your preferences and theirs allow you to be paired with (a number, never who) and when Vote last found no one new to pair you with. It is stored by Vote on its hosting provider (Supabase).'],
+      ['Photos', 'Photos are stored privately. Someone gets a link to a photo only while your settings and your relation to them allow it, and each link works for about three minutes. After a block, or when you hide a photo or turn on Incognito, no new link is issued; a link already issued can keep working until it runs out, and a photo already shown may stay on their screen until they leave it.'],
+      ['Messages', 'Messages are stored so both of you can read them. Only the two people in a conversation can open it. When you both have read receipts on, someone with Vote Plus or Vote Max sees when you read their messages; turning read receipts off in Settings, on any plan, hides yours and theirs. A message you wrote that has not reached Vote yet is kept on your phone so it can be sent again without being sent twice. After 24 hours it is no longer used, and it is deleted from your phone the next time you open Vote; signing out removes it at once.'],
+      ['After a date', 'A few days into a conversation in which you have both written, Vote may ask you, and only you, whether you met, whether you are still talking and whether you would like to see them again. Answering is up to you. Your answers are kept with the conversation and never shown to the other person, who does not learn whether you answered. Vote uses them, counted together with everyone else’s, to learn which introductions really work. If you turn on “Share how my dates go” (Settings › Community), people who follow a pair you are in can see “they met”, “still talking” or “want to meet again”, but only when both of you have it on and both said yes; a no, or one person’s answer, is never shown. With it on, you can see the same for the pairs you follow.'],
+      ['Photos in chat', 'A photo sent in chat stays in the conversation, where the two people in it can open it (each time through a link that works for one minute) until the conversation ends (an unmatch, a block or a deleted account); then Vote deletes it. A photo sent as “View once” can be opened by the other person one time; after that nobody can open it, and Vote deletes it within 24 hours (it is kept that long only so it can be reported). Photos sent before 2 October 2026 could be opened for 24 hours and are deleted then. If someone reports a photo, it is kept for Vote’s safety team until the report is closed, and every time the team opens it is recorded. Anyone can take a screenshot, so send only what you are comfortable with.'],
+      ['The sky between you', 'In a chat you can turn on “The sky between you”, which reads your birth chart and the other person’s against each other. It opens only once you have both turned it on for that conversation, and the other person is not told when you turn it on. Either of you can turn it off at any time, which closes it for you both; it opens again only when you both turn it on again. Vote calculates both charts itself, on its own servers, from your birth dates and, only where someone added them, birth times and places, and shows you both the same short reading in texts Vote has written in advance. Neither of you ever sees the other’s birth date, time or place, although a reading can hint at a little of them: for example that you were born at a similar time of year, or, when it includes a Moon or rising sign, that the other person gave a birth time. No AI is involved and nothing is sent to anyone else. Vote keeps the conversations in which you turned it on, and since when, and the reading while it is open, so it stays the same even if birth details change; the reading is deleted when either of you turns it off, and all of it within a day after the conversation ends, or with your account. Which conversations you turned it on in is part of your data export. The reading is a reflection for curiosity, not a prediction or a judgment of the two of you.'],
+      ['Daily Orbit', 'Daily Orbit on your profile reads your day area by area (you, love, home and family, friends, work and money) from the positions of the Sun, the Moon and the planets and your birth chart, with a short portrait of you in five parts from the signs of that chart. Vote calculates the astrology itself, on its own servers, from your birth date and, only if you add them, your birth time and birth place (the city, its approximate coordinates and its time zone). Your birth time and place are used only for Daily Orbit and, if you turn it on in a chat, “The sky between you”: they are never shown to anyone and never used for matching, and you can remove them at any time. Each day’s Daily Orbit is kept with your account for 30 days. The words you read are texts Vote has written in advance, chosen by that calculation: no AI writes them, and nothing about you is sent to an AI provider for them. Only you see your Daily Orbit and your portrait. They are a reflection, not a prediction, a diagnosis or a measurement of anything.'],
+      ['Notifications on your phone', 'If you turn on notifications, your phone’s push token is stored for this installation and sent, with the alert, to Apple’s push service (or Google’s on Android). An alert says only what happened, such as “You have a new message”, never what anyone wrote, and a first name only if you turn on “Show names in alerts”. Signing out or turning notifications off removes the token.'],
+      ['Usage statistics', 'Vote counts how the app is used (for example that a vote or a match happened, or that the plans page was opened) in its own database, never at an analytics company. It records no message text, photos, votes’ reasons or profile answers. You can turn this off in Settings › Privacy; the counts lose their link to you when you delete your account and are removed after 13 months.'],
+      ['Crash reports', 'When the app crashes or hits an error, a report with technical details (what failed, the app version, the device model and system version, and your account’s random ID) may be sent to Vote’s crash reporting service, Sentry. Reports are cleaned of messages, photos, links, e-mail addresses and locations before they leave your phone.'],
+      ['Subscriptions', 'If you buy Vote Plus or Vote Max, Apple handles the payment; Vote never sees your card or Apple ID details. Vote keeps what the App Store reports about the subscription (the product, its transaction IDs, its status and dates, whether it renews) and a random token that ties the purchase to your Vote account, so your plan follows you and can be restored.'],
+      ['Help and support', 'When you write to Vote from Settings › Help & support (or appeal a suspension), your message and Vote’s answer are kept with your account so you can see them in the app, and are deleted with your account. Only Vote’s staff can read them.'],
+      ['Safety and moderation', 'A report keeps the reason you chose, any note you add and, for a photo sent in chat, that photo until the report is closed. Vote’s safety team sees the report, the reported account and its history of reports; every decision and every time the team opens a reported photo is recorded, with who did it and why. Nobody is told who reported them.'],
+      ['Kind words', 'Before a message, a caption or a like’s note goes, the app on your phone checks it against short lists of words. For insults it asks “Are you sure?”, and you decide; under a message you receive with such words it asks whether it bothers you, with a way to report it. These checks happen only on your phone: nothing about the words, or that you were asked, is sent or recorded. Vote’s servers refuse a message, note or profile text (name, work, school, hometown, languages or answers) with a threat of sexual violence, words telling someone to kill themselves, or a slur on a short list, and a refused text is not stored.'],
+      ['First dates readers imagine', 'When you read two people together you may imagine their first date from three choices (when, what and where), kept with your read. Once at least five readers imagined one, the two people see the date most of them chose, part by part, with their introduction and at the top of their conversation: never a date only one reader chose, never how many or who.'],
+      ['This installation', 'When you sign in, Vote records a random ID created by the app for this installation, the platform, app version, language and time zone. It is used only to keep your sign-in and notifications tied to the right device and to prevent abuse. It is not derived from your device’s hardware or advertising identifiers, is deleted when you delete the app or your account, and never affects what anyone sees in Vote.']
+    ]
+  },
+  docs: {
+    terms: {
+      title: 'Terms',
+      body: [
+        ['Who can use Vote', 'You must be 18 or older and legally able to agree to these terms. One account per person.'],
+        ['Your content', 'You own what you post. You give Vote permission to show it according to your privacy settings, and nothing more.'],
+        ['Community reads', 'Reads on pairs are opinions, not facts. They never connect anyone without both people saying yes.'],
+        ['Plans', 'Vote is free. Vote Plus and Vote Max add features such as unlimited likes and votes, undo, seeing who likes you and your full vote history. What your plan includes is decided by Vote’s servers. A plan never changes how the community reads pairs or what the percentages mean, and privacy settings, blocking and reporting are the same on every plan. On any plan, Vote may limit automated or abusive use.'],
+        ['Subscriptions', 'Vote Plus and Vote Max are sold through the App Store as auto-renewing subscriptions. Payment is charged to your Apple ID; the price and period are shown before you buy. A subscription renews automatically unless you cancel it at least 24 hours before the current period ends, in your iPhone’s Settings › your name › Subscriptions. Cancelling keeps the plan until the end of the period you paid for. Refunds are handled by Apple. A subscription belongs to the Vote account it was bought with. Deleting your Vote account does not cancel an App Store subscription: cancel it with Apple.'],
+        ['Help and appeals', 'You can write to Vote’s team from Settings › Help & support. If Vote suspends or restricts your account, you can appeal from the screen your account shows, or from Help & support; a person on Vote’s team reviews it and answers there, in the app.'],
+        ['Ending your account', 'You can pause or delete your account at any time from Settings. Deleting it removes your account, profile, photos, likes, reads, follows, matches, the conversations you were part of, introductions, blocks, your support requests and the reports you made that are closed. A report still open when you delete your account, one you made or one about you, is kept, no longer linked to any account, until Vote’s safety team closes it, together with a chat photo it concerns, so that a safety review can finish.']
+      ]
+    },
+    privacy: {
+      title: 'Privacy',
+      body: [
+        ['What readers see', 'Community readers see only photos you allow in Vote and profile sections set to Everyone. Never your distance, activity, work, beliefs or anything you marked private.'],
+        ['What dates see', 'People in Discover see sections set to Everyone or Potential dates. Connections also see sections set to Connections.'],
+        ['Location', 'Vote shows your city or neighborhood, never your coordinates. It keeps coordinates rounded to about 1 km only to compute rounded distances. When you search for your city, the text you type is sent to the Open-Meteo place-search service. If you choose “Use my current location”, Vote asks your device for its approximate location once and sends the rounded coordinates to the BigDataCloud reverse-geocoding service to find your city, and nothing else about you. You can always type your city instead.'],
+        ['Permissions', 'Vote asks for a permission only when you use something that needs it: your photo library or camera when you add a photo, and approximate location only if you tap “Use my current location”. Vote never asks for your contacts and does not track you across other apps or websites.'],
+        ['Anonymity', 'You never see who read, proposed or followed you: only anonymous counts, and a pair’s results only once at least five people have read it. Nobody sees yours.'],
+        ['Your data', 'Export what Vote keeps about you (your account, photos, activity, messages, birth details, Daily Orbits, the chats where you turned on “The sky between you”, your answers after a date, support requests, subscription records and usage statistics) from Settings › Your data. The safety team’s internal notes on reports are not part of the export. Deleting your account removes it from the app’s database at once, except an open report and a chat photo it concerns, kept without your account until the report is closed (see Terms › Ending your account); copies may remain in the hosting provider’s backups until those expire.']
+      ]
+    },
+    support: {
+      title: 'Support',
+      body: [
+        ['Getting help', 'Open Vote, then Settings › Help & support. You can ask about your account, privacy and your data, safety, or anything else. A person on Vote’s team answers there, in the app.'],
+        ['Appeals', 'If your account was suspended or restricted and you think it was a mistake, open Vote: the screen your account shows has “Appeal or ask for help”. Your appeal is reviewed by a person, not decided automatically.'],
+        ['Reporting someone', 'On any profile, pair, introduction or chat, open the menu and choose Report. Reports are confidential: the person is never told who reported them.'],
+        ['If you are in danger', 'Contact local emergency services first. Vote cannot send help.'],
+        ['Can’t sign in', 'Use the sign-in method you chose when you joined (Apple, Google or e-mail). With e-mail, “Forgot password” on the sign-in screen sends a reset link.']
+      ]
+    },
+    guidelines: {
+      title: 'Community guidelines',
+      body: [
+        ['Be real', 'Use your own photos and your real age. No impersonation.'],
+        ['Read generously', 'Every pair is two real people. Reads are about fit, never about ranking anyone.'],
+        ['A no is final', 'Don’t pressure anyone to accept a like, a match or an introduction.'],
+        ['Zero tolerance', 'Harassment, hate, threats, scams and sexual content without consent lead to removal.'],
+        ['Kind words', 'Vote never sends or shows threats of sexual violence, words telling someone to kill themselves, or slurs, and asks “Are you sure?” before words that may hurt. If a message bothers you, report it: a person on Vote’s team reviews it.']
+      ]
+    }
+  }
+};
