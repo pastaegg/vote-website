@@ -9,8 +9,8 @@
    The Privacy Policy, Terms and Support pages use the same English legal text
    the app shows, so the website and the app never say different things.
    Whenever that file changes in the app, run the second form and commit.
-   Only the website sections in WEB below are written here (sign-in, this
-   website, contact). */
+   Only the website sections in WEB below are written here (a summary,
+   this website, contact). */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -31,6 +31,7 @@ const YEAR = 2026;
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const slug = s => s.toLowerCase().normalize('NFKD').replace(/[‘’“”"']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const linkEmail = s => s.replaceAll(EMAIL, `<a href="mailto:${EMAIL}">${EMAIL}</a>`);
 const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
 
 const MARK = `<svg viewBox="0 0 48 32" aria-hidden="true"><circle cx="17" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="31" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
@@ -110,7 +111,7 @@ function docPage({ file, title, description, lead, current, intro = '', parts, a
     const rows = part.rows.map(([h, p]) => {
       const sid = id(h);
       toc.push([sid, h]);
-      return `<section id="${sid}"><h2>${esc(h)}</h2>${p.startsWith('<') ? p : `<p>${esc(p)}</p>`}</section>`;
+      return `<section id="${sid}"><h2>${esc(h)}</h2>${p.startsWith('<') ? p : `<p>${linkEmail(esc(p))}</p>`}</section>`;
     }).join('\n');
     return `${part.title ? `<h2 class="part">${esc(part.title)}</h2>` : ''}${part.lead ? `<p class="part-lead">${esc(part.lead)}</p>` : ''}\n${rows}`;
   }).join('\n');
@@ -132,22 +133,23 @@ ${after}
 /* Website-only sections. Everything else on these pages is the app's text. */
 const WEB = {
   privacyIntro: [
-    ['Who we are', `<p>${NAME} (“Vote”) is a dating app where the community reads pairs of people and strong reads can become introductions. This policy explains what Vote stores, who can see it and how you stay in control. Questions or requests about your privacy: <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`],
     ['In short', `<ul><li>Vote shows your city, never your coordinates, and keeps location rounded to about 1&nbsp;km.</li><li>No ads, no advertising identifiers, no tracking across other apps or websites, and no analytics companies.</li><li>Nobody sees who read, proposed or followed them: only anonymous counts.</li><li>Photos are private, and each link to one expires within minutes.</li><li>You can export your data or delete your account at any time from Settings.</li></ul>`]
   ],
   privacyOutro: [
-    ['Signing in with Apple or Google', `<p>If you sign in with Apple or Google, Vote receives what you allow that provider to share: an identifier for your account, your e-mail address and your name (Google may also include a link to your profile picture, which Vote doesn’t use). Vote uses them only to create your account and sign you in, and suggests your first name for your profile, which you can change. Vote never receives your Apple or Google password and has no access to anything else in those accounts, such as contacts, e-mail, files or calendars. Google user data is never sold, never used for advertising and never shared except with Vote’s hosting provider so you can sign in.</p>`],
-    ['Age', `<p>Vote is only for people 18 and older, and your birth date is checked when you join. If you think someone under 18 is using Vote, report their profile in the app (“May be under 18”) or write to <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`],
     ['This website', '<p>votebettertogether.com sets no cookies and uses no analytics, ads or trackers. It is hosted on GitHub Pages, which may keep technical logs such as IP addresses to keep the service secure.</p>'],
     ['Changes to this policy', '<p>When this policy changes, its version changes and the app shows you the new text. This page always shows the current version.</p>'],
     ['Contact', `<p>Privacy questions, or a request about your data when you can’t use the app: <a href="mailto:${EMAIL}">${EMAIL}</a>. To delete your account, see <a href="/delete-account/">Delete your account</a>.</p>`]
   ],
   termsOutro: [
     ['Privacy', '<p>How Vote handles your information is described in the <a href="/privacy/">Privacy Policy</a>.</p>'],
-    ['Changes to these terms', '<p>When these terms change, their version changes and the app shows you the new text. This page always shows the current version.</p>'],
     ['Contact', `<p>Questions about these terms: <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`]
   ]
 };
+
+/* The app's privacy text opens with who is responsible; the website shows
+   that first, before the summary. */
+const responsible = legal.docs.privacy.body.filter(([h]) => h === 'Who is responsible');
+const privacyRest = legal.docs.privacy.body.filter(([h]) => h !== 'Who is responsible');
 
 const pages = {};
 
@@ -164,9 +166,9 @@ pages['privacy/index.html'] = docPage({
   description: 'What Vote stores, who can see it, and how you export or delete your data.',
   lead: 'What Vote stores, who can see it, and how you stay in control.',
   parts: [
-    { rows: WEB.privacyIntro },
+    { rows: [...responsible, ...WEB.privacyIntro] },
     { title: 'What Vote stores', lead: 'For a real account, everything below is stored by Vote on its hosting provider, Supabase.', rows: legal.privacyStored.production },
-    { title: 'Who sees what, and your choices', rows: legal.docs.privacy.body },
+    { title: 'Who sees what, and your rights', rows: privacyRest },
     { title: 'More about your privacy', rows: WEB.privacyOutro }
   ]
 });
