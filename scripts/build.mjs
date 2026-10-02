@@ -26,8 +26,21 @@ const legal = (await import(pathToFileURL(path.join(root, 'src/legal-en.js')).hr
 
 const SITE = 'https://votebettertogether.com';
 const NAME = 'Vote: Better Together';
-const EMAIL = 'ahmetfceren@gmail.com';
+const EMAIL = 'support@votebettertogether.com';
 const YEAR = 2026;
+/* The values the app's legal text leaves open ({controllerName} …), the same
+   as the app's build (mobile/eas.json in the app repo); an environment
+   variable overrides one. */
+const VALUES = {
+  controllerName: process.env.LEGAL_CONTROLLER_NAME || 'VOTEBT',
+  controllerAddress: process.env.LEGAL_CONTROLLER_ADDRESS || 'Toronto, Ontario, Canada',
+  contact: process.env.SUPPORT_CONTACT || EMAIL,
+  hostingRegion: process.env.LEGAL_HOSTING_REGION || 'Canada (Central)'
+};
+const fill = t => String(t).replace(/\{(controllerName|controllerAddress|contact|hostingRegion)\}/g, (_, k) => VALUES[k]);
+/* A section's text: blank lines part paragraphs, single line breaks stay. */
+const toHtml = t => fill(t).split(/\n{2,}/).map(par => `<p>${linkEmail(esc(par)).replaceAll('\n', '<br>')}</p>`).join('');
+const rowsOf = doc => Object.values(doc.sections).map(([h, t]) => [fill(h), toHtml(t)]);
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const slug = s => s.toLowerCase().normalize('NFKD').replace(/[‘’“”"']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -133,23 +146,16 @@ ${after}
 /* Website-only sections. Everything else on these pages is the app's text. */
 const WEB = {
   privacyIntro: [
-    ['In short', `<ul><li>Vote shows your city, never your coordinates, and keeps location rounded to about 1&nbsp;km.</li><li>No ads, no advertising identifiers, no tracking across other apps or websites, and no analytics companies.</li><li>Nobody sees who read, proposed or followed them: only anonymous counts.</li><li>Photos are private, and each link to one expires within minutes.</li><li>You can export your data or delete your account at any time from Settings.</li></ul>`]
+    ['In short', `<ul><li>Vote shows your city, never your coordinates, and keeps location on a grid of about 5&nbsp;km.</li><li>No ads, no advertising identifiers, no tracking across other apps or websites, and no analytics companies.</li><li>Nobody sees who read, proposed or followed them: only anonymous counts.</li><li>Photos are private, and each link to one expires within minutes.</li><li>You can export your data or delete your account at any time from Settings.</li></ul>`]
   ],
   privacyOutro: [
-    ['This website', '<p>votebettertogether.com sets no cookies and uses no analytics, ads or trackers. It is hosted on GitHub Pages, which may keep technical logs such as IP addresses to keep the service secure.</p>'],
-    ['Changes to this policy', '<p>When this policy changes, its version changes and the app shows you the new text. This page always shows the current version.</p>'],
-    ['Contact', `<p>Privacy questions, or a request about your data when you can’t use the app: <a href="mailto:${EMAIL}">${EMAIL}</a>. To delete your account, see <a href="/delete-account/">Delete your account</a>.</p>`]
+    ['This website', '<p>votebettertogether.com sets no cookies and uses no analytics, ads or trackers. It is hosted on GitHub Pages, which may keep technical logs such as IP addresses to keep the service secure.</p>']
   ],
   termsOutro: [
     ['Privacy', '<p>How Vote handles your information is described in the <a href="/privacy/">Privacy Policy</a>.</p>'],
     ['Contact', `<p>Questions about these terms: <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`]
   ]
 };
-
-/* The app's privacy text opens with who is responsible; the website shows
-   that first, before the summary. */
-const responsible = legal.docs.privacy.body.filter(([h]) => h === 'Who is responsible');
-const privacyRest = legal.docs.privacy.body.filter(([h]) => h !== 'Who is responsible');
 
 const pages = {};
 
@@ -166,9 +172,8 @@ pages['privacy/index.html'] = docPage({
   description: 'What Vote stores, who can see it, and how you export or delete your data.',
   lead: 'What Vote stores, who can see it, and how you stay in control.',
   parts: [
-    { rows: [...responsible, ...WEB.privacyIntro] },
-    { title: 'What Vote stores', lead: 'For a real account, everything below is stored by Vote on its hosting provider, Supabase.', rows: legal.privacyStored.production },
-    { title: 'Who sees what, and your rights', rows: privacyRest },
+    { rows: WEB.privacyIntro },
+    { title: 'The policy', rows: rowsOf(legal.docs.privacy) },
     { title: 'More about your privacy', rows: WEB.privacyOutro }
   ]
 });
@@ -180,8 +185,8 @@ pages['terms/index.html'] = docPage({
   description: 'The terms for using Vote: Better Together, including subscriptions and the community guidelines.',
   lead: 'The terms for using Vote, and the community guidelines everyone agrees to.',
   parts: [
-    { title: 'Terms', rows: legal.docs.terms.body },
-    { title: legal.docs.guidelines.title, rows: legal.docs.guidelines.body },
+    { title: 'Terms', rows: rowsOf(legal.docs.terms) },
+    { title: legal.docs.guidelines.title, rows: rowsOf(legal.docs.guidelines) },
     { title: 'Also', rows: WEB.termsOutro }
   ]
 });
@@ -199,7 +204,7 @@ pages['support/index.html'] = docPage({
   <a href="/terms/"><b>Terms of Use</b><span>Including subscriptions and refunds</span></a>
 </div>`,
   parts: [
-    { rows: legal.docs.support.body },
+    { rows: rowsOf(legal.docs.support) },
     { title: 'Staying safe', rows: [
       ['Keep it on Vote', 'Chat here until you’re comfortable. Be wary of anyone who rushes you off the app.'],
       ['Meet in public', 'For first dates, choose a public place and tell a friend where you’ll be.'],
@@ -212,13 +217,19 @@ pages['support/index.html'] = docPage({
   ]
 });
 
-pages['delete-account/index.html'] = layout({
+pages['delete-account/index.html'] = docPage({
   file: 'delete-account/index.html',
-  title: 'Delete your account',
+  title: legal.docs.deletion.title,
   current: '',
   description: 'How to delete your Vote: Better Together account and data, in the app or by e-mail, and what is deleted or kept.',
-  body: read('delete-account.html').replaceAll('{{EMAIL}}', EMAIL).replaceAll('{{NAME}}', NAME).replaceAll('{{VERSION}}', esc(legal.version))
+  lead: 'In the app at any time, or by e-mail if you can’t sign in.',
+  parts: [{ rows: rowsOf(legal.docs.deletion) }]
 });
+
+/* The flat addresses (privacy.html …) some listings and older builds use
+   lead to the pages. */
+const moved = to => `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${NAME}</title><link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0; url=${to}"></head><body><p><a href="${to}">${SITE}${to}</a></p></body></html>\n`;
+for (const p of ['privacy', 'terms', 'support', 'delete-account']) pages[`${p}.html`] = moved(`/${p}/`);
 
 pages['404.html'] = layout({
   file: '404.html',
