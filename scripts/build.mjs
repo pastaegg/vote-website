@@ -11,6 +11,7 @@
    Whenever that file changes in the app, run the second form and commit.
    Only the website sections in WEB below are written here (a summary,
    this website, contact). */
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -49,7 +50,7 @@ const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
 
 const MARK = `<svg viewBox="0 0 48 32" aria-hidden="true"><circle cx="17" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="31" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
 
-function layout({ file, title, description, current = '', body }) {
+function layout({ file, title, description, current = '', body, head = '' }) {
   const url = SITE + '/' + file.replace(/index\.html$/, '');
   const fullTitle = title ? `${title} · ${NAME}` : `${NAME} · People help people find people`;
   const link = (href, label, cls = '') =>
@@ -80,7 +81,7 @@ function layout({ file, title, description, current = '', body }) {
 <link rel="preload" href="/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
-</head>
+${head}</head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="sky" aria-hidden="true"><div class="stars"></div></div>
@@ -224,6 +225,34 @@ pages['delete-account/index.html'] = docPage({
   description: 'How to delete your Vote: Better Together account and data, in the app or by e-mail, and what is deleted or kept.',
   lead: 'In the app at any time, or by e-mail if you can’t sign in.',
   parts: [{ rows: rowsOf(legal.docs.deletion) }]
+});
+
+/* The page Vote's sign-up and password-reset emails link to (the app
+   repo's supabase/templates): it hands the link to the app, or confirms a
+   sign-up here on a computer (src/email-link.js, words in
+   src/email-link.json). The site's one script: inline, pinned by its hash
+   in a Content-Security-Policy that lets it talk only to Vote's sign-in
+   service (Supabase Auth). Not indexed; the app repo's deploy checks it is
+   published before the emails point here (data-vote-email-link). */
+const linkWords = JSON.parse(read('email-link.json'));
+const linkScript = read('email-link.js').replace('__STRINGS__', () => JSON.stringify(linkWords));
+const linkHash = crypto.createHash('sha256').update(linkScript).digest('base64');
+pages['auth/confirm/index.html'] = layout({
+  file: 'auth/confirm/index.html',
+  title: 'Email link',
+  description: 'Opens Vote to confirm your email or choose a new password.',
+  head: `<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-${linkHash}'; style-src 'self'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src https://usuyyubmjwayrliadrax.supabase.co; base-uri 'none'; form-action 'none'">
+`,
+  body: `<section class="closing linkpage" data-vote-email-link><div class="wrap">
+<div class="mark">${MARK}</div>
+<h1 id="lp-title">${esc(linkWords.en.opening)}</h1>
+<p class="lead" id="lp-text">${esc(linkWords.en.openHint)}</p>
+<div class="cta"><a class="btn solid" id="lp-open" href="/" hidden>${esc(linkWords.en.open)}</a><button class="btn solid" id="lp-confirm" type="button" hidden>${esc(linkWords.en.confirm)}</button><button class="btn" id="lp-here" type="button" hidden>${esc(linkWords.en.here)}</button></div>
+<noscript><p class="lead">Open this email on your phone, in Vote.</p></noscript>
+</div></section>
+<script>${linkScript}</script>`
 });
 
 /* The flat addresses (privacy.html …) some listings and older builds use

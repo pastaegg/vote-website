@@ -9,6 +9,7 @@ The website for **Vote: Better Together**: a homepage plus the Privacy Policy, T
 | Terms of Use | https://votebettertogether.com/terms/ | App Store (EULA link for subscriptions), Google OAuth |
 | Support | https://votebettertogether.com/support/ | App Store "Support URL" |
 | Delete account | https://votebettertogether.com/delete-account/ | Google Play "Delete account URL" (Data safety) |
+| Email link | https://votebettertogether.com/auth/confirm/ | Where the app's sign-up and password-reset emails link (not indexed) |
 
 ## Editing
 
@@ -23,7 +24,19 @@ The Privacy Policy, Terms and Support text comes from the app's canonical legal 
 
 - `src/home.html`: homepage body
 - `src/delete-account.html`: delete account page body
+- `src/email-link.js`, `src/email-link.json`: the email link page's script and its words in the app's 13 languages
 - `scripts/build.mjs`: layout, website-only legal sections, sitemap, manifest
 - `assets/site.css`: styles; fonts are the app's Fraunces and Inter (SIL OFL, `assets/fonts/OFL.txt`)
+- `assets/email/`: images the app's emails load (the logo, `vote-icon-144.png`)
 
-No JavaScript, cookies, analytics or external requests.
+No cookies, analytics or trackers. One page has JavaScript: the email link
+page (`auth/confirm/`). The app's emails (the app repo's `supabase/templates`)
+link there with the address and a one-time code after `#`, which never
+reaches this server. On a phone it opens the app
+(`vote-rn://login-callback?…`, where the app confirms the email and signs
+in); on a computer it can confirm a sign-up there, with one request to
+Vote's sign-in service (Supabase Auth) and nothing kept. The script is
+inline and pinned by its hash in the page's Content-Security-Policy, which
+allows no other request. The app repo's deploy checks this page and the
+logo are published before it points the emails here, so publish this site
+first.
