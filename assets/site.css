@@ -172,6 +172,13 @@ section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--
 .strengths span { color: var(--text-3); font-size: 14px; }
 
 .promises { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.dot-moss { --dot: var(--moss); }
+.dot-lilac { --dot: var(--lilac); }
+.dot-tide { --dot: var(--tide); }
+.dot-saffron { --dot: var(--saffron); }
+.dot-ember { --dot: var(--ember); }
+.dot-rose { --dot: #FF8FB1; }
+.no-border { border-top: 0; }
 .promise { background: var(--bg-2); padding: 28px; }
 .promise h3 { font-size: 20px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
 .promise h3::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--dot, var(--moss)); box-shadow: 0 0 12px var(--dot, var(--moss)); }

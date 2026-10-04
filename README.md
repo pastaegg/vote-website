@@ -40,3 +40,19 @@ inline and pinned by its hash in the page's Content-Security-Policy, which
 allows no other request. The app repo's deploy checks this page and the
 logo are published before it points the emails here, so publish this site
 first.
+
+## Security checks
+
+After every edit, rebuild and check the security policies and auth behavior:
+
+```sh
+node scripts/build.mjs
+node scripts/check-security.mjs
+node --test tests/*.test.mjs
+```
+
+Every generated page has a restrictive CSP and no-referrer policy before
+resources load. The only executable script is hash-pinned on `/auth/confirm/`;
+its credentials must be in `#`, and its requests are limited to fixed Auth
+paths. See [SECURITY.md](SECURITY.md) for verified controls, account settings
+still requiring attention, and the response-header limitations of GitHub Pages.

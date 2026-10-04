@@ -1,0 +1,5 @@
+Contact: mailto:support@votebettertogether.com
+Expires: 2027-04-04T00:00:00Z
+Preferred-Languages: en, tr
+Canonical: https://votebettertogether.com/.well-known/security.txt
+Policy: https://github.com/pastaegg/vote-website/blob/main/SECURITY.md

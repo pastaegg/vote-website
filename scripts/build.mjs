@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-/* Builds votebettertogether.com: static HTML pages, no scripts, no trackers.
+/* Builds votebettertogether.com: static pages, one hash-pinned auth script,
+   no third-party assets or trackers.
 
      node scripts/build.mjs                         rebuild from src/
      node scripts/build.mjs ../vote-bettertogether-rn
@@ -50,7 +51,16 @@ const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
 
 const MARK = `<svg viewBox="0 0 48 32" aria-hidden="true"><circle cx="17" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="31" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
 
-function layout({ file, title, description, current = '', body, head = '' }) {
+const digest = value => crypto.createHash('sha256').update(value).digest('base64');
+const cssIntegrity = `sha256-${digest(fs.readFileSync(path.join(root, 'assets/site.css')))}`;
+// GitHub Pages does not apply custom response headers from this repository.
+// Put the policies before *any* resource; header-only controls are documented
+// in SECURITY.md rather than represented by ineffective http-equiv tags.
+const policy = (script = "'none'", connect = "'none'") =>
+  `default-src 'none'; script-src ${script}; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src ${connect}; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests`;
+const securityHead = csp => `<meta name="referrer" content="no-referrer">\n<meta http-equiv="Content-Security-Policy" content="${esc(csp).replaceAll('&#39;', "'")}">\n`;
+
+function layout({ file, title, description, current = '', body, head = '', csp = policy() }) {
   const url = SITE + '/' + file.replace(/index\.html$/, '');
   const fullTitle = title ? `${title} · ${NAME}` : `${NAME} · People help people find people`;
   const link = (href, label, cls = '') =>
@@ -59,7 +69,7 @@ function layout({ file, title, description, current = '', body, head = '' }) {
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${url}">
@@ -80,8 +90,8 @@ function layout({ file, title, description, current = '', body, head = '' }) {
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css">
-${head}</head>
+<link rel="stylesheet" href="/assets/site.css" integrity="${cssIntegrity}" crossorigin="anonymous">
+</head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="sky" aria-hidden="true"><div class="stars"></div></div>
@@ -235,15 +245,17 @@ pages['delete-account/index.html'] = docPage({
    service (Supabase Auth). Not indexed; the app repo's deploy checks it is
    published before the emails point here (data-vote-email-link). */
 const linkWords = JSON.parse(read('email-link.json'));
-const linkScript = read('email-link.js').replace('__STRINGS__', () => JSON.stringify(linkWords));
-const linkHash = crypto.createHash('sha256').update(linkScript).digest('base64');
+// JSON in an inline script must not be able to close its HTML script element.
+const scriptJson = value => JSON.stringify(value).replace(/[<>&\u2028\u2029]/g, c => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
+const linkScript = read('email-link.js').replace('__STRINGS__', () => scriptJson(linkWords));
+const linkHash = digest(linkScript);
 pages['auth/confirm/index.html'] = layout({
   file: 'auth/confirm/index.html',
   title: 'Email link',
   description: 'Opens Vote to confirm your email or choose a new password.',
-  head: `<meta name="robots" content="noindex">
-<meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-${linkHash}'; style-src 'self'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src https://usuyyubmjwayrliadrax.supabase.co; base-uri 'none'; form-action 'none'">
+  csp: policy(`'sha256-${linkHash}'`, 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout'),
+  head: `<meta name="robots" content="noindex, nofollow, noarchive">
+<script>${linkScript}</script>
 `,
   body: `<section class="closing linkpage" data-vote-email-link><div class="wrap">
 <div class="mark">${MARK}</div>
@@ -251,20 +263,19 @@ pages['auth/confirm/index.html'] = layout({
 <p class="lead" id="lp-text">${esc(linkWords.en.openHint)}</p>
 <div class="cta"><a class="btn solid" id="lp-open" href="/" hidden>${esc(linkWords.en.open)}</a><button class="btn solid" id="lp-confirm" type="button" hidden>${esc(linkWords.en.confirm)}</button><button class="btn" id="lp-here" type="button" hidden>${esc(linkWords.en.here)}</button></div>
 <noscript><p class="lead">Open this email on your phone, in Vote.</p></noscript>
-</div></section>
-<script>${linkScript}</script>`
+</div></section>`
 });
 
 /* The flat addresses (privacy.html …) some listings and older builds use
    lead to the pages. */
-const moved = to => `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${NAME}</title><link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0; url=${to}"></head><body><p><a href="${to}">${SITE}${to}</a></p></body></html>\n`;
+const moved = to => `<!doctype html><html lang="en"><head><meta charset="utf-8">${securityHead(policy())}<title>${NAME}</title><link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0; url=${to}"></head><body><p><a href="${to}">${SITE}${to}</a></p></body></html>\n`;
 for (const p of ['privacy', 'terms', 'support', 'delete-account']) pages[`${p}.html`] = moved(`/${p}/`);
 
 pages['404.html'] = layout({
   file: '404.html',
   title: 'Page not found',
   description: 'This page doesn’t exist.',
-  body: `<section class="closing" style="border-top:0"><div class="wrap"><div class="mark">${MARK}</div><h2>Nothing here.</h2><p class="lead">This page doesn’t exist, or it moved.</p><div class="cta"><a class="btn solid" href="/">Go home</a><a class="btn" href="/support/">Support</a></div></div></section>`
+  body: `<section class="closing no-border"><div class="wrap"><div class="mark">${MARK}</div><h2>Nothing here.</h2><p class="lead">This page doesn’t exist, or it moved.</p><div class="cta"><a class="btn solid" href="/">Go home</a><a class="btn" href="/support/">Support</a></div></div></section>`
 });
 
 for (const [file, html] of Object.entries(pages)) {
@@ -284,5 +295,15 @@ fs.writeFileSync(path.join(root, 'site.webmanifest'), JSON.stringify({
   name: NAME, short_name: 'Vote', start_url: '/', display: 'browser', background_color: '#0B0A0F', theme_color: '#0B0A0F',
   icons: [{ src: '/assets/img/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/assets/img/icon-512.png', sizes: '512x512', type: 'image/png' }]
 }, null, 2) + '\n');
+
+const securityTxt = `Contact: mailto:${EMAIL}
+Expires: 2027-04-04T00:00:00Z
+Preferred-Languages: en, tr
+Canonical: ${SITE}/.well-known/security.txt
+Policy: https://github.com/pastaegg/vote-website/blob/main/SECURITY.md
+`;
+fs.mkdirSync(path.join(root, '.well-known'), { recursive: true });
+fs.writeFileSync(path.join(root, '.well-known/security.txt'), securityTxt);
+fs.writeFileSync(path.join(root, 'security.txt'), securityTxt);
 
 console.log(`Built ${Object.keys(pages).length} pages (legal text version ${legal.version})`);

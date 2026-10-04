@@ -2,6 +2,152 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qxZHbpuuGTQFwt5GihUfHy/0ChGDufMlk4+x3gQopew='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<script>/* This script runs in the head, before any resources. Only fragments carry
+   credentials: queries have already reached server logs and are rejected.
+   No session is persisted; a temporary signup session is logged out locally.
+   Logout revokes refresh tokens, not an already-issued access token. */
+(function () {
+  'use strict';
+  var STRINGS = {"en":{"opening":"Opening Vote…","openHint":"If Vote doesn’t open, tap the button. It works on the phone where you asked for the email.","open":"Open Vote","here":"No Vote on this device? Confirm here","confirmTitle":"Confirm your email","confirmText":"Confirm {email} here, then open Vote on your phone and sign in.","confirm":"Confirm my email","busy":"One moment…","doneTitle":"Email confirmed","doneText":"Open Vote on your phone and sign in with {email}.","resetTitle":"Open this on your phone","resetText":"You choose a new password in Vote. Open this email on the phone with Vote and tap the button there.","expiredTitle":"This link has expired","expiredText":"Links work for one hour, and only once. If you already confirmed your email, just sign in. If not, open Vote and send a new link.","brokenTitle":"This link is incomplete","brokenText":"Open the newest email from Vote, or ask for a new link in the app.","failedText":"Vote couldn’t be reached. Check your connection and try again."},"tr":{"opening":"Vote açılıyor…","openHint":"Vote açılmazsa düğmeye dokun. E-postayı istediğin telefonda çalışır.","open":"Vote’yi aç","here":"Bu cihazda Vote yok mu? Burada onayla","confirmTitle":"E-postanı onayla","confirmText":"{email} adresini burada onayla, sonra telefonunda Vote’yi açıp giriş yap.","confirm":"E-postamı onayla","busy":"Bir saniye…","doneTitle":"E-postan onaylandı","doneText":"Telefonunda Vote’yi aç ve {email} ile giriş yap.","resetTitle":"Bunu telefonunda aç","resetText":"Yeni şifreni Vote’de seçersin. Bu e-postayı Vote’nin olduğu telefonda aç ve oradaki düğmeye dokun.","expiredTitle":"Bu bağlantının süresi doldu","expiredText":"Bağlantılar bir saat geçerli ve yalnızca bir kez çalışır. E-postanı zaten onayladıysan giriş yapman yeterli. Onaylamadıysan Vote’yi aç ve yeni bir bağlantı gönder.","brokenTitle":"Bu bağlantı eksik","brokenText":"Vote’den gelen en yeni e-postayı aç ya da uygulamadan yeni bir bağlantı iste.","failedText":"Vote’ye ulaşılamadı. İnternet bağlantını kontrol edip yeniden dene."},"de":{"opening":"Vote wird geöffnet…","openHint":"Falls Vote nicht aufgeht, tippe auf den Button. Das klappt auf dem Handy, auf dem du die E-Mail angefordert hast.","open":"Vote öffnen","here":"Kein Vote auf diesem Gerät? Hier bestätigen","confirmTitle":"Bestätige deine E-Mail-Adresse","confirmText":"Bestätige {email} hier, öffne dann Vote auf deinem Handy und melde dich an.","confirm":"E-Mail-Adresse bestätigen","busy":"Einen Moment…","doneTitle":"E-Mail-Adresse bestätigt","doneText":"Öffne Vote auf deinem Handy und melde dich mit {email} an.","resetTitle":"Öffne das auf deinem Handy","resetText":"Dein neues Passwort wählst du in Vote. Öffne diese E-Mail auf dem Handy mit Vote und tippe dort auf den Button.","expiredTitle":"Dieser Link ist abgelaufen","expiredText":"Links gelten eine Stunde lang und nur einmal. Wenn du deine E-Mail-Adresse schon bestätigt hast, melde dich einfach an. Wenn nicht, öffne Vote und fordere einen neuen Link an.","brokenTitle":"Dieser Link ist unvollständig","brokenText":"Öffne die neueste E-Mail von Vote oder fordere in der App einen neuen Link an.","failedText":"Vote ist gerade nicht erreichbar. Prüf deine Verbindung und versuch es noch mal."},"es":{"opening":"Abriendo Vote…","openHint":"Si Vote no se abre, toca el botón. Funciona en el teléfono donde pediste el correo.","open":"Abrir Vote","here":"¿No tienes Vote aquí? Confirma desde aquí","confirmTitle":"Confirma tu correo","confirmText":"Confirma {email} aquí y luego abre Vote en tu teléfono e inicia sesión.","confirm":"Confirmar mi correo","busy":"Un momento…","doneTitle":"Correo confirmado","doneText":"Abre Vote en tu teléfono e inicia sesión con {email}.","resetTitle":"Ábrelo en tu teléfono","resetText":"La contraseña nueva se elige en Vote. Abre este correo en el teléfono que tiene Vote y toca el botón ahí.","expiredTitle":"Este enlace caducó","expiredText":"Los enlaces sirven por una hora y una sola vez. Si ya confirmaste tu correo, solo inicia sesión. Si no, abre Vote y pide un enlace nuevo.","brokenTitle":"A este enlace le falta algo","brokenText":"Abre el correo más reciente de Vote o pide un enlace nuevo en la app.","failedText":"No se pudo conectar con Vote. Revisa tu conexión y vuelve a intentarlo."},"fr":{"opening":"Ouverture de Vote…","openHint":"Si Vote ne s’ouvre pas, touche le bouton. Ça marche sur le téléphone où tu as demandé l’e-mail.","open":"Ouvrir Vote","here":"Pas de Vote sur cet appareil ? Confirme ici","confirmTitle":"Confirme ton e-mail","confirmText":"Confirme {email} ici, puis ouvre Vote sur ton téléphone et connecte-toi.","confirm":"Confirmer mon e-mail","busy":"Un instant…","doneTitle":"E-mail confirmé","doneText":"Ouvre Vote sur ton téléphone et connecte-toi avec {email}.","resetTitle":"Ouvre ceci sur ton téléphone","resetText":"Le nouveau mot de passe se choisit dans Vote. Ouvre cet e-mail sur le téléphone où se trouve Vote et touche le bouton là-bas.","expiredTitle":"Ce lien a expiré","expiredText":"Les liens sont valables une heure, et une seule fois. Si tu as déjà confirmé ton e-mail, connecte-toi, tout simplement. Sinon, ouvre Vote et demande un nouveau lien.","brokenTitle":"Ce lien est incomplet","brokenText":"Ouvre le dernier e-mail de Vote, ou demande un nouveau lien dans l’app.","failedText":"Impossible de joindre Vote. Vérifie ta connexion et réessaie."},"it":{"opening":"Sto aprendo Vote…","openHint":"Se Vote non si apre, tocca il pulsante. Funziona sul telefono da cui hai chiesto l’email.","open":"Apri Vote","here":"Vote non è su questo dispositivo? Conferma qui","confirmTitle":"Conferma la tua email","confirmText":"Conferma {email} qui, poi apri Vote sul telefono e accedi.","confirm":"Conferma la mia email","busy":"Un momento…","doneTitle":"Email confermata","doneText":"Apri Vote sul telefono e accedi con {email}.","resetTitle":"Aprilo sul telefono","resetText":"La nuova password si sceglie in Vote. Apri questa email sul telefono con Vote e tocca il pulsante lì.","expiredTitle":"Questo link è scaduto","expiredText":"I link valgono un’ora e una sola volta. Se hai già confermato la tua email, ti basta accedere. Altrimenti apri Vote e chiedi un nuovo link.","brokenTitle":"Questo link è incompleto","brokenText":"Apri l’email più recente di Vote, oppure chiedi un nuovo link nell’app.","failedText":"Impossibile raggiungere Vote. Controlla la connessione e riprova."},"pt":{"opening":"Abrindo o Vote…","openHint":"Se o Vote não abrir, toque no botão. Funciona no celular em que você pediu o e-mail.","open":"Abrir o Vote","here":"Não tem o Vote aqui? Confirme por aqui","confirmTitle":"Confirme seu e-mail","confirmText":"Confirme {email} aqui, depois abra o Vote no celular e entre.","confirm":"Confirmar meu e-mail","busy":"Um momento…","doneTitle":"E-mail confirmado","doneText":"Abra o Vote no celular e entre com {email}.","resetTitle":"Abra isto no seu celular","resetText":"A nova senha é escolhida no Vote. Abra este e-mail no celular que tem o Vote e toque no botão lá.","expiredTitle":"Este link expirou","expiredText":"Os links valem por uma hora e só uma vez. Se você já confirmou seu e-mail, é só entrar. Se não, abra o Vote e peça um link novo.","brokenTitle":"Este link está incompleto","brokenText":"Abra o e-mail mais recente do Vote ou peça um link novo no app.","failedText":"Não foi possível falar com o Vote. Confira sua conexão e tente de novo."},"ar":{"opening":"جارٍ فتح Vote…","openHint":"إذا لم يُفتح Vote، فاضغط على الزر. يعمل ذلك على الهاتف الذي طلبت منه الرسالة.","open":"فتح Vote","here":"Vote غير موجود على هذا الجهاز؟ أكّد من هنا","confirmTitle":"أكّد بريدك الإلكتروني","confirmText":"أكّد {email} من هنا، ثم افتح Vote على هاتفك وسجّل الدخول.","confirm":"تأكيد بريدي الإلكتروني","busy":"لحظة واحدة…","doneTitle":"تم تأكيد بريدك الإلكتروني","doneText":"افتح Vote على هاتفك وسجّل الدخول باستخدام {email}.","resetTitle":"افتح هذا على هاتفك","resetText":"تختار كلمة المرور الجديدة داخل Vote. افتح هذه الرسالة على الهاتف الذي عليه Vote واضغط على الزر هناك.","expiredTitle":"انتهت صلاحية هذا الرابط","expiredText":"تعمل الروابط لمدة ساعة واحدة ولمرة واحدة فقط. إذا كنت قد أكّدت بريدك الإلكتروني، فسجّل الدخول فحسب. وإن لم تفعل، فافتح Vote وأرسل رابطًا جديدًا.","brokenTitle":"هذا الرابط غير مكتمل","brokenText":"افتح أحدث رسالة من Vote، أو اطلب رابطًا جديدًا من التطبيق.","failedText":"تعذّر الوصول إلى Vote. تأكّد من اتصالك وحاول مرة أخرى."},"hi":{"opening":"Vote खुल रहा है…","openHint":"अगर Vote न खुले, तो बटन टैप करें। यह उसी फ़ोन पर काम करता है जहाँ से आपने ईमेल माँगा था।","open":"Vote खोलें","here":"इस डिवाइस पर Vote नहीं है? यहीं पक्का करें","confirmTitle":"अपना ईमेल पक्का करें","confirmText":"{email} को यहाँ पक्का करें, फिर अपने फ़ोन पर Vote खोलकर साइन इन करें।","confirm":"मेरा ईमेल पक्का करें","busy":"एक पल…","doneTitle":"ईमेल पक्का हो गया","doneText":"अपने फ़ोन पर Vote खोलें और {email} से साइन इन करें।","resetTitle":"इसे अपने फ़ोन पर खोलें","resetText":"नया पासवर्ड Vote में चुना जाता है। यह ईमेल उस फ़ोन पर खोलें जिसमें Vote है, और वहीं बटन टैप करें।","expiredTitle":"यह लिंक खत्म हो चुका है","expiredText":"लिंक एक घंटे तक और सिर्फ़ एक बार काम करते हैं। अगर आपने ईमेल पहले ही पक्का कर लिया है, तो बस साइन इन करें। नहीं तो Vote खोलें और नया लिंक भेजें।","brokenTitle":"यह लिंक अधूरा है","brokenText":"Vote का सबसे नया ईमेल खोलें, या ऐप में नया लिंक माँगें।","failedText":"Vote तक पहुँच नहीं हो पाई। अपना कनेक्शन देखें और फिर से कोशिश करें।"},"ja":{"opening":"Vote を開いています…","openHint":"Vote が開かないときは、ボタンをタップしてください。メールをリクエストしたスマートフォンで使えます。","open":"Vote を開く","here":"この端末に Vote がない場合は、ここで確認","confirmTitle":"メールアドレスを確認してください","confirmText":"ここで {email} を確認してから、スマートフォンで Vote を開いてログインしてください。","confirm":"メールアドレスを確認","busy":"少々お待ちください…","doneTitle":"メールアドレスを確認しました","doneText":"スマートフォンで Vote を開き、{email} でログインしてください。","resetTitle":"スマートフォンで開いてください","resetText":"新しいパスワードは Vote の中で設定します。Vote が入っているスマートフォンでこのメールを開き、そちらのボタンをタップしてください。","expiredTitle":"このリンクは期限切れです","expiredText":"リンクの有効期限は1時間で、使えるのは1回だけです。すでに確認済みなら、そのままログインしてください。まだの場合は、Vote を開いて新しいリンクを送ってください。","brokenTitle":"このリンクは不完全です","brokenText":"Vote から届いた最新のメールを開くか、アプリで新しいリンクをリクエストしてください。","failedText":"Vote に接続できませんでした。接続を確かめて、もう一度お試しください。"},"ko":{"opening":"Vote를 여는 중…","openHint":"Vote가 열리지 않으면 버튼을 눌러 주세요. 메일을 요청한 휴대폰에서 열려요.","open":"Vote 열기","here":"이 기기에 Vote가 없나요? 여기서 인증하기","confirmTitle":"이메일을 인증해 주세요","confirmText":"여기서 {email} 주소를 인증한 뒤, 휴대폰에서 Vote를 열고 로그인해 주세요.","confirm":"이메일 인증하기","busy":"잠시만요…","doneTitle":"이메일 인증이 끝났어요","doneText":"휴대폰에서 Vote를 열고 {email} 주소로 로그인해 주세요.","resetTitle":"휴대폰에서 열어 주세요","resetText":"새 비밀번호는 Vote 안에서 정해요. Vote가 있는 휴대폰에서 이 메일을 열고 거기서 버튼을 눌러 주세요.","expiredTitle":"만료된 링크예요","expiredText":"링크는 1시간 동안 한 번만 쓸 수 있어요. 이미 이메일을 인증했다면 로그인만 하면 돼요. 아직이라면 Vote를 열고 새 링크를 보내 주세요.","brokenTitle":"링크가 완전하지 않아요","brokenText":"Vote에서 온 가장 최근 메일을 열거나, 앱에서 새 링크를 요청해 주세요.","failedText":"Vote에 연결하지 못했어요. 연결 상태를 확인하고 다시 시도해 주세요."},"zh-Hans":{"opening":"正在打开 Vote…","openHint":"如果 Vote 没有打开，请点按钮。在你申请邮件的那部手机上才能打开。","open":"打开 Vote","here":"这台设备上没有 Vote？在这里确认","confirmTitle":"确认你的邮箱","confirmText":"在这里确认 {email}，然后在手机上打开 Vote 并登录。","confirm":"确认我的邮箱","busy":"请稍候…","doneTitle":"邮箱已确认","doneText":"在手机上打开 Vote，用 {email} 登录。","resetTitle":"请在手机上打开","resetText":"新密码需要在 Vote 里设置。请在装有 Vote 的手机上打开这封邮件，再点那里的按钮。","expiredTitle":"这个链接已过期","expiredText":"链接一小时内有效，而且只能用一次。如果你已经确认过邮箱，直接登录就好。还没确认的话，打开 Vote 重新发送一个链接。","brokenTitle":"这个链接不完整","brokenText":"请打开 Vote 发来的最新邮件，或在 App 里重新获取链接。","failedText":"无法连接 Vote。请检查网络后再试一次。"},"zh-Hant":{"opening":"正在開啟 Vote…","openHint":"如果 Vote 沒有開啟，請點按鈕。在你申請郵件的那部手機上才能開啟。","open":"開啟 Vote","here":"這台裝置上沒有 Vote？在這裡確認","confirmTitle":"確認你的電子郵件","confirmText":"在這裡確認 {email}，然後在手機上開啟 Vote 並登入。","confirm":"確認我的電子郵件","busy":"請稍候…","doneTitle":"電子郵件已確認","doneText":"在手機上開啟 Vote，用 {email} 登入。","resetTitle":"請在手機上開啟","resetText":"新密碼需要在 Vote 裡設定。請在裝有 Vote 的手機上開啟這封郵件，再點那裡的按鈕。","expiredTitle":"這個連結已過期","expiredText":"連結一小時內有效，而且只能使用一次。如果你已經確認過電子郵件，直接登入就好。還沒確認的話，開啟 Vote 重新傳送一個連結。","brokenTitle":"這個連結不完整","brokenText":"請開啟 Vote 寄來的最新郵件，或在 App 裡重新取得連結。","failedText":"無法連線到 Vote。請檢查網路連線後再試一次。"}};
+  var APP_LINK = 'vote-rn://login-callback';
+  var AUTH = 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1';
+  var KEY = 'sb_publishable_SdJ_AsnJPiNjBOEczW62bg_m4fAaWZ_';
+  var raw = (location.hash || '').replace(/^#/, '');
+  var hadQuery = !!location.search;
+  var safeContext = window.isSecureContext && window.self === window.top;
+  try {
+    if (location.hash || location.search) history.replaceState(null, '', location.pathname);
+  } catch (_) { safeContext = false; }
+  var params = new URLSearchParams(raw.length <= 2048 ? raw : '');
+  var allowed = ['type', 'email', 'token', 'lang'];
+  var validParams = raw.length <= 2048 && !hadQuery;
+  params.forEach(function (_, key) {
+    if (allowed.indexOf(key) < 0 || params.getAll(key).length !== 1) validParams = false;
+  });
+  raw = '';
+  var own = function (tag) { return Object.prototype.hasOwnProperty.call(STRINGS, tag); };
+  function pick(tags) {
+    for (var i = 0; i < tags.length; i++) {
+      var tag = String(tags[i] || '');
+      if (own(tag)) return tag;
+      var lower = tag.toLowerCase();
+      if (/^zh-(hant|tw|hk|mo)/.test(lower)) return 'zh-Hant';
+      if (/^zh/.test(lower)) return 'zh-Hans';
+      var base = lower.split('-')[0];
+      if (own(base)) return base;
+    }
+    return 'en';
+  }
+  var lang = pick([params.get('lang')].concat(navigator.languages || [navigator.language]));
+  var t = STRINGS[lang];
+  var type = params.get('type');
+  var email = String(params.get('email') || '').trim().toLowerCase();
+  var token = String(params.get('token') || '').trim();
+  params = null;
+  var valid = safeContext && validParams && (type === 'signup' || type === 'recovery') &&
+    email.length <= 254 && /^[^\s@<>\x00-\x1f\x7f]+@[^\s@<>\x00-\x1f\x7f]+\.[^\s@<>\x00-\x1f\x7f]+$/.test(email) && /^\d{6,10}$/.test(token);
+  if (!valid) { email = ''; token = ''; }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var $ = function (id) { return document.getElementById(id); };
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    var open = $('lp-open');
+    var confirm = $('lp-confirm');
+    var here = $('lp-here');
+    var busy = false, finished = false, openTimer;
+    var fill = function (text) { return text.replace('{email}', email); };
+    open.textContent = t.open;
+    confirm.textContent = t.confirm;
+    here.textContent = t.here;
+    function show(title, text, buttons) {
+      $('lp-title').textContent = title;
+      $('lp-text').textContent = text;
+      open.hidden = buttons.indexOf('open') < 0;
+      confirm.hidden = buttons.indexOf('confirm') < 0;
+      here.hidden = buttons.indexOf('here') < 0;
+      confirm.disabled = busy;
+      confirm.textContent = busy ? t.busy : t.confirm;
+    }
+    function forget() {
+      token = ''; email = ''; finished = true;
+      open.removeAttribute('href');
+      clearTimeout(openTimer);
+    }
+    window.addEventListener('pagehide', forget);
+    // Browsers may restore a page from their back-forward cache. Never revive
+    // a discarded code or leave apparently active controls on that page.
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted) show(t.brokenTitle, t.brokenText, []);
+    });
+    if (!valid) return show(t.brokenTitle, t.brokenText, []);
+    open.href = APP_LINK + '?type=' + type + '&email=' + encodeURIComponent(email) + '&token=' + token;
+
+    function request(endpoint, headers, body) {
+      var controller = new AbortController();
+      var timeout = setTimeout(function () { controller.abort(); }, 10000);
+      return fetch(AUTH + endpoint, {
+        method: 'POST', headers: headers, body: body,
+        credentials: 'omit', cache: 'no-store', redirect: 'error',
+        referrerPolicy: 'no-referrer', signal: controller.signal
+      }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (data) {
+          return { ok: res.ok, status: res.status, body: data };
+        });
+      }).finally(function () { clearTimeout(timeout); });
+    }
+    function confirmHere() {
+      if (busy || finished || type !== 'signup' || !token) return;
+      busy = true;
+      show(t.confirmTitle, t.busy, ['confirm']);
+      request('/verify', { apikey: KEY, 'Content-Type': 'application/json' },
+        JSON.stringify({ type: 'signup', email: email, token: token }))
+      .then(function (res) {
+        if (res.ok) {
+          var doneText = fill(t.doneText);
+          forget();
+          var accessToken = res.body && res.body.access_token;
+          // Discard refresh tokens and user data immediately. Do not store
+          // them, put them in a URL, or log the response on failure.
+          res.body = null;
+          var logout = accessToken ? request('/logout?scope=local',
+            { apikey: KEY, Authorization: 'Bearer ' + accessToken }).catch(function () {}) : Promise.resolve();
+          accessToken = '';
+          return logout.then(function () { show(t.doneTitle, doneText, []); });
+        }
+        if (res.status === 403 || res.status === 422 || (res.body && res.body.code === 'otp_expired')) {
+          forget();
+          show(t.expiredTitle, t.expiredText, []);
+        } else {
+          busy = false;
+          show(t.confirmTitle, t.failedText, ['confirm']);
+        }
+      }).catch(function () {
+        if (!finished) { busy = false; show(t.confirmTitle, t.failedText, ['confirm']); }
+      });
+    }
+    confirm.addEventListener('click', confirmHere);
+    here.addEventListener('click', function () {
+      if (!finished) show(t.confirmTitle, fill(t.confirmText), ['confirm']);
+    });
+    var phone = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (phone) {
+      show(t.opening, t.openHint, type === 'signup' ? ['open', 'here'] : ['open']);
+      openTimer = setTimeout(function () {
+        if (!finished && !open.hidden) location.href = open.href;
+      }, 300);
+    } else if (type === 'signup') {
+      show(t.confirmTitle, fill(t.confirmText), ['confirm']);
+    } else {
+      show(t.resetTitle, t.resetText, []);
+    }
+  }, { once: true });
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Email link · Vote: Better Together</title>
 <meta name="description" content="Opens Vote to confirm your email or choose a new password.">
@@ -23,10 +169,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css">
-<meta name="robots" content="noindex">
-<meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-+B8u2ArOe+S9aGJL+dzN+X+Va/jJs1qw4YjNPUTz5Kg='; style-src 'self'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src https://usuyyubmjwayrliadrax.supabase.co; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="/assets/site.css" integrity="sha256-MvjlX/LN0COhtBHfUt9ZndnucboBpq5v4I39D6OJKUg=" crossorigin="anonymous">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -50,114 +193,6 @@
 <div class="cta"><a class="btn solid" id="lp-open" href="/" hidden>Open Vote</a><button class="btn solid" id="lp-confirm" type="button" hidden>Confirm my email</button><button class="btn" id="lp-here" type="button" hidden>No Vote on this device? Confirm here</button></div>
 <noscript><p class="lead">Open this email on your phone, in Vote.</p></noscript>
 </div></section>
-<script>/* The email link page (auth/confirm/). Vote's sign-up and password-reset
-   emails link here with #type=signup|recovery&email=…&token=…&lang=… (the
-   address and the one-time code). On a phone this hands the link to the
-   app (vote-rn://login-callback, which confirms and signs in); on a
-   computer a sign-up link can be confirmed here, and the person signs in
-   on their phone. A reset always finishes in the app.
-
-   The code is taken out of the address bar at once and goes only to the
-   app or to Vote's sign-in service (Supabase Auth): nothing is stored, no
-   cookie, nothing else is loaded. The session Supabase answers a
-   confirmation with isn't wanted here and is ended straight away. */
-(function () {
-  'use strict';
-  var STRINGS = {"en":{"opening":"Opening Vote…","openHint":"If Vote doesn’t open, tap the button. It works on the phone where you asked for the email.","open":"Open Vote","here":"No Vote on this device? Confirm here","confirmTitle":"Confirm your email","confirmText":"Confirm {email} here, then open Vote on your phone and sign in.","confirm":"Confirm my email","busy":"One moment…","doneTitle":"Email confirmed","doneText":"Open Vote on your phone and sign in with {email}.","resetTitle":"Open this on your phone","resetText":"You choose a new password in Vote. Open this email on the phone with Vote and tap the button there.","expiredTitle":"This link has expired","expiredText":"Links work for one hour, and only once. If you already confirmed your email, just sign in. If not, open Vote and send a new link.","brokenTitle":"This link is incomplete","brokenText":"Open the newest email from Vote, or ask for a new link in the app.","failedText":"Vote couldn’t be reached. Check your connection and try again."},"tr":{"opening":"Vote açılıyor…","openHint":"Vote açılmazsa düğmeye dokun. E-postayı istediğin telefonda çalışır.","open":"Vote’yi aç","here":"Bu cihazda Vote yok mu? Burada onayla","confirmTitle":"E-postanı onayla","confirmText":"{email} adresini burada onayla, sonra telefonunda Vote’yi açıp giriş yap.","confirm":"E-postamı onayla","busy":"Bir saniye…","doneTitle":"E-postan onaylandı","doneText":"Telefonunda Vote’yi aç ve {email} ile giriş yap.","resetTitle":"Bunu telefonunda aç","resetText":"Yeni şifreni Vote’de seçersin. Bu e-postayı Vote’nin olduğu telefonda aç ve oradaki düğmeye dokun.","expiredTitle":"Bu bağlantının süresi doldu","expiredText":"Bağlantılar bir saat geçerli ve yalnızca bir kez çalışır. E-postanı zaten onayladıysan giriş yapman yeterli. Onaylamadıysan Vote’yi aç ve yeni bir bağlantı gönder.","brokenTitle":"Bu bağlantı eksik","brokenText":"Vote’den gelen en yeni e-postayı aç ya da uygulamadan yeni bir bağlantı iste.","failedText":"Vote’ye ulaşılamadı. İnternet bağlantını kontrol edip yeniden dene."},"de":{"opening":"Vote wird geöffnet…","openHint":"Falls Vote nicht aufgeht, tippe auf den Button. Das klappt auf dem Handy, auf dem du die E-Mail angefordert hast.","open":"Vote öffnen","here":"Kein Vote auf diesem Gerät? Hier bestätigen","confirmTitle":"Bestätige deine E-Mail-Adresse","confirmText":"Bestätige {email} hier, öffne dann Vote auf deinem Handy und melde dich an.","confirm":"E-Mail-Adresse bestätigen","busy":"Einen Moment…","doneTitle":"E-Mail-Adresse bestätigt","doneText":"Öffne Vote auf deinem Handy und melde dich mit {email} an.","resetTitle":"Öffne das auf deinem Handy","resetText":"Dein neues Passwort wählst du in Vote. Öffne diese E-Mail auf dem Handy mit Vote und tippe dort auf den Button.","expiredTitle":"Dieser Link ist abgelaufen","expiredText":"Links gelten eine Stunde lang und nur einmal. Wenn du deine E-Mail-Adresse schon bestätigt hast, melde dich einfach an. Wenn nicht, öffne Vote und fordere einen neuen Link an.","brokenTitle":"Dieser Link ist unvollständig","brokenText":"Öffne die neueste E-Mail von Vote oder fordere in der App einen neuen Link an.","failedText":"Vote ist gerade nicht erreichbar. Prüf deine Verbindung und versuch es noch mal."},"es":{"opening":"Abriendo Vote…","openHint":"Si Vote no se abre, toca el botón. Funciona en el teléfono donde pediste el correo.","open":"Abrir Vote","here":"¿No tienes Vote aquí? Confirma desde aquí","confirmTitle":"Confirma tu correo","confirmText":"Confirma {email} aquí y luego abre Vote en tu teléfono e inicia sesión.","confirm":"Confirmar mi correo","busy":"Un momento…","doneTitle":"Correo confirmado","doneText":"Abre Vote en tu teléfono e inicia sesión con {email}.","resetTitle":"Ábrelo en tu teléfono","resetText":"La contraseña nueva se elige en Vote. Abre este correo en el teléfono que tiene Vote y toca el botón ahí.","expiredTitle":"Este enlace caducó","expiredText":"Los enlaces sirven por una hora y una sola vez. Si ya confirmaste tu correo, solo inicia sesión. Si no, abre Vote y pide un enlace nuevo.","brokenTitle":"A este enlace le falta algo","brokenText":"Abre el correo más reciente de Vote o pide un enlace nuevo en la app.","failedText":"No se pudo conectar con Vote. Revisa tu conexión y vuelve a intentarlo."},"fr":{"opening":"Ouverture de Vote…","openHint":"Si Vote ne s’ouvre pas, touche le bouton. Ça marche sur le téléphone où tu as demandé l’e-mail.","open":"Ouvrir Vote","here":"Pas de Vote sur cet appareil ? Confirme ici","confirmTitle":"Confirme ton e-mail","confirmText":"Confirme {email} ici, puis ouvre Vote sur ton téléphone et connecte-toi.","confirm":"Confirmer mon e-mail","busy":"Un instant…","doneTitle":"E-mail confirmé","doneText":"Ouvre Vote sur ton téléphone et connecte-toi avec {email}.","resetTitle":"Ouvre ceci sur ton téléphone","resetText":"Le nouveau mot de passe se choisit dans Vote. Ouvre cet e-mail sur le téléphone où se trouve Vote et touche le bouton là-bas.","expiredTitle":"Ce lien a expiré","expiredText":"Les liens sont valables une heure, et une seule fois. Si tu as déjà confirmé ton e-mail, connecte-toi, tout simplement. Sinon, ouvre Vote et demande un nouveau lien.","brokenTitle":"Ce lien est incomplet","brokenText":"Ouvre le dernier e-mail de Vote, ou demande un nouveau lien dans l’app.","failedText":"Impossible de joindre Vote. Vérifie ta connexion et réessaie."},"it":{"opening":"Sto aprendo Vote…","openHint":"Se Vote non si apre, tocca il pulsante. Funziona sul telefono da cui hai chiesto l’email.","open":"Apri Vote","here":"Vote non è su questo dispositivo? Conferma qui","confirmTitle":"Conferma la tua email","confirmText":"Conferma {email} qui, poi apri Vote sul telefono e accedi.","confirm":"Conferma la mia email","busy":"Un momento…","doneTitle":"Email confermata","doneText":"Apri Vote sul telefono e accedi con {email}.","resetTitle":"Aprilo sul telefono","resetText":"La nuova password si sceglie in Vote. Apri questa email sul telefono con Vote e tocca il pulsante lì.","expiredTitle":"Questo link è scaduto","expiredText":"I link valgono un’ora e una sola volta. Se hai già confermato la tua email, ti basta accedere. Altrimenti apri Vote e chiedi un nuovo link.","brokenTitle":"Questo link è incompleto","brokenText":"Apri l’email più recente di Vote, oppure chiedi un nuovo link nell’app.","failedText":"Impossibile raggiungere Vote. Controlla la connessione e riprova."},"pt":{"opening":"Abrindo o Vote…","openHint":"Se o Vote não abrir, toque no botão. Funciona no celular em que você pediu o e-mail.","open":"Abrir o Vote","here":"Não tem o Vote aqui? Confirme por aqui","confirmTitle":"Confirme seu e-mail","confirmText":"Confirme {email} aqui, depois abra o Vote no celular e entre.","confirm":"Confirmar meu e-mail","busy":"Um momento…","doneTitle":"E-mail confirmado","doneText":"Abra o Vote no celular e entre com {email}.","resetTitle":"Abra isto no seu celular","resetText":"A nova senha é escolhida no Vote. Abra este e-mail no celular que tem o Vote e toque no botão lá.","expiredTitle":"Este link expirou","expiredText":"Os links valem por uma hora e só uma vez. Se você já confirmou seu e-mail, é só entrar. Se não, abra o Vote e peça um link novo.","brokenTitle":"Este link está incompleto","brokenText":"Abra o e-mail mais recente do Vote ou peça um link novo no app.","failedText":"Não foi possível falar com o Vote. Confira sua conexão e tente de novo."},"ar":{"opening":"جارٍ فتح Vote…","openHint":"إذا لم يُفتح Vote، فاضغط على الزر. يعمل ذلك على الهاتف الذي طلبت منه الرسالة.","open":"فتح Vote","here":"Vote غير موجود على هذا الجهاز؟ أكّد من هنا","confirmTitle":"أكّد بريدك الإلكتروني","confirmText":"أكّد {email} من هنا، ثم افتح Vote على هاتفك وسجّل الدخول.","confirm":"تأكيد بريدي الإلكتروني","busy":"لحظة واحدة…","doneTitle":"تم تأكيد بريدك الإلكتروني","doneText":"افتح Vote على هاتفك وسجّل الدخول باستخدام {email}.","resetTitle":"افتح هذا على هاتفك","resetText":"تختار كلمة المرور الجديدة داخل Vote. افتح هذه الرسالة على الهاتف الذي عليه Vote واضغط على الزر هناك.","expiredTitle":"انتهت صلاحية هذا الرابط","expiredText":"تعمل الروابط لمدة ساعة واحدة ولمرة واحدة فقط. إذا كنت قد أكّدت بريدك الإلكتروني، فسجّل الدخول فحسب. وإن لم تفعل، فافتح Vote وأرسل رابطًا جديدًا.","brokenTitle":"هذا الرابط غير مكتمل","brokenText":"افتح أحدث رسالة من Vote، أو اطلب رابطًا جديدًا من التطبيق.","failedText":"تعذّر الوصول إلى Vote. تأكّد من اتصالك وحاول مرة أخرى."},"hi":{"opening":"Vote खुल रहा है…","openHint":"अगर Vote न खुले, तो बटन टैप करें। यह उसी फ़ोन पर काम करता है जहाँ से आपने ईमेल माँगा था।","open":"Vote खोलें","here":"इस डिवाइस पर Vote नहीं है? यहीं पक्का करें","confirmTitle":"अपना ईमेल पक्का करें","confirmText":"{email} को यहाँ पक्का करें, फिर अपने फ़ोन पर Vote खोलकर साइन इन करें।","confirm":"मेरा ईमेल पक्का करें","busy":"एक पल…","doneTitle":"ईमेल पक्का हो गया","doneText":"अपने फ़ोन पर Vote खोलें और {email} से साइन इन करें।","resetTitle":"इसे अपने फ़ोन पर खोलें","resetText":"नया पासवर्ड Vote में चुना जाता है। यह ईमेल उस फ़ोन पर खोलें जिसमें Vote है, और वहीं बटन टैप करें।","expiredTitle":"यह लिंक खत्म हो चुका है","expiredText":"लिंक एक घंटे तक और सिर्फ़ एक बार काम करते हैं। अगर आपने ईमेल पहले ही पक्का कर लिया है, तो बस साइन इन करें। नहीं तो Vote खोलें और नया लिंक भेजें।","brokenTitle":"यह लिंक अधूरा है","brokenText":"Vote का सबसे नया ईमेल खोलें, या ऐप में नया लिंक माँगें।","failedText":"Vote तक पहुँच नहीं हो पाई। अपना कनेक्शन देखें और फिर से कोशिश करें।"},"ja":{"opening":"Vote を開いています…","openHint":"Vote が開かないときは、ボタンをタップしてください。メールをリクエストしたスマートフォンで使えます。","open":"Vote を開く","here":"この端末に Vote がない場合は、ここで確認","confirmTitle":"メールアドレスを確認してください","confirmText":"ここで {email} を確認してから、スマートフォンで Vote を開いてログインしてください。","confirm":"メールアドレスを確認","busy":"少々お待ちください…","doneTitle":"メールアドレスを確認しました","doneText":"スマートフォンで Vote を開き、{email} でログインしてください。","resetTitle":"スマートフォンで開いてください","resetText":"新しいパスワードは Vote の中で設定します。Vote が入っているスマートフォンでこのメールを開き、そちらのボタンをタップしてください。","expiredTitle":"このリンクは期限切れです","expiredText":"リンクの有効期限は1時間で、使えるのは1回だけです。すでに確認済みなら、そのままログインしてください。まだの場合は、Vote を開いて新しいリンクを送ってください。","brokenTitle":"このリンクは不完全です","brokenText":"Vote から届いた最新のメールを開くか、アプリで新しいリンクをリクエストしてください。","failedText":"Vote に接続できませんでした。接続を確かめて、もう一度お試しください。"},"ko":{"opening":"Vote를 여는 중…","openHint":"Vote가 열리지 않으면 버튼을 눌러 주세요. 메일을 요청한 휴대폰에서 열려요.","open":"Vote 열기","here":"이 기기에 Vote가 없나요? 여기서 인증하기","confirmTitle":"이메일을 인증해 주세요","confirmText":"여기서 {email} 주소를 인증한 뒤, 휴대폰에서 Vote를 열고 로그인해 주세요.","confirm":"이메일 인증하기","busy":"잠시만요…","doneTitle":"이메일 인증이 끝났어요","doneText":"휴대폰에서 Vote를 열고 {email} 주소로 로그인해 주세요.","resetTitle":"휴대폰에서 열어 주세요","resetText":"새 비밀번호는 Vote 안에서 정해요. Vote가 있는 휴대폰에서 이 메일을 열고 거기서 버튼을 눌러 주세요.","expiredTitle":"만료된 링크예요","expiredText":"링크는 1시간 동안 한 번만 쓸 수 있어요. 이미 이메일을 인증했다면 로그인만 하면 돼요. 아직이라면 Vote를 열고 새 링크를 보내 주세요.","brokenTitle":"링크가 완전하지 않아요","brokenText":"Vote에서 온 가장 최근 메일을 열거나, 앱에서 새 링크를 요청해 주세요.","failedText":"Vote에 연결하지 못했어요. 연결 상태를 확인하고 다시 시도해 주세요."},"zh-Hans":{"opening":"正在打开 Vote…","openHint":"如果 Vote 没有打开，请点按钮。在你申请邮件的那部手机上才能打开。","open":"打开 Vote","here":"这台设备上没有 Vote？在这里确认","confirmTitle":"确认你的邮箱","confirmText":"在这里确认 {email}，然后在手机上打开 Vote 并登录。","confirm":"确认我的邮箱","busy":"请稍候…","doneTitle":"邮箱已确认","doneText":"在手机上打开 Vote，用 {email} 登录。","resetTitle":"请在手机上打开","resetText":"新密码需要在 Vote 里设置。请在装有 Vote 的手机上打开这封邮件，再点那里的按钮。","expiredTitle":"这个链接已过期","expiredText":"链接一小时内有效，而且只能用一次。如果你已经确认过邮箱，直接登录就好。还没确认的话，打开 Vote 重新发送一个链接。","brokenTitle":"这个链接不完整","brokenText":"请打开 Vote 发来的最新邮件，或在 App 里重新获取链接。","failedText":"无法连接 Vote。请检查网络后再试一次。"},"zh-Hant":{"opening":"正在開啟 Vote…","openHint":"如果 Vote 沒有開啟，請點按鈕。在你申請郵件的那部手機上才能開啟。","open":"開啟 Vote","here":"這台裝置上沒有 Vote？在這裡確認","confirmTitle":"確認你的電子郵件","confirmText":"在這裡確認 {email}，然後在手機上開啟 Vote 並登入。","confirm":"確認我的電子郵件","busy":"請稍候…","doneTitle":"電子郵件已確認","doneText":"在手機上開啟 Vote，用 {email} 登入。","resetTitle":"請在手機上開啟","resetText":"新密碼需要在 Vote 裡設定。請在裝有 Vote 的手機上開啟這封郵件，再點那裡的按鈕。","expiredTitle":"這個連結已過期","expiredText":"連結一小時內有效，而且只能使用一次。如果你已經確認過電子郵件，直接登入就好。還沒確認的話，開啟 Vote 重新傳送一個連結。","brokenTitle":"這個連結不完整","brokenText":"請開啟 Vote 寄來的最新郵件，或在 App 裡重新取得連結。","failedText":"無法連線到 Vote。請檢查網路連線後再試一次。"}};
-  var APP_LINK = 'vote-rn://login-callback';
-  var AUTH = 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1';
-  var KEY = 'sb_publishable_SdJ_AsnJPiNjBOEczW62bg_m4fAaWZ_';
-
-  var $ = function (id) { return document.getElementById(id); };
-  var raw = (location.hash || '').replace(/^#/, '') || (location.search || '').replace(/^\?/, '');
-  var params = new URLSearchParams(raw);
-  if (raw && window.history && history.replaceState) history.replaceState(null, '', location.pathname);
-
-  /* The language the email was written in, else the browser's, else English. */
-  function pick(tags) {
-    for (var i = 0; i < tags.length; i++) {
-      var tag = String(tags[i] || '');
-      if (!tag) continue;
-      if (STRINGS[tag]) return tag;
-      var lower = tag.toLowerCase();
-      if (/^zh-(hant|tw|hk|mo)/.test(lower)) return 'zh-Hant';
-      if (/^zh/.test(lower)) return 'zh-Hans';
-      var base = lower.split('-')[0];
-      if (STRINGS[base]) return base;
-    }
-    return 'en';
-  }
-  var lang = pick([params.get('lang')].concat(navigator.languages || [navigator.language]));
-  var t = STRINGS[lang];
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-  var type = params.get('type');
-  var email = String(params.get('email') || '').trim().toLowerCase();
-  var token = String(params.get('token') || '').trim();
-  var fill = function (text) { return text.replace('{email}', email); };
-
-  var open = $('lp-open');
-  var confirm = $('lp-confirm');
-  var here = $('lp-here');
-  open.textContent = t.open;
-  confirm.textContent = t.confirm;
-  here.textContent = t.here;
-
-  function show(title, text, buttons) {
-    $('lp-title').textContent = title;
-    $('lp-text').textContent = text;
-    open.hidden = buttons.indexOf('open') < 0;
-    confirm.hidden = buttons.indexOf('confirm') < 0;
-    here.hidden = buttons.indexOf('here') < 0;
-    confirm.disabled = false;
-    confirm.textContent = t.confirm;
-  }
-
-  var valid = (type === 'signup' || type === 'recovery') && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && /^\d{6,10}$/.test(token);
-  if (!valid) return show(t.brokenTitle, t.brokenText, []);
-
-  open.href = APP_LINK + '?type=' + type + '&email=' + encodeURIComponent(email) + '&token=' + token;
-
-  function confirmHere() {
-    confirm.disabled = true;
-    confirm.textContent = t.busy;
-    fetch(AUTH + '/verify', {
-      method: 'POST',
-      headers: { apikey: KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'signup', email: email, token: token })
-    }).then(function (res) {
-      return res.json().catch(function () { return {}; }).then(function (body) {
-        if (res.ok) {
-          if (body && body.access_token) {
-            fetch(AUTH + '/logout?scope=local', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + body.access_token } }).catch(function () {});
-          }
-          show(t.doneTitle, fill(t.doneText), []);
-        } else if (res.status === 403 || res.status === 422 || (body && body.code === 'otp_expired')) {
-          show(t.expiredTitle, t.expiredText, []);
-        } else {
-          show(t.confirmTitle, t.failedText, ['confirm']);
-        }
-      });
-    }).catch(function () {
-      show(t.confirmTitle, t.failedText, ['confirm']);
-    });
-  }
-  confirm.addEventListener('click', confirmHere);
-  here.addEventListener('click', function () { show(t.confirmTitle, fill(t.confirmText), ['confirm']); });
-
-  var phone = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if (phone) {
-    show(t.opening, t.openHint, type === 'signup' ? ['open', 'here'] : ['open']);
-    // Straight on to the app, as the link in the email meant; the button stays for a second try.
-    setTimeout(function () { location.href = open.href; }, 300);
-  } else if (type === 'signup') {
-    show(t.confirmTitle, fill(t.confirmText), ['confirm']);
-  } else {
-    show(t.resetTitle, t.resetText, []);
-  }
-})();
-</script>
 </main>
 <footer class="foot">
   <div class="wrap">
