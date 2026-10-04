@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qxZHbpuuGTQFwt5GihUfHy/0ChGDufMlk4+x3gQopew='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-mGVdLVSLCPBM9fKTKieEHgMVwIWT9PVEItJYzc6Xu1U='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <script>/* This script runs in the head, before any resources. Only fragments carry
    credentials: queries have already reached server logs and are rejected.
@@ -58,7 +58,7 @@
     var open = $('lp-open');
     var confirm = $('lp-confirm');
     var here = $('lp-here');
-    var busy = false, finished = false, openTimer;
+    var busy = false, finished = false, leftPage = false, openTimer;
     var fill = function (text) { return text.replace('{email}', email); };
     open.textContent = t.open;
     confirm.textContent = t.confirm;
@@ -77,7 +77,7 @@
       open.removeAttribute('href');
       clearTimeout(openTimer);
     }
-    window.addEventListener('pagehide', forget);
+    window.addEventListener('pagehide', function () { leftPage = true; forget(); });
     // Browsers may restore a page from their back-forward cache. Never revive
     // a discarded code or leave apparently active controls on that page.
     window.addEventListener('pageshow', function (event) {
@@ -116,8 +116,13 @@
           var logout = accessToken ? request('/logout?scope=local',
             { apikey: KEY, Authorization: 'Bearer ' + accessToken }).catch(function () {}) : Promise.resolve();
           accessToken = '';
-          return logout.then(function () { show(t.doneTitle, doneText, []); });
+          return logout.then(function () {
+            if (!leftPage) show(t.doneTitle, doneText, []);
+          });
         }
+        // A pending request may finish after a back-forward cache restore.
+        // Keep its discarded UI, but still clean up successful sessions above.
+        if (leftPage) return;
         if (res.status === 403 || res.status === 422 || (res.body && res.body.code === 'otp_expired')) {
           forget();
           show(t.expiredTitle, t.expiredText, []);

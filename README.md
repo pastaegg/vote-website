@@ -28,6 +28,7 @@ The Privacy Policy, Terms and Support text comes from the app's canonical legal 
 - `scripts/build.mjs`: layout, website-only legal sections, sitemap, manifest
 - `assets/site.css`: styles; fonts are the app's Fraunces and Inter (SIL OFL, `assets/fonts/OFL.txt`)
 - `assets/email/`: images the app's emails load (the logo, `vote-icon-144.png`)
+- `scripts/stage-site.mjs`: builds `_site/` with only intended public pages and assets
 
 No cookies, analytics or trackers. One page has JavaScript: the email link
 page (`auth/confirm/`). The app's emails (the app repo's `supabase/templates`)
@@ -56,3 +57,31 @@ resources load. The only executable script is hash-pinned on `/auth/confirm/`;
 its credentials must be in `#`, and its requests are limited to fixed Auth
 paths. See [SECURITY.md](SECURITY.md) for verified controls, account settings
 still requiring attention, and the response-header limitations of GitHub Pages.
+
+## Verified publication
+
+The optional `Verified Pages deployment` workflow rebuilds, checks generated
+files, runs the security gate and tests, then uploads only the public `_site/`
+artifact. A failed check prevents its deploy job. Source, tests, workflows and
+unlisted assets are excluded; missing required files and symlinks fail staging.
+GitHub Actions updates are proposed weekly by Dependabot; security checks also
+run weekly on the default branch.
+
+To activate this workflow after merging it into `main`:
+
+1. Open [Settings → Pages](https://github.com/pastaegg/vote-website/settings/pages)
+   and set **Build and deployment → Source → GitHub Actions**. This disables the
+   independent branch publisher; merely adding the workflow does not disable it.
+2. In [Settings → Secrets and variables → Actions → Variables](https://github.com/pastaegg/vote-website/settings/variables/actions),
+   add `PAGES_ACTIONS_DEPLOY_ENABLED` with the value `true`.
+3. Run **Verified Pages deployment** from the Actions tab, selecting `main`.
+   Confirm deployment succeeds and homepage, legal pages and email confirmation
+   load correctly. Later pushes to `main` follow the same verified deployment.
+4. Protect `main` with a ruleset requiring a pull request and the `checks` status.
+   Restrict the `github-pages` environment to `main`; use a maintainer-compatible
+   review rule so the owner can still ship fixes.
+
+Until steps 1–3 are completed, the new publisher is inactive and the original
+branch publisher may still serve repository source files. Changing publication
+does not add HTTP response headers, a WAF or native-app verified links. Those
+require the account/hosting work described in `SECURITY.md`.

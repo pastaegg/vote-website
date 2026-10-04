@@ -22,6 +22,17 @@ function boot({ hash = fragment, search = '', phone = false, secure = true, fram
   return { elements, location, early, requests, timers, listeners, document, click: id => elements[id].click() };
 }
 const settle = async () => { for (let i = 0; i < 20; i++) await Promise.resolve(); };
+function deferred() {
+  let resolve;
+  const promise = new Promise(done => { resolve = done; });
+  return { promise, resolve };
+}
+function assertDiscarded(b) {
+  assert.equal(b.elements['lp-title'].textContent, words.en.brokenTitle);
+  assert.equal(b.elements['lp-text'].textContent, words.en.brokenText);
+  for (const id of ['lp-open', 'lp-confirm', 'lp-here']) assert.equal(b.elements[id].hidden, true);
+  assert.equal(b.elements['lp-open'].href, undefined);
+}
 test('clears fragment before DOM ready; signup waits for an explicit click', () => {
   const b = boot(); assert.equal(b.early.hash, ''); assert.equal(b.requests.length, 0); assert.equal(b.elements['lp-confirm'].hidden, false);
 });
@@ -85,4 +96,48 @@ test('leaving the page discards credentials and cancels automatic app opening', 
   const b = boot({ phone: true }); b.listeners.pagehide(); b.click('lp-confirm');
   assert.equal(b.requests.length, 0); assert.equal(b.timers.size, 0); assert.equal(b.elements['lp-open'].href, undefined);
   b.listeners.pageshow({ persisted: true }); assert.equal(b.elements['lp-open'].hidden, true);
+});
+for (const status of [503, 403]) test(`verification error ${status} after restoration cannot revive discarded controls`, async () => {
+  const verify = deferred();
+  const b = boot({ fetchImpl: () => verify.promise });
+  b.click('lp-confirm');
+  b.listeners.pagehide();
+  b.listeners.pageshow({ persisted: true });
+  assertDiscarded(b);
+  verify.resolve({ ok: false, status, json: async () => ({}) });
+  await settle();
+  assertDiscarded(b);
+  b.click('lp-confirm'); b.click('lp-here');
+  assert.equal(b.requests.length, 1);
+  assert.equal(b.timers.size, 0);
+  assertDiscarded(b);
+});
+test('verification success after leaving still logs out without changing the restored page', async () => {
+  const verify = deferred();
+  const b = boot({ fetchImpl: url => url.endsWith('/verify') ? verify.promise : Promise.resolve({ ok: true, status: 204, json: async () => ({}) }) });
+  b.click('lp-confirm');
+  b.listeners.pagehide();
+  b.listeners.pageshow({ persisted: true });
+  verify.resolve({ ok: true, status: 200, json: async () => ({ access_token: 'late-access', refresh_token: 'late-refresh' }) });
+  await settle();
+  assert.equal(b.requests.length, 2);
+  assert.equal(b.requests[1].url, 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout?scope=local');
+  assert.equal(b.requests[1].options.headers.Authorization, 'Bearer late-access');
+  assert.equal(b.timers.size, 0);
+  assertDiscarded(b);
+});
+test('leaving while logout is pending prevents its completion from rendering stale success', async () => {
+  const logout = deferred();
+  const b = boot({ fetchImpl: url => url.endsWith('/verify') ? Promise.resolve({ ok: true, status: 200, json: async () => ({ access_token: 'test-access' }) }) : logout.promise });
+  b.click('lp-confirm');
+  await settle();
+  assert.equal(b.requests.length, 2);
+  b.listeners.pagehide();
+  b.listeners.pageshow({ persisted: true });
+  assertDiscarded(b);
+  logout.resolve({ ok: true, status: 204, json: async () => ({}) });
+  await settle();
+  assert.equal(b.requests.length, 2);
+  assert.equal(b.timers.size, 0);
+  assertDiscarded(b);
 });
