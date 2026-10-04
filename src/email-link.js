@@ -51,7 +51,7 @@
     var open = $('lp-open');
     var confirm = $('lp-confirm');
     var here = $('lp-here');
-    var busy = false, finished = false, openTimer;
+    var busy = false, finished = false, leftPage = false, openTimer;
     var fill = function (text) { return text.replace('{email}', email); };
     open.textContent = t.open;
     confirm.textContent = t.confirm;
@@ -70,7 +70,7 @@
       open.removeAttribute('href');
       clearTimeout(openTimer);
     }
-    window.addEventListener('pagehide', forget);
+    window.addEventListener('pagehide', function () { leftPage = true; forget(); });
     // Browsers may restore a page from their back-forward cache. Never revive
     // a discarded code or leave apparently active controls on that page.
     window.addEventListener('pageshow', function (event) {
@@ -109,8 +109,13 @@
           var logout = accessToken ? request('/logout?scope=local',
             { apikey: KEY, Authorization: 'Bearer ' + accessToken }).catch(function () {}) : Promise.resolve();
           accessToken = '';
-          return logout.then(function () { show(t.doneTitle, doneText, []); });
+          return logout.then(function () {
+            if (!leftPage) show(t.doneTitle, doneText, []);
+          });
         }
+        // A pending request may finish after a back-forward cache restore.
+        // Keep its discarded UI, but still clean up successful sessions above.
+        if (leftPage) return;
         if (res.status === 403 || res.status === 422 || (res.body && res.body.code === 'otp_expired')) {
           forget();
           show(t.expiredTitle, t.expiredText, []);

@@ -30,6 +30,9 @@ flooding the service or accessing other people's accounts.
 - Confirmation requires a deliberate button click. Recovery finishes in the
   app. Requests omit cookies, reject redirects, avoid caching/referrers and time
   out after 10 seconds. Duplicate clicks cannot submit concurrent requests.
+- Leaving the page discards its credentials. Pending responses cannot revive
+  controls after navigation or back-forward restoration; successful pending
+  responses still attempt local logout of the newly issued temporary session.
 - The website never persists an Auth session. It attempts local logout of the
   temporary session issued for signup confirmation and discards its response.
   Logout revokes refresh tokens; an already-issued access token remains valid
@@ -65,6 +68,21 @@ then rebuild and run the checks. `scripts/check-security.mjs` fails when the
 page policies, script hashes or stylesheet integrity drift. Keep security.txt's
 expiry current. Ignore rules reduce accidental secret commits but are not a
 secret scanner or a substitute for push protection.
+
+The security gate checks additional HTML outside source/tool directories as well
+as the required entry points. It rejects duplicate CSP directives/attributes,
+unapproved policy overrides, external or disguised scripts, and policy tags that
+follow resources. The gate covers generated site HTML; `src/home.html` is a
+template, not a protected page. Branch publication can nevertheless expose it.
+
+The optional `Verified Pages deployment` workflow gives its build job read-only
+permissions and its isolated deploy job only Pages/OIDC write permissions.
+Checks and tests must pass before a strictly allowlisted `_site/` artifact is
+uploaded. Source, tests, workflows and accidental files under `assets/` are not
+copied. All required assets must exist and symlinks are rejected. See the
+activation steps in [README.md](README.md#verified-publication). This workflow
+does not protect publication until Pages is switched to Actions and
+`PAGES_ACTIONS_DEPLOY_ENABLED=true` is configured. Restrict deployment to `main`.
 
 ## Account and hosting controls still requiring administrative access
 
@@ -104,6 +122,34 @@ Required follow-through:
    header protection and customer-configurable WAF/rate limits. GitHub Pages
    does **not** apply a repository `_headers` file. HTML meta tags cannot enforce
    HSTS, X-Frame-Options, `frame-ancestors` or Permissions-Policy.
+
+### Follow-up account audit on 2026-10-04 UTC
+
+The connected GitHub API confirmed `main` has `protected=false` and no active
+repository rulesets. The existing security check and branch Pages deployment
+both succeeded for commit `a4b3d8f7962a22ef939d010d3ba24194f11451c4`, but were
+independent. New workflow files cannot change Pages settings or branch rules by
+themselves. Enable the verified publisher and required checks using the linked
+repository settings before treating these checks as a publication barrier.
+
+The connected Supabase security advisor for this website's Auth project
+(`usuyyubmjwayrliadrax`) reported **leaked password protection disabled**. Enable
+it in [Supabase Auth settings](https://supabase.com/dashboard/project/usuyyubmjwayrliadrax/auth/settings)
+if supported by the project's plan; consult [password security](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).
+This is a live Auth configuration change, not something an HTML policy can fix.
+
+The same advisor reported 51 RLS-enabled tables without policies and 123
+authenticated-callable `SECURITY DEFINER` functions. RLS without policies denies
+ordinary row access; it does not by itself imply a data leak. Intentional RPC
+access must instead enforce ownership/admin authorization within each function.
+An advisor warning alone is not proof of unauthorized access, and indiscriminate
+policy creation or revocation can expose data or break the app. A full native
+app/database authorization audit is separate from this website change.
+
+Direct live HTTP/header checks could not be repeated from this execution
+workspace because its network proxy was unreachable. The earlier HTTP/DNS
+observations above are historical findings, not fresh verification of the
+deployed site. No production database or account setting was changed here.
 
 For a future header-capable host/edge, use the **same per-page CSP** as the
 built HTML, and additionally set the following response headers:
