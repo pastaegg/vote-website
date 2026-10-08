@@ -8,6 +8,12 @@ import path from 'node:path';
 export const requiredPages = ['index.html', '404.html', 'auth/confirm/index.html', ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`])];
 export const excludedDirectories = new Set(['.git', 'node_modules', 'src', 'scripts', 'tests', '_site']);
 const site = 'https://votebettertogether.com';
+// Only the two official identity links may leave the site. These are
+// navigation destinations, never asset, script or API permissions.
+const externalLinks = new Set([
+  'https://www.linkedin.com/in/ahmetfceren',
+  'https://www.linkedin.com/company/vote-better-together/'
+]);
 const authConnections = 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout';
 const aliases = new Map(['privacy', 'terms', 'support', 'delete-account'].map(p => [`${p}.html`, `0; url=/${p}/`]));
 const tags = new Set('html head body title meta link a article b br button circle defs div em footer h1 h2 h3 header i img li main nav noscript ol p path radialgradient rect script section small span stop svg ul'.split(' '));
@@ -107,11 +113,17 @@ export function tokenizeHtml(html) {
   return tokens;
 }
 
-function safeUrl(value, file) {
+function safeUrl(value, file, token, attribute) {
   assert.equal(typeof value, 'string', `${file}: URLs need values`);
   assert.ok(!/[\x00-\x20\x7f\\]/.test(value), `${file}: URL whitespace, controls or backslashes`);
   assert.ok(!value.startsWith('//'), `${file}: protocol-relative URL`);
   if (value === 'mailto:support@votebettertogether.com') return;
+  if (token.name === 'a' && attribute === 'href' && externalLinks.has(value)) {
+    const rel = (token.attributes.get('rel') || '').toLowerCase().split(/\s+/);
+    assert.ok(rel.includes('noopener') && rel.includes('noreferrer'), `${file}: external link protection required`);
+    assert.ok(!token.attributes.has('target') || token.attributes.get('target') === '_blank', `${file}: unsupported external target`);
+    return;
+  }
   const url = new URL(value, site + '/');
   assert.ok(url.protocol === 'https:' && url.origin === site && !url.username && !url.password, `${file}: URL must remain on this HTTPS origin`);
 }
@@ -146,7 +158,7 @@ export function checkSecurityPage(html, file, css) {
     for (const [key, value] of attributes) {
       assert.ok(key !== 'style' && !key.startsWith('on'), `${file}: inline styles or event handlers`);
       assert.ok(!['srcset', 'srcdoc', 'ping', 'action', 'formaction', 'background', 'xlink:href'].includes(key), `${file}: unsupported resource attribute ${key}`);
-      if (key === 'href' || key === 'src') safeUrl(value, file);
+      if (key === 'href' || key === 'src') safeUrl(value, file, token, key);
     }
   }
   assert.equal(stack.length, 0, `${file}: unclosed elements`);

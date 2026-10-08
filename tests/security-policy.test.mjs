@@ -74,6 +74,20 @@ test('ambiguous raw script closing syntax cannot hide later HTML elements', () =
 test('HTML comment escaping inside scripts must not change tokenizer boundaries', () => reject(auth.replace(authScript, '<!--<script>bad()</script>'), /ambiguous script raw-text escaping/, authFile));
 test('text before a doctype cannot make the browser enter the body first', () => reject('unexpected' + normal, /doctype must precede/));
 test('boolean attributes can precede other attributes safely', () => checkSecurityPage(inject('<button hidden type=button>Button</button>'), 'index.html', css));
+for (const url of ['https://www.linkedin.com/in/ahmetfceren', 'https://www.linkedin.com/company/vote-better-together/']) {
+  test(`allows official identity navigation: ${url}`, () => {
+    checkSecurityPage(inject(`<a href="${url}" rel="noopener noreferrer">LinkedIn</a>`), 'index.html', css);
+    checkSecurityPage(inject(`<a href="${url}" rel="noreferrer noopener" target="_blank">LinkedIn</a>`), 'index.html', css);
+    reject(inject(`<a href="${url}">LinkedIn</a>`), /external link protection/);
+    reject(inject(`<a href="${url}" rel="noopener">LinkedIn</a>`), /external link protection/);
+    reject(inject(`<a href="${url}" rel="noopener noreferrer" target="unsafe">LinkedIn</a>`), /unsupported external target/);
+    reject(inject(`<img src="${url}">`), /this HTTPS origin/);
+    reject(inject(`<link rel="preload" href="${url}">`), /this HTTPS origin/);
+  });
+}
+for (const url of ['https://www.linkedin.com/in/ahmetfceren?redirect=bad', 'https://www.linkedin.com/in/ahmetfceren/other', 'https://www.linkedin.com.evil.invalid/in/ahmetfceren', 'https://www.linkedin.com/company/another-business/']) {
+  test(`rejects identity-link lookalike: ${url}`, () => reject(inject(`<a href="${url}" rel="noopener noreferrer">LinkedIn</a>`)));
+}
 test('meta refresh is limited to the fixed internal aliases', () => {
   const alias = `<!doctype html><html><head><meta name="referrer" content="no-referrer">${csp(false)}<meta http-equiv="refresh" content="0; url=/privacy/"></head><body><a href="/privacy/">Privacy</a></body></html>`;
   checkSecurityPage(alias, 'privacy.html', css);
