@@ -111,7 +111,7 @@ ${body}
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div>© ${YEAR} ${NAME}${file === 'index.html' ? '<br>Founded by Ahmet Fatih Ceren<br>Toronto, Canada<br>Operated by VOTEBT<br>' : ' · '}<a href="mailto:${EMAIL}">${EMAIL}</a></div>
+    <div>© ${YEAR} ${NAME} · <a href="mailto:${EMAIL}">${EMAIL}</a>${file === 'index.html' ? '<br><small>Founded by Ahmet Fatih Ceren · Toronto, Canada · Operated by VOTEBT</small>' : ''}</div>
     <nav aria-label="Footer">
       <a href="/">Home</a>
       <a href="/privacy/">Privacy Policy</a>
