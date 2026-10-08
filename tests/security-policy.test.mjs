@@ -74,6 +74,16 @@ test('ambiguous raw script closing syntax cannot hide later HTML elements', () =
 test('HTML comment escaping inside scripts must not change tokenizer boundaries', () => reject(auth.replace(authScript, '<!--<script>bad()</script>'), /ambiguous script raw-text escaping/, authFile));
 test('text before a doctype cannot make the browser enter the body first', () => reject('unexpected' + normal, /doctype must precede/));
 test('boolean attributes can precede other attributes safely', () => checkSecurityPage(inject('<button hidden type=button>Button</button>'), 'index.html', css));
+test('official footer links are allowed only as protected homepage navigation', () => {
+  for (const url of ['https://www.linkedin.com/in/ahmetfceren', 'https://www.linkedin.com/company/vote-better-together/']) {
+    const html = inject(`<a href="${url}" rel="noopener noreferrer">LinkedIn</a>`);
+    checkSecurityPage(html, 'index.html', css);
+    reject(html, /this HTTPS origin/, 'privacy/index.html');
+    reject(inject(`<a href="${url}">LinkedIn</a>`), /link protection/);
+    reject(inject(`<img src="${url}">`), /this HTTPS origin/);
+    reject(inject(`<a href="${url}?redirect=other" rel="noopener noreferrer">LinkedIn</a>`));
+  }
+});
 test('meta refresh is limited to the fixed internal aliases', () => {
   const alias = `<!doctype html><html><head><meta name="referrer" content="no-referrer">${csp(false)}<meta http-equiv="refresh" content="0; url=/privacy/"></head><body><a href="/privacy/">Privacy</a></body></html>`;
   checkSecurityPage(alias, 'privacy.html', css);
