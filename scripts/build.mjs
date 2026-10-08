@@ -111,13 +111,15 @@ ${body}
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div>© ${YEAR} ${NAME} · <a href="mailto:${EMAIL}">${EMAIL}</a></div>
+    <div>© ${YEAR} ${NAME}${file === 'index.html' ? '<br>Founded by Ahmet Fatih Ceren<br>Toronto, Canada<br>Operated by VOTEBT<br>' : ' · '}<a href="mailto:${EMAIL}">${EMAIL}</a></div>
     <nav aria-label="Footer">
       <a href="/">Home</a>
       <a href="/privacy/">Privacy Policy</a>
       <a href="/terms/">Terms of Use</a>
       <a href="/support/">Support</a>
-      <a href="/delete-account/">Delete your account</a>
+      <a href="/delete-account/">Delete your account</a>${file === 'index.html' ? `
+      <a href="https://www.linkedin.com/in/ahmetfceren" rel="noopener noreferrer">Founder LinkedIn</a>
+      <a href="https://www.linkedin.com/company/vote-better-together/" rel="noopener noreferrer">Company LinkedIn</a>` : ''}
     </nav>
   </div>
 </footer>
