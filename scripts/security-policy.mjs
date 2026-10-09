@@ -8,7 +8,9 @@ import path from 'node:path';
 export const requiredPages = ['index.html', '404.html', 'auth/confirm/index.html', ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`])];
 export const excludedDirectories = new Set(['.git', 'node_modules', 'src', 'scripts', 'tests', '_site']);
 const site = 'https://votebettertogether.com';
-const identityLinks = new Set([
+// Only the two official identity links may leave the site. These are
+// navigation destinations, never asset, script or API permissions.
+const externalLinks = new Set([
   'https://www.linkedin.com/in/ahmetfceren',
   'https://www.linkedin.com/company/vote-better-together/'
 ]);
@@ -116,10 +118,10 @@ function safeUrl(value, file, token, attribute) {
   assert.ok(!/[\x00-\x20\x7f\\]/.test(value), `${file}: URL whitespace, controls or backslashes`);
   assert.ok(!value.startsWith('//'), `${file}: protocol-relative URL`);
   if (value === 'mailto:support@votebettertogether.com') return;
-  // Official footer links are navigation only, never resource permissions.
-  if (file === 'index.html' && token.name === 'a' && attribute === 'href' && identityLinks.has(value)) {
+  if (token.name === 'a' && attribute === 'href' && externalLinks.has(value)) {
     const rel = (token.attributes.get('rel') || '').toLowerCase().split(/\s+/);
-    assert.ok(rel.includes('noopener') && rel.includes('noreferrer'), `${file}: identity link protection required`);
+    assert.ok(rel.includes('noopener') && rel.includes('noreferrer'), `${file}: external link protection required`);
+    assert.ok(!token.attributes.has('target') || token.attributes.get('target') === '_blank', `${file}: unsupported external target`);
     return;
   }
   const url = new URL(value, site + '/');

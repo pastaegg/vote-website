@@ -7,9 +7,9 @@
        first copies the app's canonical legal text
        (www/app/i18n/legal/en.js) into src/legal-en.js, then rebuilds
 
-   The Privacy Policy, Terms and Support pages use the same English legal text
-   the app shows, so the website and the app never say different things.
-   Whenever that file changes in the app, run the second form and commit.
+   The website keeps a reviewed copy of the app's English legal drafts.
+   The optional import replaces it: review changes and retain the factual
+   corrections documented in README.md before committing.
    Only the website sections in WEB below are written here (a summary,
    this website, contact). */
 import crypto from 'node:crypto';
@@ -83,7 +83,13 @@ ${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, in
 <meta property="og:image" content="${SITE}/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vote: Better Together brand artwork">
+<meta property="og:locale" content="en_CA">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title || NAME)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${SITE}/assets/img/og.jpg">
+<meta name="twitter:image:alt" content="Vote: Better Together brand artwork">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -100,26 +106,30 @@ ${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, in
     <a class="brand" href="/" aria-label="${NAME}, home"><img src="/assets/img/icon-192.png" alt="" width="32" height="32"><span>Vote<small>Better Together</small></span></a>
     <nav class="nav" aria-label="Main">
       ${link('/#how', 'How it works', 'hide-sm')}
+      ${link('/#about', 'About')}
       ${link('/privacy/', 'Privacy')}
       ${link('/terms/', 'Terms')}
       ${link('/support/', 'Support')}
     </nav>
   </div>
 </header>
-<main id="main">
+<main id="main" tabindex="-1">
 ${body}
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div>© ${YEAR} ${NAME} · <a href="mailto:${EMAIL}">${EMAIL}</a>${file === 'index.html' ? '<br><small>Founded by Ahmet Fatih Ceren · Toronto, Canada · Operated by VOTEBT</small>' : ''}</div>
+    <div class="foot-identity"><p>© ${YEAR} ${NAME}</p><p>Founded by Ahmet Fatih Ceren · Operated by VOTEBT · Toronto, Canada</p><a href="mailto:${EMAIL}">${EMAIL}</a></div>
     <nav aria-label="Footer">
       <a href="/">Home</a>
+      <a href="/#about">About</a>
       <a href="/privacy/">Privacy Policy</a>
       <a href="/terms/">Terms of Use</a>
       <a href="/support/">Support</a>
-      <a href="/delete-account/">Delete your account</a>${file === 'index.html' ? `
+      <a href="/delete-account/">Delete your account</a>
+    </nav>
+    <nav class="foot-social" aria-label="LinkedIn">
       <a href="https://www.linkedin.com/in/ahmetfceren" rel="noopener noreferrer">Founder LinkedIn</a>
-      <a href="https://www.linkedin.com/company/vote-better-together/" rel="noopener noreferrer">Company LinkedIn</a>` : ''}
+      <a href="https://www.linkedin.com/company/vote-better-together/" rel="noopener noreferrer">Company LinkedIn</a>
     </nav>
   </div>
 </footer>
@@ -145,7 +155,7 @@ function docPage({ file, title, description, lead, current, intro = '', parts, a
   <p class="eyebrow">${NAME}</p>
   <h1>${esc(title)}</h1>
   <p class="lead">${lead}</p>
-  <div class="meta"><span>Version ${esc(legal.version)}</span><span>Same text as in the app</span><span>For people 18 and older</span></div>
+  <div class="meta"><span>Version ${esc(legal.version)}</span><span>English</span><span>For people 18 and older</span></div>
 </div></header>
 <div class="doc"><div class="wrap">
 ${intro}
@@ -156,10 +166,10 @@ ${after}
   return layout({ file, title, description, current, body });
 }
 
-/* Website-only sections. Everything else on these pages is the app's text. */
+/* Website-only sections. The other sections use the reviewed legal copy. */
 const WEB = {
   privacyIntro: [
-    ['In short', `<ul><li>Vote shows your city, never your coordinates, and keeps location on a grid of about 5&nbsp;km.</li><li>No ads, no advertising identifiers, no tracking across other apps or websites, and no analytics companies.</li><li>Nobody sees who read, proposed or followed them: only anonymous counts.</li><li>Photos are private, and each link to one expires within minutes.</li><li>You can export your data or delete your account at any time from Settings.</li></ul>`]
+    ['Privacy at a glance', `<ul><li>Choose audiences for profile sections and photos.</li><li>Community summaries do not name the members who voted on your pairs.</li><li>Use the helper setup to vote without appearing in Discover or pairs, subject to reader eligibility.</li><li>Photo links are short-lived; an issued link or a photo already on a screen may remain visible for a time.</li><li>Export your data or request account deletion in Settings. <a href="/delete-account/">Account deletion instructions</a> explain retained data and the email option.</li></ul>`]
   ],
   privacyOutro: [
     ['This website', '<p>votebettertogether.com sets no cookies and uses no analytics, ads or trackers. It is hosted on GitHub Pages, which may keep technical logs such as IP addresses to keep the service secure.</p>']
@@ -174,7 +184,7 @@ const pages = {};
 
 pages['index.html'] = layout({
   file: 'index.html',
-  description: 'Vote is a dating app where the community reads pairs of people. When enough people see the same thing, it can become an introduction, and nobody is connected unless both say yes.',
+  description: 'Vote: Better Together is a Toronto-based social dating startup. Meet people, vote on potential couples, and connect only when both people choose to.',
   body: read('home.html').replaceAll('{{MARK}}', MARK)
 });
 
@@ -184,6 +194,7 @@ pages['privacy/index.html'] = docPage({
   current: '/privacy/',
   description: 'What Vote stores, who can see it, and how you export or delete your data.',
   lead: 'What Vote stores, who can see it, and how you stay in control.',
+  intro: '<p class="note">This website’s policy is available in English. The app has its own language options.</p>',
   parts: [
     { rows: WEB.privacyIntro },
     { title: 'The policy', rows: rowsOf(legal.docs.privacy) },
@@ -197,6 +208,7 @@ pages['terms/index.html'] = docPage({
   current: '/terms/',
   description: 'The terms for using Vote: Better Together, including subscriptions and the community guidelines.',
   lead: 'The terms for using Vote, and the community guidelines everyone agrees to.',
+  intro: '<p class="note">Vote is in development. References to store purchases apply only where those purchases are offered. These terms are available in English on this website.</p>',
   parts: [
     { title: 'Terms', rows: rowsOf(legal.docs.terms) },
     { title: legal.docs.guidelines.title, rows: rowsOf(legal.docs.guidelines) },
@@ -209,7 +221,7 @@ pages['support/index.html'] = docPage({
   title: 'Support',
   current: '/support/',
   description: 'Get help with Vote: account, sign-in, safety, reporting someone, appeals and deleting your account.',
-  lead: 'The fastest way to reach a person is in the app. If you can’t open it, write to us.',
+  lead: 'Email us for help with Vote. If you have access to the app, you can also use Settings › Help &amp; support.',
   intro: `<div class="cards">
   <a href="mailto:${EMAIL}"><b>E-mail us</b><span>${EMAIL}</span></a>
   <a href="/delete-account/"><b>Delete your account</b><span>In the app, or by e-mail</span></a>
@@ -222,9 +234,10 @@ pages['support/index.html'] = docPage({
       ['Keep it on Vote', 'Chat here until you’re comfortable. Be wary of anyone who rushes you off the app.'],
       ['Meet in public', 'For first dates, choose a public place and tell a friend where you’ll be.'],
       ['Never send money', 'Report anyone who asks for money, gift cards or crypto.'],
-      ['Trust your instincts', 'You can unmatch, block or report at any time. We never tell the other person who reported them.']
+      ['Trust your instincts', 'Use the safety menu to unmatch, block or report a concern, or email support if you cannot use the app.']
     ] },
     { title: 'Contact', rows: [
+      ['Who operates Vote', 'Vote: Better Together is independently developed and operated by VOTEBT, an Ontario-registered Sole Proprietorship based in Toronto, Ontario, Canada.'],
       ['If you can’t use the app', `<p>Write to <a href="mailto:${EMAIL}">${EMAIL}</a>. Send it from the e-mail address of your Vote account if you can, or tell us how you sign in (Apple, Google or e-mail), so we can find your account.</p>`]
     ] }
   ]
@@ -236,6 +249,7 @@ pages['delete-account/index.html'] = docPage({
   current: '',
   description: 'How to delete your Vote: Better Together account and data, in the app or by e-mail, and what is deleted or kept.',
   lead: 'In the app at any time, or by e-mail if you can’t sign in.',
+  intro: `<p class="note">To request deletion without opening the app, email <a href="mailto:${EMAIL}">${EMAIL}</a> with “Account deletion” in the subject. Don’t send your password or a sign-in code. <a href="/privacy/">Read the Privacy Policy</a> for more about retained data.</p>`,
   parts: [{ rows: rowsOf(legal.docs.deletion) }]
 });
 
@@ -277,7 +291,8 @@ pages['404.html'] = layout({
   file: '404.html',
   title: 'Page not found',
   description: 'This page doesn’t exist.',
-  body: `<section class="closing no-border"><div class="wrap"><div class="mark">${MARK}</div><h2>Nothing here.</h2><p class="lead">This page doesn’t exist, or it moved.</p><div class="cta"><a class="btn solid" href="/">Go home</a><a class="btn" href="/support/">Support</a></div></div></section>`
+  head: '<meta name="robots" content="noindex, follow">',
+  body: `<section class="closing linkpage no-border"><div class="wrap"><div class="mark">${MARK}</div><h1>Nothing here.</h1><p class="lead">This page doesn’t exist, or it moved.</p><div class="cta"><a class="btn solid" href="/">Go home</a><a class="btn" href="/support/">Support</a></div></div></section>`
 });
 
 for (const [file, html] of Object.entries(pages)) {
