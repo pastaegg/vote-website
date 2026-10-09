@@ -118,7 +118,7 @@ ${body}
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div class="foot-identity"><p>© ${YEAR} ${NAME}</p><p>Operated by VOTEBT · Toronto, Canada</p><a href="mailto:${EMAIL}">${EMAIL}</a></div>
+    <div class="foot-identity"><p>© ${YEAR} ${NAME}</p><p>Founded by Ahmet Fatih Ceren · Operated by VOTEBT · Toronto, Canada</p><a href="mailto:${EMAIL}">${EMAIL}</a></div>
     <nav aria-label="Footer">
       <a href="/">Home</a>
       <a href="/#about">About</a>
@@ -221,7 +221,7 @@ pages['support/index.html'] = docPage({
   title: 'Support',
   current: '/support/',
   description: 'Get help with Vote: account, sign-in, safety, reporting someone, appeals and deleting your account.',
-  lead: 'Email us for help with Vote. If you have access to the app, you can also use Settings › Help & support.',
+  lead: 'Email us for help with Vote. If you have access to the app, you can also use Settings › Help &amp; support.',
   intro: `<div class="cards">
   <a href="mailto:${EMAIL}"><b>E-mail us</b><span>${EMAIL}</span></a>
   <a href="/delete-account/"><b>Delete your account</b><span>In the app, or by e-mail</span></a>
