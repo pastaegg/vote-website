@@ -184,6 +184,7 @@ const pages = {};
 
 pages['index.html'] = layout({
   file: 'index.html',
+  head: '<meta name="google-site-verification" content="QsnZOQgOm-0g0jdixJW8R7ctzlFytoEGCBxh9Opx0Fk">',
   description: 'Vote: Better Together is a Toronto-based social dating startup. Meet people, vote on potential couples, and connect only when both people choose to.',
   body: read('home.html').replaceAll('{{MARK}}', MARK)
 });
