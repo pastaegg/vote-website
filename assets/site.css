@@ -27,7 +27,7 @@
   --line-2: rgba(244, 238, 230, .16);
   --text: #F4EEE6;
   --text-2: #BDB5C6;
-  --text-3: #847C8F;
+  --text-3: #ABA2B6;
   --ember: #FF7A59;
   --lilac: #B79CFF;
   --tide: #5CC8E0;
@@ -50,7 +50,6 @@ body {
   color: var(--text);
   font: 400 16px/1.6 var(--sans);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
@@ -61,6 +60,8 @@ a { color: inherit; }
 .skip:focus { left: 16px; }
 
 .wrap { width: min(100% - 32px, var(--max)); margin-inline: auto; }
+.wrap > * { min-width: 0; }
+a { overflow-wrap: anywhere; }
 
 /* Night sky behind every page: two soft glows in the icon's colours and a
    faint star field. Purely decorative. */
@@ -83,12 +84,12 @@ a { color: inherit; }
 
 /* Header */
 .top { position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(140%) blur(16px); -webkit-backdrop-filter: saturate(140%) blur(16px); background: rgba(11, 10, 15, .72); border-bottom: 1px solid var(--line); }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
+.top .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; min-height: 68px; padding-block: 8px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--serif); font-weight: 600; font-size: 20px; letter-spacing: -.01em; }
 .brand img { width: 32px; height: 32px; border-radius: 9px; }
 .brand span small { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--text-3); margin-left: 6px; letter-spacing: 0; }
-.nav { display: flex; align-items: center; gap: 4px; }
-.nav a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; padding: 8px 12px; border-radius: 999px; transition: color .15s, background .15s; }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; padding: 8px 12px; border-radius: 999px; transition: color .15s, background .15s; }
 .nav a:hover { color: var(--text); background: rgba(244, 238, 230, .06); }
 .nav a[aria-current="page"] { color: var(--text); background: rgba(244, 238, 230, .08); }
 .nav .hide-sm { display: inline-block; }
@@ -145,6 +146,7 @@ em.i { font-style: italic; font-weight: 400; }
 .read-foot { display: flex; justify-content: space-between; margin-top: 14px; font-size: 12px; color: var(--text-3); }
 .read-orb { position: absolute; z-index: -1; inset: -12% -18%; }
 .read-orb svg { width: 100%; height: 100%; }
+.illustration-note { margin: 16px 0 0; text-align: center; font-size: 13px; color: var(--text-3); }
 
 /* Sections */
 section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--line); }
@@ -192,6 +194,14 @@ section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--
 .checks b { display: block; font-weight: 600; margin-bottom: 2px; }
 .checks span { color: var(--text-2); font-size: 15px; }
 
+/* Company identity follows the existing two-column section layout. */
+.about-copy { color: var(--text-2); margin: 22px 0 0; }
+.company-info p { margin: 0; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.company-label { display: block; color: var(--text-3); font-size: 13px; margin-bottom: 4px; }
+.company-info a { color: var(--lilac); text-underline-offset: 4px; }
+.company-links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 18px; }
+.company-links a { display: inline-flex; align-items: center; min-height: 44px; }
+
 .closing { text-align: center; padding: clamp(72px, 10vw, 128px) 0; border-top: 1px solid var(--line); }
 .closing .mark { width: 120px; margin: 0 auto 28px; }
 .closing h2 { font-size: clamp(36px, 5.4vw, 64px); line-height: 1.02; margin-bottom: 18px; }
@@ -208,7 +218,9 @@ section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--
 .foot { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--text-3); font-size: 14px; }
 .foot .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
 .foot nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
-.foot a { color: var(--text-2); text-decoration: none; }
+.foot-identity { width: 100%; }
+.foot-identity p { margin: 0 0 4px; }
+.foot a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-2); text-decoration: none; }
 .foot a:hover { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 
 /* Document pages (privacy, terms, support, delete account) */
@@ -222,7 +234,7 @@ section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--
 .toc b { display: block; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
 .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 28px; }
 .toc li { font-size: 14px; color: var(--text-3); padding: 3px 0; break-inside: avoid; }
-.toc a { color: var(--text-2); text-decoration: none; }
+.toc a { display: inline-block; padding-block: 4px; color: var(--text-2); text-decoration: none; }
 .toc a:hover { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 .doc { padding-bottom: clamp(64px, 8vw, 96px); }
 .doc .part { font-size: 30px; margin: 56px 0 8px; padding-top: 8px; }
@@ -261,6 +273,12 @@ section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--
   .tab.vote { grid-row: auto; }
   .toc ol { columns: 1; }
   .foot .wrap { flex-direction: column; align-items: flex-start; }
+  .strengths div { flex-wrap: wrap; gap: 4px 12px; }
+  html { scroll-padding-top: 144px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .read-orb .c1 { animation: drift-a 6s ease-in-out infinite alternate; }
