@@ -98,7 +98,6 @@ a { overflow-wrap: anywhere; }
 h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
 em.i { font-style: italic; font-weight: 400; }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin: 0 0 18px; }
-.eyebrow::before { content: ""; width: 18px; height: 1px; background: currentColor; }
 .lead { font-size: clamp(18px, 2.2vw, 21px); line-height: 1.55; color: var(--text-2); margin: 0; text-wrap: pretty; }
 .grad { background: var(--brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
