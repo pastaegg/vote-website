@@ -158,6 +158,11 @@ section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--
 .steps li::before { content: "0" counter(step); display: block; font: 500 13px/1 var(--sans); color: var(--text-3); letter-spacing: .06em; margin-bottom: 28px; }
 .steps h3 { font-size: 21px; line-height: 1.15; margin-bottom: 8px; }
 .steps p { margin: 0; color: var(--text-2); font-size: 15px; }
+/* How it works, four steps, each with its picture. */
+.steps.four { grid-template-columns: repeat(4, 1fr); }
+.steps.four li::before { margin-bottom: 14px; }
+.steps .art { margin: 0 -6px 18px; aspect-ratio: 22 / 15; border-radius: 16px; background: radial-gradient(80% 90% at 50% 40%, rgba(124, 108, 255, .14), transparent 70%), rgba(11, 10, 15, .45); border: 1px solid var(--line); display: grid; place-items: center; overflow: hidden; }
+.steps .art svg { width: 100%; height: 100%; }
 
 .tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .tab { position: relative; overflow: hidden; padding: 28px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); }
@@ -262,6 +267,7 @@ section.block { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--
   .read { margin-top: 12px; }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .steps li:last-child { grid-column: span 2; }
+  .steps.four li:last-child { grid-column: auto; }
   .promises { grid-template-columns: 1fr 1fr; }
   .split { grid-template-columns: 1fr; }
 }
