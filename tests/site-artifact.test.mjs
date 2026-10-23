@@ -11,7 +11,7 @@ const script = fs.readFileSync(new URL('../scripts/stage-site.mjs', import.meta.
 const publicFiles = [
   'index.html', '404.html', 'auth/confirm/index.html',
   ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`]),
-  '.nojekyll', 'CNAME', 'robots.txt', 'sitemap.xml', 'site.webmanifest',
+  '.nojekyll', 'CNAME', 'robots.txt', 'app-ads.txt', 'sitemap.xml', 'site.webmanifest',
   'security.txt', '.well-known/security.txt', 'apple-app-site-association',
   '.well-known/apple-app-site-association', 'apple-touch-icon.png',
   'favicon-32.png', 'favicon.ico', 'assets/site.css', 'assets/fonts/OFL.txt',

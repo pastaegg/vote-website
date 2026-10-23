@@ -309,6 +309,10 @@ ${urls.map(u => `  <url><loc>${SITE}/${u}</loc></url>`).join('\n')}
 </urlset>
 `);
 fs.writeFileSync(path.join(root, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+// Google AdMob's authorized sellers file (app-ads.txt, the IAB standard):
+// the one AdMob publisher account that may sell the app's ad space (the
+// owner's AdMob account, 23 Oct 2026; the app's App ID carries the same id).
+fs.writeFileSync(path.join(root, 'app-ads.txt'), 'google.com, pub-8547648770010342, DIRECT, f08c47fec0942fa0\n');
 fs.writeFileSync(path.join(root, 'site.webmanifest'), JSON.stringify({
   name: NAME, short_name: 'Vote', start_url: '/', display: 'browser', background_color: '#0B0A0F', theme_color: '#0B0A0F',
   icons: [{ src: '/assets/img/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/assets/img/icon-512.png', sizes: '512x512', type: 'image/png' }]
