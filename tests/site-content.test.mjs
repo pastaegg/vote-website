@@ -51,6 +51,8 @@ test('sitemap indexes public documents and excludes auth, errors and duplicate a
   assert.deepEqual(urls, ['', 'privacy/', 'terms/', 'support/', 'delete-account/'].map(p => `${site}/${p}`));
   for (const file of ['auth/confirm/index.html', '404.html']) assert.ok(attrs(file, 'meta').some(a => a.get('name') === 'robots' && a.get('content').includes('noindex')));
   assert.ok(read('robots.txt').includes(`Sitemap: ${site}/sitemap.xml`));
+  // AdMob's authorized seller: exactly the owner's publisher account, DIRECT, Google's certification id.
+  assert.equal(read('app-ads.txt'), 'google.com, pub-8547648770010342, DIRECT, f08c47fec0942fa0\n');
 });
 
 test('footer identifies the operator and exposes required support and identity destinations', () => {
