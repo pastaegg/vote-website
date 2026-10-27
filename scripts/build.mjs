@@ -119,7 +119,7 @@ ${body}
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div class="foot-identity" id="about" itemscope itemtype="https://schema.org/Organization"><p>© ${YEAR} <span itemprop="name">${NAME}</span></p><p>Made in Toronto by <span itemprop="legalName">VOTEBT</span>, since <span itemprop="foundingDate">${YEAR}</span>.</p><a href="mailto:${EMAIL}" itemprop="email">${EMAIL}</a></div>
+    <div class="foot-identity" id="about" itemscope itemtype="https://schema.org/Organization"><p>© ${YEAR} <span itemprop="name">${NAME}</span>. All rights reserved.</p><p>Made in Toronto by <span itemprop="legalName">VOTEBT</span>, since <span itemprop="foundingDate">${YEAR}</span>.</p><a href="mailto:${EMAIL}" itemprop="email">${EMAIL}</a></div>
     <nav aria-label="Footer">
       <a href="/">Home</a>
       <a href="/#about">About</a>
