@@ -5,7 +5,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const requiredPages = ['index.html', '404.html', 'auth/confirm/index.html', ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`])];
+export const requiredPages = ['index.html', '404.html', 'auth/confirm/index.html', 'child-safety/index.html', ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`])];
 export const excludedDirectories = new Set(['.git', 'node_modules', 'src', 'scripts', 'tests', '_site']);
 const site = 'https://votebettertogether.com';
 // Only the two official identity links may leave the site. These are

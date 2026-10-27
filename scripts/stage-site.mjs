@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, '_site');
 const files = [
-  'index.html', '404.html', 'auth/confirm/index.html',
+  'index.html', '404.html', 'auth/confirm/index.html', 'child-safety/index.html',
   ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`]),
   '.nojekyll', 'CNAME', 'robots.txt', 'app-ads.txt', 'sitemap.xml', 'site.webmanifest',
   'security.txt', '.well-known/security.txt', 'apple-app-site-association',

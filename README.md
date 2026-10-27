@@ -1,6 +1,6 @@
 # votebettertogether.com
 
-The website for **Vote: Better Together**: a homepage plus the Privacy Policy, Terms of Use, Support and Delete account pages, served by GitHub Pages.
+The website for **Vote: Better Together**: a homepage plus the Privacy Policy, Terms of Use, Support, Delete account and Child safety pages, served by GitHub Pages.
 
 | Page | URL | Used for |
 | --- | --- | --- |
@@ -9,6 +9,7 @@ The website for **Vote: Better Together**: a homepage plus the Privacy Policy, T
 | Terms of Use | https://votebettertogether.com/terms/ | App Store (EULA link for subscriptions), Google OAuth |
 | Support | https://votebettertogether.com/support/ | App Store "Support URL" |
 | Delete account | https://votebettertogether.com/delete-account/ | Google Play "Delete account URL" (Data safety) |
+| Child safety | https://votebettertogether.com/child-safety/ | Google Play child safety standards (CSAE) URL |
 | Email link | https://votebettertogether.com/auth/confirm/ | Where the app's sign-up and password-reset emails link (not indexed) |
 
 ## Editing
