@@ -18,7 +18,9 @@ const publicFiles = [
   'assets/fonts/fraunces-italic-latin.woff2', 'assets/fonts/fraunces-latin-ext.woff2',
   'assets/fonts/fraunces-latin.woff2', 'assets/fonts/inter-latin-ext.woff2',
   'assets/fonts/inter-latin.woff2', 'assets/email/vote-icon-144.png',
-  'assets/img/icon-192.png', 'assets/img/icon-512.png', 'assets/img/og.jpg'
+  'assets/img/icon-192.png', 'assets/img/icon-512.png', 'assets/img/og.jpg',
+  'assets/img/screen-vote.webp', 'assets/img/screen-lenses.webp',
+  'assets/img/screen-your-pairs.webp', 'assets/img/screen-chat.webp'
 ];
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'vote-artifact-'));

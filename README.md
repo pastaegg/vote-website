@@ -27,7 +27,8 @@ The legal text originated in the app's canonical legal file (`www/app/i18n/legal
 - `src/legal-en.js`: reviewed website copy of the English legal drafts, including deletion instructions
 - `src/email-link.js`, `src/email-link.json`: the email link page's script and its words in the app's 13 languages
 - `scripts/build.mjs`: layout, website-only legal sections, sitemap, manifest
-- `assets/site.css`: styles; fonts are the app's Fraunces and Inter (SIL OFL, `assets/fonts/OFL.txt`)
+- `assets/site.css`: styles, on the app's own tokens (Design System V2, the app repo's `mobile/components/theme.tsx`): light is the app's Day, dark its Night; fonts are the app's Fraunces and Inter (SIL OFL, `assets/fonts/OFL.txt`)
+- `assets/img/screen-*.webp`: real app screens, cut from the store's phone frames (photos feature models, names are fictional; the photo licence covers marketing, not redistribution)
 - `assets/email/`: images the app's emails load (the logo, `vote-icon-144.png`)
 - `scripts/stage-site.mjs`: builds `_site/` with only intended public pages and assets
 
