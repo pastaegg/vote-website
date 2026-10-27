@@ -31,6 +31,9 @@ jobs:
         with:
           path: _site
           retention-days: 1
+          # .well-known/ (apple-app-site-association, security.txt) starts with
+          # a dot; v5 leaves such folders out unless this is on.
+          include-hidden-files: true
   deploy:
     needs: build
     runs-on: ubuntu-latest

@@ -73,3 +73,8 @@ test('a missing required public file prevents upload of a partial site', t => {
   assert.notEqual(result.status, 0);
   assert.equal(fs.existsSync(path.join(f.root, '_site')), false);
 });
+
+test('Pages upload keeps dot folders (.well-known/apple-app-site-association, security.txt)', () => {
+  const wf = fs.readFileSync(new URL('../.github/workflows/pages.yml', import.meta.url), 'utf8');
+  assert.match(wf, /upload-pages-artifact@[0-9a-f]{40}[^\n]*\n\s+with:\n(?:\s+[^\n]*\n)*?\s+include-hidden-files: true/);
+});
