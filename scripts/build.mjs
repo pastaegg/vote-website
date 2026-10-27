@@ -108,7 +108,6 @@ ${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, in
     <a class="brand" href="/" aria-label="${NAME}, home">${MARK}<span>Vote<small>Better Together</small></span></a>
     <nav class="nav" aria-label="Main">
       ${link('/#how', 'How it works', 'hide-sm')}
-      ${link('/#about', 'About')}
       ${link('/privacy/', 'Privacy')}
       ${link('/terms/', 'Terms')}
       ${link('/support/', 'Support')}
@@ -120,7 +119,7 @@ ${body}
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div class="foot-identity"><p>© ${YEAR} ${NAME}</p><p>Founded by Ahmet Fatih Ceren · Operated by VOTEBT · Toronto, Canada</p><a href="mailto:${EMAIL}">${EMAIL}</a></div>
+    <div class="foot-identity" id="about" itemscope itemtype="https://schema.org/Organization"><p>© ${YEAR} <span itemprop="name">${NAME}</span></p><p>Made in Toronto by <span itemprop="legalName">VOTEBT</span>, since <span itemprop="foundingDate">${YEAR}</span>.</p><a href="mailto:${EMAIL}" itemprop="email">${EMAIL}</a></div>
     <nav aria-label="Footer">
       <a href="/">Home</a>
       <a href="/#about">About</a>
