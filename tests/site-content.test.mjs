@@ -58,12 +58,13 @@ test('sitemap indexes public documents and excludes auth, errors and duplicate a
 test('footer identifies the operator and exposes required support and identity destinations', () => {
   for (const file of requiredPages.filter(f => f === 'index.html' || f.endsWith('/index.html') || f === '404.html')) {
     const footer = read(file).split('<footer class="foot">')[1];
-    assert.ok(footer.includes('Operated by VOTEBT'), file);
+    assert.ok(footer.includes('Made in Toronto by <span itemprop="legalName">VOTEBT</span>'), file);
     for (const url of ['/#about', '/privacy/', '/terms/', '/support/', '/delete-account/', '/child-safety/', 'mailto:support@votebettertogether.com', 'https://www.linkedin.com/in/ahmetfceren', 'https://www.linkedin.com/company/vote-better-together/']) assert.ok(footer.includes(`href="${url}"`), `${file}: footer ${url}`);
   }
+  // The operator is named in every footer (the owner, 26 Oct 2026: no
+  // founder block on the homepage, "Made in Toronto by VOTEBT" is enough).
   const home = read('index.html');
   assert.ok(home.includes('itemtype="https://schema.org/Organization"'));
   assert.ok(home.includes('itemprop="legalName">VOTEBT'));
   assert.ok(home.includes('itemprop="foundingDate">2026'));
-  assert.ok(home.includes('itemprop="name">Ahmet Fatih Ceren'));
 });
