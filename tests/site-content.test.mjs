@@ -48,7 +48,7 @@ test('public pages have unique headings, accurate canonical URLs and social prev
 
 test('sitemap indexes public documents and excludes auth, errors and duplicate aliases', () => {
   const urls = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-  assert.deepEqual(urls, ['', 'privacy/', 'terms/', 'support/', 'delete-account/'].map(p => `${site}/${p}`));
+  assert.deepEqual(urls, ['', 'privacy/', 'terms/', 'support/', 'delete-account/', 'child-safety/'].map(p => `${site}/${p}`));
   for (const file of ['auth/confirm/index.html', '404.html']) assert.ok(attrs(file, 'meta').some(a => a.get('name') === 'robots' && a.get('content').includes('noindex')));
   assert.ok(read('robots.txt').includes(`Sitemap: ${site}/sitemap.xml`));
   // AdMob's authorized seller: exactly the owner's publisher account, DIRECT, Google's certification id.
@@ -59,7 +59,7 @@ test('footer identifies the operator and exposes required support and identity d
   for (const file of requiredPages.filter(f => f === 'index.html' || f.endsWith('/index.html') || f === '404.html')) {
     const footer = read(file).split('<footer class="foot">')[1];
     assert.ok(footer.includes('Operated by VOTEBT'), file);
-    for (const url of ['/#about', '/privacy/', '/terms/', '/support/', '/delete-account/', 'mailto:support@votebettertogether.com', 'https://www.linkedin.com/in/ahmetfceren', 'https://www.linkedin.com/company/vote-better-together/']) assert.ok(footer.includes(`href="${url}"`), `${file}: footer ${url}`);
+    for (const url of ['/#about', '/privacy/', '/terms/', '/support/', '/delete-account/', '/child-safety/', 'mailto:support@votebettertogether.com', 'https://www.linkedin.com/in/ahmetfceren', 'https://www.linkedin.com/company/vote-better-together/']) assert.ok(footer.includes(`href="${url}"`), `${file}: footer ${url}`);
   }
   const home = read('index.html');
   assert.ok(home.includes('itemtype="https://schema.org/Organization"'));

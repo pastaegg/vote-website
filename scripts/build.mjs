@@ -125,6 +125,7 @@ ${body}
       <a href="/privacy/">Privacy Policy</a>
       <a href="/terms/">Terms of Use</a>
       <a href="/support/">Support</a>
+      <a href="/child-safety/">Child safety</a>
       <a href="/delete-account/">Delete your account</a>
     </nav>
     <nav class="foot-social" aria-label="LinkedIn">
@@ -139,7 +140,7 @@ ${body}
 }
 
 /* A document page: header, table of contents, then parts of sections. */
-function docPage({ file, title, description, lead, current, intro = '', parts, after = '' }) {
+function docPage({ file, title, description, lead, current, intro = '', parts, after = '', updated = '' }) {
   const used = new Set();
   const id = h => { let s = slug(h) || 'section', n = s, i = 2; while (used.has(n)) n = `${s}-${i++}`; used.add(n); return n; };
   const toc = [];
@@ -155,7 +156,7 @@ function docPage({ file, title, description, lead, current, intro = '', parts, a
   <p class="eyebrow">${NAME}</p>
   <h1>${esc(title)}</h1>
   <p class="lead">${lead}</p>
-  <div class="meta"><span>Version ${esc(legal.version)}</span><span>English</span><span>For people 18 and older</span></div>
+  <div class="meta"><span>${updated ? `Last updated ${esc(updated)}` : `Version ${esc(legal.version)}`}</span><span>English</span><span>For people 18 and older</span></div>
 </div></header>
 <div class="doc"><div class="wrap">
 ${intro}
@@ -244,6 +245,25 @@ pages['support/index.html'] = docPage({
   ]
 });
 
+pages['child-safety/index.html'] = docPage({
+  file: 'child-safety/index.html',
+  title: 'Child Safety Standards',
+  current: '',
+  description: 'Vote: Better Together is for adults 18 and older. How Vote prohibits child sexual abuse and exploitation, how to report it, and what Vote does.',
+  lead: 'Vote is for adults only. Nothing sexual involving a minor is allowed, and we act on every report.',
+  updated: '26 October 2026',
+  intro: `<p class="note">To raise a child safety concern outside the app, email <a href="mailto:${EMAIL}">${EMAIL}</a> with “Child safety” in the subject. Please do not attach or forward any image. If a child or anyone else is in immediate danger, contact local emergency services first: Vote cannot send help.</p>`,
+  parts: [{ rows: [
+    ['Our standard', '<p>Vote: Better Together is operated by VOTEBT, a sole proprietorship in Toronto, Ontario, Canada. Our <a href="/terms/">Terms of Use</a> and Community guidelines forbid anything sexual involving a minor, in dating or in Community. This covers child sexual abuse and exploitation (CSAE) and child sexual abuse material (CSAM), and an adult seeking sexual contact with a minor. We have zero tolerance: it leads to removal.</p>'],
+    ['Adults only', '<p>Vote is only for people aged 18 or over. The app checks your age from your birth date when you join. Members can report someone who may be under 18, and those reports are handled first. When we learn that an account belongs to someone under 18, we close it and delete its data, except what we must keep for safety or by law. A photo that shows anyone under 18, even with the member, is turned down.</p>'],
+    ['Every new profile photo is checked by a person', '<p>A person on Vote’s team checks every new profile photo before anyone else sees it. Until then it shows as “In review”. Vote uses no automated face recognition, and no profile photo is classified automatically.</p>'],
+    ['How to report in the app', '<p>On any profile, pair, introduction or chat, open the menu and choose Report. Reports can also be made about a chat photo and about Community profiles, rooms, posts, comments and messages. “Underage” is one of the reasons you can choose. Reports are confidential: the person is never told who reported them. By default, reporting someone also blocks them.</p><p>You can also block from the same menu. A block works at once and both ways, and a match, chat or introduction it ended stays closed. If you can’t open the app, email <a href="mailto:' + EMAIL + '">' + EMAIL + '</a> with “Child safety” in the subject.</p>'],
+    ['What Vote does when a report arrives', '<p>People on Vote’s team review reports; decisions are never made by software alone. A report that a member may be under 18 is urgent and is posted to the safety team at once. In summary:</p><ul><li>The account is paused at once while the report is checked.</li><li>The content is removed from view, and the account is banned. The ban list stops the same e-mail address, sign-in or phone from starting again.</li><li>Evidence is preserved: a reported chat photo is kept while the report is active, and the safety team keeps a copy of the last 20 messages, the reported profile’s text and the IDs of its photos. This copy is kept for 90 days after the report is closed, and longer if the safety team must keep it for a legal or safety reason. Only the safety team can open it, and every opening is recorded.</li><li>Staff do not copy, forward or share the material. Nothing is sent anywhere except through an authority’s own reporting system.</li><li>Confirmed child sexual abuse material is reported the same day to Cybertip.ca (the Canadian Centre for Child Protection), the organisation designated under Canada’s law on mandatory reporting of Internet child pornography. Where that law applies, the police are also notified and the related data is preserved for the period it sets. For members in the United States, the report goes to the NCMEC CyberTipline. In other countries, it goes to the national hotline or to the police.</li></ul>'],
+    ['Compliance', '<p>Vote follows the child safety laws that apply to it, including Canadian law on reporting child sexual abuse material. When an authority asks for information, Vote asks for the legal process that applies, and gives only what that process requires.</p>'],
+    ['Child safety contact', `<p>Email <a href="mailto:${EMAIL}">${EMAIL}</a> with “Child safety” in the subject. In the app, you can also use Settings › Help &amp; support and choose “Safety”. Read more in the <a href="/terms/">Terms of Use</a>, the <a href="/privacy/">Privacy Policy</a> and <a href="/support/">Support</a>.</p>`]
+  ] }]
+});
+
 pages['delete-account/index.html'] = docPage({
   file: 'delete-account/index.html',
   title: legal.docs.deletion.title,
@@ -302,7 +322,7 @@ for (const [file, html] of Object.entries(pages)) {
   fs.writeFileSync(out, html);
 }
 
-const urls = ['', 'privacy/', 'terms/', 'support/', 'delete-account/'];
+const urls = ['', 'privacy/', 'terms/', 'support/', 'delete-account/', 'child-safety/'];
 fs.writeFileSync(path.join(root, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${SITE}/${u}</loc></url>`).join('\n')}
