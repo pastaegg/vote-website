@@ -155,112 +155,130 @@ main:focus { outline: none; }
 
 .caption { font-size: var(--text-xs); color: var(--muted); }
 
-/* Hero */
-.hero { padding-block: var(--space-lg) var(--space-2xl); }
-.hero-grid { display: grid; gap: var(--space-2xl); align-items: center; }
-.hero-copy { max-width: 36rem; }
+/* The home page sits on one 12-column grid: every section starts on the
+   same left edge, text blocks take columns 1 to 6, visuals 7 to 12, and
+   every section has the same vertical rhythm (--section). */
+:root { --section: clamp(72px, 4rem + 5vw, 136px); --gutter: var(--space-lg); }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: var(--gutter); }
+@media (min-width: 960px) {
+  .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .grid > * { grid-column: 1 / -1; }
+}
+
+/* Hero: the words on the left, the glass on the right, centred on one line. */
+.hero { padding-block: var(--space-xl) 0; }
+@media (min-width: 960px) { .hero { padding-block: var(--space-2xl) 0; } .hero-grid { min-height: min(640px, calc(100svh - 200px)); } }
+.hero-grid { row-gap: var(--space-xl); align-items: center; }
 .hero h1 { max-width: 12ch; }
 .lede { margin-top: var(--space-lg); font-size: clamp(1.125rem, 1.05rem + .35vw, 1.3125rem); line-height: 1.55; color: var(--ink-2); max-width: 34em; }
 .stores { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm); }
-.stores li { display: flex; flex-direction: column; justify-content: center; min-height: 56px; padding: var(--space-xs) var(--space-lg) var(--space-xs) var(--space-md); border-radius: var(--r-sm); background: var(--paper-2); box-shadow: inset 0 0 0 1px var(--rule); }
+.stores li { display: flex; flex-direction: column; justify-content: center; min-height: 56px; padding: var(--space-xs) var(--space-lg) var(--space-xs) var(--space-md); border-radius: var(--r-sm); background: var(--paper-2); }
 .stores small { font-size: var(--text-xs); color: var(--muted); line-height: 1.3; }
-.stores b { font-size: 1.0625rem; line-height: 1.25; letter-spacing: -.005em; }
+.stores b { font-size: 1.0625rem; line-height: 1.25; }
 .hero-note { margin-top: var(--space-lg); font-size: var(--text-small); color: var(--muted); }
-.hero-note a { margin-left: var(--space-2xs); font-weight: 600; color: var(--ink); white-space: nowrap; }
+.hero-note a { margin-left: var(--space-2xs); white-space: nowrap; }
 
-.stage { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); max-width: 600px; width: 100%; margin-inline: auto; }
-.stage > * { grid-area: 1 / 1; }
-.orbit-art { width: 92%; justify-self: start; align-self: start; color: var(--dot); }
-.orbit-art .dot { fill: currentColor; }
-.stage-phone { width: 46%; justify-self: end; align-self: end; margin-top: 28%; filter: var(--phone-shadow); }
-.stage-caption { grid-area: auto; justify-self: end; margin-top: var(--space-sm); }
-
-@media (min-width: 960px) {
-  .hero { padding-block: var(--space-xl) var(--space-3xl); }
-  .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-xl); }
-  .stage { margin-right: 0; }
+/* The App Store set's glass lenses. The art's warm ground fades out on an
+   ellipse, so on Day it melts into the white page with no edge. On Night
+   it sits on a warm paper panel of the same ground. */
+.hero-art { position: relative; }
+.hero-art img { width: 124%; margin-left: -8%; max-width: none; -webkit-mask-image: radial-gradient(50% 50% at 50% 50%, #000 62%, transparent 100%); mask-image: radial-gradient(50% 50% at 50% 50%, #000 62%, transparent 100%); }
+@media (prefers-color-scheme: dark) {
+  .hero-art { background: linear-gradient(180deg, #F5EDE4, #E9E0D6); border-radius: var(--r-xl); overflow: hidden; }
 }
-
+@media (min-width: 960px) {
+  .hero-copy { grid-column: 1 / span 6; }
+  .hero-art { grid-column: 7 / span 6; }
+}
 
 /* One settle on arrival, from a visible default. */
 @media (prefers-reduced-motion: no-preference) {
-  /* The orbit's two circles drift into each other once, as the launch's
-     stage does; the phone settles after them. */
   .hero-copy { animation: settle var(--dur-slow) var(--ease-out) both; }
-  .stage-phone { animation: settle var(--dur-slow) var(--ease-out) var(--dur-standard) both; }
-  .orbit-art .ca { animation: drift-a 900ms var(--ease-out) both; }
-  .orbit-art .cb { animation: drift-b 900ms var(--ease-out) both; }
-  .orbit-art .lens { animation: lens 900ms var(--ease-out) both; }
+  .hero-art { animation: fade 900ms var(--ease-out) var(--dur-standard) both; }
   @keyframes settle { from { opacity: 0; transform: translateY(8px); } }
-  @keyframes drift-a { from { transform: translateX(-14px); } }
-  @keyframes drift-b { from { transform: translateX(14px); } }
-  @keyframes lens { from { opacity: 0; } }
+  @keyframes fade { from { opacity: 0; } }
 }
 
-/* Section scaffolding */
-.section-head { display: grid; gap: var(--space-md); max-width: 40rem; }
-.section-head p { color: var(--ink-2); font-size: 1.125rem; }
+/* Section heads: the heading and its one line, columns 1 to 7. */
+.section-head { row-gap: var(--space-md); }
+.section-head p { color: var(--ink-2); font-size: var(--text-card); line-height: 1.5; }
+@media (min-width: 960px) { .section-head > * { grid-column: 1 / span 7; } }
 
-/* How it works */
-.how { padding-block: var(--space-3xl); border-top: 1px solid var(--rule); }
-.steps { list-style: none; margin: var(--space-2xl) 0 0; padding: 0; counter-reset: step; display: grid; gap: var(--space-2xl) var(--space-xl); }
-.step { counter-increment: step; display: grid; gap: var(--space-sm); align-content: start; }
-.shot { display: flex; justify-content: center; padding-top: var(--space-xl); height: clamp(300px, 30vw, 420px); overflow: hidden; border-radius: var(--r-xl); margin-bottom: var(--space-sm); }
-.shot { background: var(--paper-2); }
-.shot img { width: min(64%, 240px); align-self: flex-start; filter: var(--phone-shadow); }
-.step h3::before { content: counter(step); display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; margin-right: var(--space-sm); border-radius: 50%; box-shadow: inset 0 0 0 1px var(--rule-strong); font: 600 .8125rem/1 var(--sans); color: var(--ink-2); vertical-align: .3em; }
-.step p { color: var(--ink-2); max-width: 34em; }
-.how .aside { margin-top: var(--space-2xl); padding-top: var(--space-lg); border-top: 1px solid var(--rule); max-width: 46rem; color: var(--ink-2); }
-.how .caption { margin-top: var(--space-sm); }
-@media (min-width: 860px) {
-  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* How it works: three equal plates, the whole phone in each at one size,
+   the titles on one baseline. */
+.how { padding-block: var(--section); }
+.steps { list-style: none; margin: var(--space-2xl) 0 0; padding: 0; counter-reset: step; row-gap: var(--space-2xl); }
+.step { counter-increment: step; display: grid; grid-template-rows: auto auto 1fr; gap: var(--space-sm); align-content: start; }
+.shot { display: grid; place-items: center; padding: var(--space-xl) var(--space-lg); border-radius: var(--r-xl); background: var(--paper-2); margin-bottom: var(--space-sm); }
+.shot img { width: 200px; filter: var(--phone-shadow); }
+.step h3::before { content: counter(step); display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; margin-right: var(--space-sm); border-radius: 50%; box-shadow: inset 0 0 0 1px var(--rule-strong); font: 500 .8125rem/1 var(--sans); color: var(--ink-2); vertical-align: .3em; }
+.step p { color: var(--ink-2); line-height: 1.55; }
+.steps-caption { margin-top: var(--space-xl); }
+@media (min-width: 860px) and (max-width: 959px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .steps > .step { grid-column: span 4; } .shot img { width: min(220px, 70%); } }
+
+/* The Orb: Vote's signature. Its ring is drawn in the colours of the
+   Voice Orb as it glows on Vote (sampled from the app's own screen), on
+   the dark stage the app draws it on, in Day and Night alike. */
+.orb-section { padding-block: 0 var(--section); }
+.orb-grid { row-gap: var(--space-xl); align-items: center; }
+.orb-copy { display: grid; gap: var(--space-md); align-content: start; }
+.orb-copy p { color: var(--ink-2); font-size: var(--text-card); line-height: 1.5; max-width: 30em; }
+.orb-copy h2 { margin-bottom: var(--space-xs); }
+.orb-copy .orb-fine { font-size: var(--text-small); color: var(--muted); }
+.orb-stage { --orb-1: #8FF0F0; --orb-2: #8EC2FA; --orb-3: #89DBC3; --orb-4: #95F8B5;
+  display: grid; justify-items: center; gap: var(--space-lg); padding: var(--space-2xl) var(--space-lg); border-radius: var(--r-xl); background: #0F1419; color: #E7E9EA; }
+@media (prefers-color-scheme: dark) { .orb-stage { background: #121412; } }
+.strength-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; width: min(100%, 400px); }
+.strength-bar span { height: 4px; border-radius: 2px; background: rgba(231, 233, 234, 0.16); }
+.strength-bar span:nth-child(-n + 2) { background: linear-gradient(90deg, var(--orb-4), var(--orb-1) 60%, var(--orb-2)); }
+.strengths { list-style: none; margin: calc(-1 * var(--space-sm)) 0 var(--space-lg); padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xs); width: min(100%, 400px); }
+.strengths li { text-align: center; font-size: var(--text-small); line-height: 1.35; color: #9A9FA4; }
+.strengths li.on { color: var(--orb-4); }
+.orb { position: relative; width: 112px; height: 112px; margin-block: var(--space-xs); }
+.orb-ring, .orb-glow { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--orb-1), var(--orb-2), var(--orb-3), var(--orb-4), var(--orb-1)); -webkit-mask-image: radial-gradient(closest-side, transparent 70%, #000 74%, #000 92%, transparent 97%); mask-image: radial-gradient(closest-side, transparent 70%, #000 74%, #000 92%, transparent 97%); }
+.orb-glow { inset: -14px; filter: blur(14px); opacity: .75; -webkit-mask-image: radial-gradient(closest-side, transparent 50%, #000 70%, transparent 100%); mask-image: radial-gradient(closest-side, transparent 50%, #000 70%, transparent 100%); }
+.apart { font-size: var(--text-small); color: #9A9FA4; }
+.orb::before, .orb::after { content: ""; position: absolute; left: 50%; width: 1px; height: var(--space-lg); background: rgba(231, 233, 234, 0.3); }
+.orb::before { bottom: calc(100% + var(--space-xs)); }
+.orb::after { top: calc(100% + var(--space-xs)); }
+@media (prefers-reduced-motion: no-preference) {
+  /* The Orb always breathes a little (AURA_IDLE): one 4 s breath. */
+  .orb-glow { animation: breathe 2s var(--ease-out) infinite alternate; }
+  @keyframes breathe { from { opacity: .5; transform: scale(.97); } to { opacity: .85; transform: scale(1.03); } }
+}
+@media (min-width: 960px) {
+  .orb-copy { grid-column: 1 / span 5; }
+  .orb-stage { grid-column: 7 / span 6; }
 }
 
 /* The promise band: the Orbit, the app's lens colour (orbit, onOrbit),
    the same in Day and Night. */
-.promise { background: linear-gradient(135deg, var(--orbit-1), var(--orbit-2) 55%, var(--orbit-3)); color: var(--on-orbit); padding-block: var(--space-3xl); }
+.promise { background: linear-gradient(135deg, var(--orbit-1), var(--orbit-2) 55%, var(--orbit-3)); color: var(--on-orbit); padding-block: var(--section); }
 .promise h2 { color: var(--on-orbit); max-width: 13ch; }
-.promise-grid { display: grid; gap: var(--space-2xl); }
+.promise-grid { row-gap: var(--space-2xl); }
 .promise-head p { margin-top: var(--space-lg); max-width: 30rem; font-size: var(--text-card); line-height: 1.5; }
-.truths { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 var(--space-xl); }
-.truths li { display: grid; gap: var(--space-2xs); padding-block: var(--space-lg); border-top: 1px solid rgba(247, 245, 241, 0.3); }
+.truths { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 var(--gutter); }
+.truths li { display: grid; gap: var(--space-2xs); align-content: start; padding-block: var(--space-lg); border-top: 1px solid rgba(247, 245, 241, 0.3); }
 .truths b { font-family: var(--serif); font-weight: 400; font-size: 1.25rem; line-height: 1.3; }
 .truths span { line-height: 1.5; }
 @media (min-width: 700px) { .truths { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1040px) {
-  .promise { padding-block: var(--space-4xl); }
-  .promise-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); }
-  .promise-head { position: sticky; top: var(--space-xl); align-self: start; }
+@media (min-width: 960px) {
+  .promise-head { grid-column: 1 / span 5; align-self: start; }
+  .truths { grid-column: 7 / span 6; }
 }
 .promise :focus-visible { outline-color: var(--on-orbit); }
 
-/* About */
-.about { padding-block: var(--space-3xl); }
-.about-grid { display: grid; gap: var(--space-xl); }
-.about-grid > div { display: grid; gap: var(--space-md); align-content: start; }
-.about-grid > div p { color: var(--ink-2); max-width: 36rem; }
-.about h2 { margin-bottom: var(--space-xs); }
-.facts { list-style: none; margin: 0; padding: 0; }
-.facts li { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--space-md); padding-block: var(--space-md); border-top: 1px solid var(--rule); }
-.facts li:last-child { border-bottom: 1px solid var(--rule); }
-.fact-label { color: var(--muted); font-size: var(--text-small); padding-top: 2px; }
-.facts a { overflow-wrap: anywhere; }
-@media (min-width: 960px) {
-  .about { padding-block: var(--space-4xl) var(--space-3xl); }
-  .about-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-3xl); }
-}
-@media (max-width: 420px) { .facts li { grid-template-columns: 1fr; gap: var(--space-2xs); } }
-
 /* Coming soon */
-.coming { padding-block: 0 var(--space-3xl); }
-.coming-grid { display: grid; gap: var(--space-lg); align-items: start; padding: var(--space-xl) var(--space-lg); border-radius: var(--r-lg); background: var(--paper-2); }
+.coming { padding-block: var(--section); }
+.coming-grid { row-gap: var(--space-lg); align-items: center; }
 .app-icon { width: 72px; height: 72px; border-radius: 18px; }
-.coming h2 { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem); max-width: 20ch; }
-.coming p { margin-top: var(--space-sm); color: var(--ink-2); max-width: 36rem; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md) var(--space-lg); margin-top: var(--space-lg); }
-@media (min-width: 720px) {
-  .coming-grid { grid-template-columns: auto minmax(0, 1fr); gap: var(--space-xl); padding: var(--space-2xl); }
-  .app-icon { width: 96px; height: 96px; border-radius: 22px; }
+.coming h2 { font-size: var(--text-section); max-width: 16ch; }
+.coming p { margin-top: var(--space-md); color: var(--ink-2); font-size: var(--text-card); line-height: 1.5; max-width: 32em; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md) var(--space-lg); margin-top: var(--space-xl); }
+@media (min-width: 960px) {
+  .app-icon { grid-column: 1 / span 2; width: 112px; height: 112px; border-radius: 26px; align-self: start; }
+  .coming-copy { grid-column: 3 / span 8; }
 }
 
 /* Footer */
