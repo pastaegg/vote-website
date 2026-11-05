@@ -272,7 +272,7 @@ main:focus { outline: none; }
 /* Coming soon */
 .coming { padding-block: var(--section); }
 .coming-grid { row-gap: var(--space-lg); align-items: center; }
-.app-icon { width: 72px; height: 72px; border-radius: 18px; }
+.app-icon { width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 0 0 1px rgba(128, 118, 100, .22); }
 .coming h2 { font-size: var(--text-section); max-width: 16ch; }
 .coming p { margin-top: var(--space-md); color: var(--ink-2); font-size: var(--text-card); line-height: 1.5; max-width: 32em; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md) var(--space-lg); margin-top: var(--space-xl); }
