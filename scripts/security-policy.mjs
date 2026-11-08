@@ -12,7 +12,8 @@ const site = 'https://votebettertogether.com';
 // navigation destinations, never asset, script or API permissions.
 const externalLinks = new Set([
   'https://www.linkedin.com/in/ahmetfceren',
-  'https://www.linkedin.com/company/vote-better-together/'
+  'https://www.linkedin.com/company/vote-better-together/',
+  'https://apps.apple.com/app/id6817733699'
 ]);
 const authConnections = 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout';
 const aliases = new Map(['privacy', 'terms', 'support', 'delete-account'].map(p => [`${p}.html`, `0; url=/${p}/`]));
