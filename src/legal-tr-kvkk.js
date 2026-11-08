@@ -1,0 +1,94 @@
+/* The app's Turkish KVKK texts (www/app/i18n/legal/tr.js in the app repo,
+   docs kvkk and consent), copied word for word. Turkish is authoritative. */
+export default {
+  "lang": "tr",
+  "version": "2026-11-08",
+  "docs": {
+    "kvkk": {
+      "title": "KVKK Aydınlatma Metni",
+      "sections": {
+        "controller": [
+          "Veri sorumlusu",
+          "6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) uyarınca kişisel verileriniz, veri sorumlusu sıfatıyla aşağıda bilgileri yer alan işletme tarafından işlenir:\nUnvanı: {controllerName}\nHukuki niteliği: Kanada’nın Ontario eyaletinde tescilli şahıs işletmesi\nAdresi: {controllerAddress}\nİletişim: {contact}\nUygulama içi başvuru kanalı: Ayarlar › Yardım ve destek\nVeri sorumlusu Türkiye’de yerleşik değildir. Türkiye’de yerleşik olmayan veri sorumluları, KVKK uyarınca Türkiye’de bir veri sorumlusu temsilcisi atar. Temsilcinin bilgileri, atandığında bu metinde yayımlanır."
+        ],
+        "scope": [
+          "Bu metnin amacı ve kapsamı",
+          "Bu Aydınlatma Metni, KVKK’nın 10. maddesi ve Aydınlatma Yükümlülüğünün Yerine Getirilmesinde Uyulacak Usul ve Esaslar Hakkında Tebliğ uyarınca, Vote mobil uygulamasını ve web sayfalarını kullanan kişilere, kişisel verilerinin hangi amaçlarla ve hangi hukuki sebeplere dayanılarak işlendiğini, kimlere aktarıldığını, nasıl toplandığını ve KVKK’dan doğan haklarını açıklamak için hazırlanmıştır. Vote yalnızca 18 yaşını doldurmuş kişilere açıktır. Daha ayrıntılı bilgi Gizlilik Politikamızda yer alır. Özel nitelikli kişisel verileriniz için açık rızanız, bu metinden ayrı olarak ve Açık Rıza Metni’ne dayanılarak alınır."
+        ],
+        "categories": [
+          "İşlenen kişisel veri kategorileri",
+          "• Kimlik: ad, doğum tarihi, cinsiyet ve zamirler, hesap kimliği, Apple veya Google’ın paylaştığı ad ve tanımlayıcı.\n• İletişim: e-posta adresi (Apple’ın gizli yönlendirme adresi dahil).\n• Görsel kayıtlar: profil fotoğrafları, sohbette gönderilen fotoğraflar ve profil doğrulaması istendiğinde gönderilen selfie.\n• Lokasyon: şehir, yaklaşık 5 km’lik bir ızgaraya yerleştirilmiş koordinatlar ve isteğe bağlı olarak doğum yeri.\n• Profil ve tercih bilgileri: kimleri görmek istediğiniz, ne aradığınız, ilişki biçimi, aile planları, boy, iş, eğitim, memleket, diller, kişilik cevapları, zevkler, ilgi alanları, profil soruları ve cevapları, kitle ve gizlilik ayarları.\n• Müşteri işlem bilgileri: beğeniler, notlar, geçilen kişiler, eşleşmeler, mesajlar, çiftlere verilen vote’lar ve ayrıntıları, öneriler, takipler, tanıştırmalar ve bunlara verilen cevaplar, buluşma sonrası cevaplar, engellemeler, şikâyetler, destek talepleri, kullanım sınırları ve varsa abonelik kayıtları.\n• İşlem güvenliği bilgileri: kurulum kimliği, cihaz kimliğinin tek yönlü özeti, yasak listesindeki özetler, iPhone’da Apple ile girişte alınan mühürlü anahtar, platform, uygulama sürümü, dil, saat dilimi, bildirim jetonu, IP adresi, istek ve giriş kayıtları, çökme raporları ve moderasyon kayıtları.\n• Diğer: isteğe bağlı doğum saati, Günün gökyüzü yorumları ve rızanızla oluşturulan kullanım istatistikleri.\n• Özel nitelikli kişisel veriler (yalnızca açık rızanızla): din, mezhep ve diğer inançlar (maneviyat cevabı ve dini inancı ortaya koyabilecek beslenme tercihi), siyasi düşünce, cinsel hayat ve cinsel yönelim (cinsiyetinizle birlikte kimleri görmek istediğiniz ve içinde yer aldığınız çiftlerin ortaya koyabileceği bilgi), kadın ya da erkek dışındaki cinsiyet kimliği ve sağlık verisi niteliği taşıyabilecek alışkanlıklar (alkol, sigara ve esrar kullanımı)."
+        ],
+        "purposes": [
+          "İşleme amaçları ve hukuki sebepler",
+          "Kişisel verileriniz aşağıdaki amaçlarla ve her amacın yanında belirtilen, KVKK’nın 5. ve 6. maddelerindeki hukuki sebeplere dayanılarak işlenir:\n• Üyeliğinizi oluşturmak, girişinizi doğrulamak ve hesabınızı yönetmek. Hukuki sebep: bir sözleşmenin kurulması veya ifasıyla doğrudan doğruya ilgili olması (m. 5/2-c).\n• Profilinizi oluşturmak ve seçtiğiniz kitlelere göstermek, Keşfet, beğeni, eşleşme, sohbet, topluluk vote’u ve tanıştırma hizmetlerini sunmak, açtığınız bildirimleri ve isteğe bağlı özellikleri (Günün gökyüzü, Gökyüzünde ikiniz) çalıştırmak, talep etmeniz hâlinde profilinizi doğrulamak, destek taleplerinizi yanıtlamak. Hukuki sebep: m. 5/2-c.\n• Özel nitelikli kişisel verilerinizi açık rızanızın kapsamında işlemek: inanç, siyasi görüş, alışkanlık, beslenme ve kimlik bilgilerinizi profilinizde seçtiğiniz kitleye göstermek, kimleri görmek istediğiniz bilgisini eşleştirmede kullanmak ve sizi topluluk vote’unda çiftlerde göstermek. Hukuki sebep: açık rızanız (m. 6/3-a).\n• Tanışmaya katılırken verdiğiniz onayla, bağlarınızın hikâyesini göstermek: bir tanıştırmaya iki kişi de evet dediğinde, o çifte vote verenlere ve takip edenlere iki kişinin birbirine şans verdiğini, ikisi de buluşmalarının nasıl gittiğini paylaşıyorsa buluştuklarını ya da hâlâ konuştuklarını göstermek. Ayarlar › Birini aramak › “Tanışmadan ayrıl” ile onay her an geri alınabilir ve o ana kadar gösterilenler hemen gizlenir. Hukuki sebep: açık rızanız (m. 5/1).\n• Topluluğun ve hizmetin güvenliğini sağlamak: şikâyetleri, moderasyonu ve itirazları yürütmek, tehdit ve aşağılama içeren sözleri engellemek, sahte hesapları, spamı ve vote’ların manipülasyonunu önlemek, kullanım sınırlarını uygulamak, bilgi güvenliğini sağlamak ve çökme raporlarıyla hataları gidermek. Hukuki sebep: temel hak ve özgürlüklerinize zarar vermemek kaydıyla meşru menfaatimiz (m. 5/2-f) ve hukuki yükümlülüklerimiz (m. 5/2-ç).\n• Kullanım istatistikleri oluşturmak. Türkiye’de bu özellik siz açmadıkça kapalıdır. Hukuki sebep: açık rızanız (m. 5/1).\n• Hukuki uyuşmazlıklarda haklarımızı tesis etmek, kullanmak ve korumak, açık şikâyetlere ilişkin kayıtları saklamak ve yetkili kurum ve kuruluşların bilgi taleplerini yanıtlamak. Hukuki sebep: bir hakkın tesisi, kullanılması veya korunması için zorunlu olması (m. 5/2-e, özel nitelikli veriler için m. 6/3-d) ve hukuki yükümlülük (m. 5/2-ç).\n• Varsa abonelik kayıtlarını tutmak. Hukuki sebep: m. 5/2-c ve m. 5/2-ç."
+        ],
+        "method": [
+          "Kişisel verilerin toplanma yöntemi",
+          "Kişisel verileriniz Vote mobil uygulaması ve web sayfaları üzerinden, elektronik ortamda ve tamamen veya kısmen otomatik yollarla toplanır: profilinize ve ayarlarınıza girdiğiniz bilgilerden, uygulamada yaptığınız işlemlerden, cihazınızdan (kurulum kimliği, dil, saat dilimi, bildirim jetonu ve yalnızca siz istediğinizde yaklaşık konum), Apple veya Google ile giriş yaptığınızda bu hizmetlerden, diğer üyelerin sizinle ilgili işlemlerinden (beğeniler, vote’lar, şikâyetler) ve sunucu kayıtlarıyla çökme raporlarından."
+        ],
+        "transfer": [
+          "Kişisel verilerin aktarılması",
+          "Kişisel verileriniz yukarıdaki amaçlarla ve KVKK’nın 8. ve 9. maddelerine uygun olarak şu alıcı gruplarına aktarılabilir:\n• Diğer üyeler: profilinizin seçtiğiniz kitlelere açık bölümleri ve ayarlarınızın izin verdiği bilgiler, hizmetin sunulması için.\n• Hizmet sağlayıcılarımız (veri işleyenler): barındırma, veri tabanı, giriş ve dosya depolama için Supabase, çökme raporları için Sentry, e-posta için Google Workspace, web sayfalarımızın barındırılması ve şifreli yedekler için GitHub ve yalnızca açılırsa otomatik kayıtlara karşı doğrulama için hCaptcha ya da Cloudflare Turnstile.\n• Apple ve Google: Apple ile Giriş, Google ile giriş, anlık bildirim hizmetleri ve varsa App Store ile Google Play ödemeleri için.\n• Google AdMob: Keşfet’te ve Vote’de kişiselleştirilmemiş reklamlar göstermek için. Google, cihazınızın IP adresini, cihaz türünü ve işletim sistemini, uygulamayı ve hangi reklamların gösterilip dokunulduğunu reklamları göstermek, ölçmek ve dolandırıcılığı önlemek amacıyla, kendi gizlilik politikasına göre bağımsız bir veri sorumlusu olarak işler. Vote, Google’a profilinizi, hesap kimliğinizi ya da adınız, yaşınız, cinsiyetiniz, konumunuz, fotoğraflarınız veya yazdıklarınızla ilgili bir bilgiyi göndermez.\n• Google Cloud Vision: otomatik fotoğraf kontrolü açıkken, yeni flört fotoğraflarının, flört kapaklarının ve Topluluk fotoğraflarının uygunsuz içerik açısından kontrolü için. Vote yalnızca gizli verileri çıkarılmış küçük bir önizleme gönderir; ad, hesap kimliği ya da fotoğraf bağlantısı göndermez. Flört fotoğraflarında bir yüz olup olmadığı da kontrol edilir. Bu yüz algılamadır, yüz tanıma değildir: yüzün kime ait olduğu belirlenmez ve yüzle ilgili hiçbir veri saklanmaz. Yüz bulunmayan bir fotoğraf, Vote ekibinden birinin bakmasını bekler.\n• Open-Meteo ve BigDataCloud: şehir araması ve yalnızca siz istediğinizde konumdan şehir bulmak için, doğrudan cihazınızdan.\n• Yetkili kamu kurum ve kuruluşları ile yargı mercileri: kanunen yetkili oldukları talepler üzerine.\n• Hukuki danışmanlarımız: bir hakkın tesisi, kullanılması veya korunması için gerektiğinde.\nVote kişisel verileri satmaz, veri simsarlarıyla ya da yapay zekâ sağlayıcılarıyla paylaşmaz ve yalnızca Google AdMob aracılığıyla kişiselleştirilmemiş reklamlar gösterir."
+        ],
+        "abroad": [
+          "Yurt dışına aktarım",
+          "Vote verilerinin saklandığı sunucu bölgesi: {hostingRegion}\nSupabase, Apple, Google, Sentry ve GitHub, Amerika Birleşik Devletleri’nde yerleşik şirketlerdir ya da verileri başka ülkelerdeki ekip ve sistemlerle işleyebilir. Bu nedenle kişisel verileriniz yurt dışına aktarılır. Bu aktarımlar KVKK’nın 9. maddesine uygun olarak yapılır. Aktarılan ülke hakkında bir yeterlilik kararı bulunmuyorsa Kişisel Verileri Koruma Kurulu’nun ilan ettiği standart sözleşmeler veya bu maddede öngörülen diğer uygun güvenceler kullanılır. Standart sözleşmeler, imzalanmalarından itibaren beş iş günü içinde Kişisel Verileri Koruma Kurumu’na bildirilir. Bu güvencelerin sağlanamadığı istisnai hâllerde aktarım, yalnızca 9. maddenin altıncı fıkrasında sayılan arızi hâllerden birine dayanılarak yapılabilir.\nVeri sorumlusu Kanada’da yerleşiktir ve veri tabanı Kanada’dadır. Uygulamayı kullandığınızda kişisel verileriniz Kanada’daki veri sorumlusuna ve yukarıdaki hizmet sağlayıcılarına ulaşır. Kanada hakkında KVKK kapsamında bir yeterlilik kararı bulunmadığından bu aktarım da yukarıda açıklanan 9. madde güvencelerine tabidir."
+        ],
+        "retention": [
+          "Saklama süreleri",
+          "Kişisel verileriniz, işleme amacı için gerekli olan süre boyunca ve her hâlde hesabınız var olduğu sürece saklanır, hesabınızı sildiğinizde silinir. Daha kısa süreler ve istisnalar şunlardır:\n• Sohbet fotoğrafları sohbet bitene kadar, tek seferlik fotoğraflar açıldıktan sonra en fazla 24 saat.\n• Günün gökyüzü yorumları 30 gün, kullanım istatistikleri 13 ay.\n• Gönderilen bildirimlerin kayıtları 14 gün, işletim kayıtları 30 gün, sınır sayaçları 2 gün.\n• Reddedilen ya da süresi dolan yüklemelerin kayıtları 90 gün, App Store ve Google Play bildirimleri 400 gün.\n• Açık bir şikâyet ve ilgili fotoğraf, hesap silinse bile hesaba bağlanmadan şikâyet kapanana kadar.\n• Moderasyon kararlarının kayıtları, moderasyonun hesap verebilirliği için saklanır ve hesap silindiğinde artık bir hesaba bağlı olmaz.\n• Yasak listesindeki özetler, yasaklanan hesap silinse bile yasak kaldırılana kadar.\n• Google Cloud Vision’a gönderilen önizlemeler yalnızca isteği yanıtlamak için bellekte işlenir. Vote, kontrolün sonucunu fotoğrafın kaydıyla birlikte saklar; yüzle ilgili hiçbir veri saklamaz.\n• Profil doğrulaması için gönderilen selfie bir moderatör karar verene kadar, hiç gönderilmeyen selfie bir gün, başvuru ve karar kaydı hesabınız var olduğu sürece.\n• Veri tabanı yedekleri kısa bir süre saklanır, bu sürenin sonunda silinen veriler yedeklerden de çıkar.\nSüresi dolan veriler silinir, yok edilir veya anonim hâle getirilir."
+        ],
+        "rights": [
+          "KVKK’nın 11. maddesi kapsamındaki haklarınız",
+          "Veri sorumlusuna başvurarak:\n• kişisel verilerinizin işlenip işlenmediğini öğrenme,\n• işlenmişse buna ilişkin bilgi talep etme,\n• işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme,\n• yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme,\n• eksik veya yanlış işlenmişse düzeltilmesini isteme,\n• KVKK’nın 7. maddesindeki şartlar çerçevesinde silinmesini veya yok edilmesini isteme,\n• düzeltme, silme ve yok etme işlemlerinin, verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,\n• işlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme,\n• kanuna aykırı işleme sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme\nhaklarına sahipsiniz. Açık rızanızı dilediğiniz zaman geri alabilirsiniz ve geri alma, o zamana kadar yapılan işlemlerin hukuka uygunluğunu etkilemez. Verilerinizin bir kopyasını uygulamada Ayarlar › Verilerin › “Verilerimi dışa aktar” ile alabilir, hesabınızı ve verilerinizi Ayarlar › Hesabı sil ile kendiniz silebilirsiniz."
+        ],
+        "apply": [
+          "Başvuru yolu",
+          "Haklarınıza ilişkin taleplerinizi, Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ’e uygun olarak şu yollardan biriyle iletebilirsiniz:\n• Uygulama içinden: Ayarlar › Yardım ve destek bölümünde konu olarak “Gizlilik ve verilerim” seçilerek.\n• Yazılı olarak, ıslak imzalı bir dilekçeyle şu adrese: {controllerAddress}\n• Sistemimizde kayıtlı e-posta adresinizden ya da güvenli elektronik imza veya mobil imza ile şu adrese: {contact}\nBaşvurunuzda adınız, soyadınız, yazılı başvurularda imzanız, Türkiye Cumhuriyeti vatandaşları için T.C. kimlik numaranız, yabancılar için uyruğunuz ile pasaport numaranız veya varsa kimlik numaranız, tebligata esas yerleşim yeri veya iş yeri adresiniz, varsa bildirime esas e-posta adresiniz ve telefon numaranız ile talebinizin konusu bulunmalıdır. Kimliğinizi doğrulamak için ek bilgi isteyebiliriz. Başvurunuzu niteliğine göre en kısa sürede ve en geç otuz gün içinde ücretsiz olarak sonuçlandırırız. İşlemin ayrıca bir maliyet gerektirmesi hâlinde, Kişisel Verileri Koruma Kurulunca belirlenen tarifedeki ücret alınabilir. Başvurunuzun reddedilmesi, verilen cevabı yetersiz bulmanız veya süresinde cevap verilmemesi hâlinde, cevabı öğrendiğiniz tarihten itibaren otuz gün ve her hâlde başvuru tarihinden itibaren altmış gün içinde Kişisel Verileri Koruma Kurulu’na şikâyette bulunabilirsiniz."
+        ],
+        "changes": [
+          "Değişiklikler",
+          "Bu metni, işleme faaliyetlerimiz veya ilgili mevzuat değiştiğinde güncelleriz. Güncel sürüm ve tarihi metnin sonunda yer alır."
+        ],
+        "language": [
+          "Metnin dili",
+          "Bu Aydınlatma Metni Türkçe hazırlanmıştır ve bağlayıcı olan Türkçe metindir. Gizlilik Politikamızın diğer dillerdeki sürümleri bu metnin yerini tutmaz."
+        ]
+      }
+    },
+    "consent": {
+      "title": "Açık Rıza Metni",
+      "sections": {
+        "intro": [
+          "Bu metin hakkında",
+          "Vote’de bazı bilgiler 6698 sayılı Kişisel Verilerin Korunması Kanunu’nun (“KVKK”) 6. maddesi anlamında özel nitelikli kişisel veridir ve ancak açık rızanızla işlenebilir. Bu metin, uygulamanın sizden istediği açık rızaların neyi kapsadığını açıklar. Her rızayı uygulamada ayrı ayrı ve kendi ekranında verirsiniz. Rıza vermeden önce KVKK Aydınlatma Metni’ni okumanızı öneririz.\nVeri sorumlusu: {controllerName}"
+        ],
+        "items": [
+          "Hangi veriler, hangi amaçla",
+          "Açık rızanız yalnızca seçtiğiniz bilgiler ve yalnızca şu amaçlar içindir:\n• İnançlar: maneviyat veya din ile siyasi görüş cevaplarınız ve helal ya da koşer gibi dini inancınızı ortaya koyabilecek beslenme tercihiniz. Amaç: profilinizde seçtiğiniz kitleye gösterilmeleri ve “Kimya” bölümünde, bakan kişinin iki kişide de görebildikleriyle karşılaştırılmaları.\n• Alışkanlıklar: sağlık verisi niteliği taşıyabileceği için alkol, sigara ve esrar kullanımına ilişkin cevaplarınız. Amaç: aynı şekilde profilinizde seçtiğiniz kitleye gösterilmeleri ve “Kimya” bölümünde karşılaştırılmaları.\n• Cinsiyet kimliği: kadın veya erkek dışındaki bir kimlik (örneğin trans kadın, trans erkek, non-binary) ve zamirleriniz. Amaç: profilinizde gösterilmeleri ve eşleştirmede hangi aramalarda görüneceğinizin belirlenmesi.\n• Cinsel yönelimi ortaya koyabilecek bilgiler: cinsiyetinizle birlikte kimleri görmek istediğiniz. Amaç: Keşfet’te ve eşleştirmede, karşılıklı tercihlere göre kişilerin size, sizin de onlara gösterilmesi.\n• Topluluk vote’unda görünmek: içinde yer aldığınız çiftlerin, vote verenlere kimlerle ilgilendiğinizi gösterebilmesi. Amaç: topluluk vote’u ve tanıştırmalar.\nBu bilgiler Keşfet’i sıralamak, çift seçmek, herhangi bir kişiyi puanlamak, reklam veya kullanım istatistikleri için kullanılmaz."
+        ],
+        "voluntary": [
+          "Rızanın isteğe bağlı olması",
+          "Açık rıza vermek isteğe bağlıdır ve her rızayı ayrı ayrı verebilir veya vermeyebilirsiniz. İnanç ve alışkanlıklara ilişkin rızaları vermemeniz Vote’yi kullanmanıza engel değildir, yalnızca bu bilgiler profilinizde yer almaz. Kimleri görmek istediğiniz bilgisi eşleştirme için gerekli olduğundan, bu rıza olmadan Vote sizi kimseye, kimseyi de size gösteremez. Topluluk vote’unda görünmeye rıza vermezseniz çiftlerde ve Keşfet’te yer almazsınız, çünkü ikisi birlikte işler. Bu durumda da çiftlere vote verebilir, başkalarının tanışmasına yardım edebilir ve sohbetlerinizi sürdürebilirsiniz."
+        ],
+        "transfer": [
+          "Aktarım",
+          "Bu bilgiler, seçtiğiniz kitlelerdeki üyelere ve hizmetin barındırıldığı Supabase’e, KVKK Aydınlatma Metni’nde açıklandığı şekilde aktarılır. Yurt dışına aktarım bu rızaya değil, KVKK’nın 9. maddesindeki güvencelere dayanır."
+        ],
+        "withdraw": [
+          "Rızanın geri alınması",
+          "Açık rızanızı dilediğiniz zaman ve gerekçe göstermeden, uygulamadaki Ayarlar bölümünden ya da Ayarlar › Yardım ve destek üzerinden bize yazarak geri alabilirsiniz. Geri aldığınızda ilgili cevaplar profilinizden silinir ve o andan sonra işlenmez. Geri alma, o zamana kadar rızanıza dayanılarak yapılan işlemlerin hukuka uygunluğunu etkilemez."
+        ],
+        "statement": [
+          "Beyan",
+          "Uygulamada ilgili rızayı onayladığımda, KVKK Aydınlatma Metni’ni ve bu metni okuduğumu, anladığımı ve seçtiğim özel nitelikli kişisel verilerimin yukarıda belirtilen amaçlarla işlenmesine özgür irademle açık rıza verdiğimi beyan ederim."
+        ],
+        "language": [
+          "Metnin dili",
+          "Bu metin Türkçe hazırlanmıştır ve bağlayıcı olan Türkçe metindir."
+        ]
+      }
+    }
+  }
+};
