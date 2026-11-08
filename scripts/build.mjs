@@ -25,6 +25,9 @@ if (appRepo) {
   console.log(`Copied legal text from ${src}`);
 }
 const legal = (await import(pathToFileURL(path.join(root, 'src/legal-en.js')).href + `?t=${Date.now()}`)).default;
+/* The KVKK Aydınlatma Metni and Açık Rıza Metni exist only in Turkish (the
+   app's www/app/i18n/legal/tr.js, copied word for word). */
+const kvkk = (await import(pathToFileURL(path.join(root, 'src/legal-tr-kvkk.js')).href + `?t=${Date.now()}`)).default;
 
 const SITE = 'https://votebettertogether.com';
 const NAME = 'Vote: Better Together';
@@ -62,13 +65,13 @@ const policy = (script = "'none'", connect = "'none'") =>
   `default-src 'none'; script-src ${script}; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src ${connect}; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests`;
 const securityHead = csp => `<meta name="referrer" content="no-referrer">\n<meta http-equiv="Content-Security-Policy" content="${esc(csp).replaceAll('&#39;', "'")}">\n`;
 
-function layout({ file, title, description, current = '', body, head = '', csp = policy() }) {
+function layout({ file, title, description, current = '', body, head = '', csp = policy(), lang = 'en' }) {
   const url = SITE + '/' + file.replace(/index\.html$/, '');
   const fullTitle = title ? `${title} · ${NAME}` : `${NAME} · People help people find people`;
   const link = (href, label, cls = '') =>
     `<a href="${href}"${cls ? ` class="${cls}"` : ''}${current === href ? ' aria-current="page"' : ''}>${label}</a>`;
   return `<!doctype html>
-<html lang="en">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8">
 ${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -87,7 +90,7 @@ ${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, in
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Vote: Better Together brand artwork">
-<meta property="og:locale" content="en_CA">
+<meta property="og:locale" content="${lang === 'tr' ? 'tr_TR' : 'en_CA'}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title || NAME)}">
 <meta name="twitter:description" content="${esc(description)}">
@@ -128,6 +131,7 @@ ${body}
       <a href="/support/">Support</a>
       <a href="/child-safety/">Child safety</a>
       <a href="/delete-account/">Delete your account</a>
+      <a href="/kvkk/" lang="tr">KVKK Aydınlatma Metni</a>
     </nav>
     <nav class="foot-social" aria-label="LinkedIn">
       <a href="https://www.linkedin.com/in/ahmetfceren" rel="noopener noreferrer">Founder LinkedIn</a>
@@ -141,7 +145,8 @@ ${body}
 }
 
 /* A document page: header, table of contents, then parts of sections. */
-function docPage({ file, title, description, lead, current, intro = '', parts, after = '', updated = '' }) {
+function docPage({ file, title, description, lead, current, intro = '', parts, after = '', updated = '', lang = 'en', version = legal.version }) {
+  const tr = lang === 'tr';
   const used = new Set();
   const id = h => { let s = slug(h) || 'section', n = s, i = 2; while (used.has(n)) n = `${s}-${i++}`; used.add(n); return n; };
   const toc = [];
@@ -157,17 +162,17 @@ function docPage({ file, title, description, lead, current, intro = '', parts, a
   <p class="eyebrow">${NAME}</p>
   <h1>${esc(title)}</h1>
   <p class="lead">${lead}</p>
-  <div class="meta"><span>${updated ? `Last updated ${esc(updated)}` : `Version ${esc(legal.version)}`}</span><span>English</span><span>For people 18 and older</span></div>
+  <div class="meta">${tr ? `<span>Sürüm ${esc(version)}</span><span>Türkçe</span><span>18 yaş ve üzeri içindir</span>` : `<span>${updated ? `Last updated ${esc(updated)}` : `Version ${esc(version)}`}</span><span>English</span><span>For people 18 and older</span>`}</div>
 </div></header>
 <div class="doc"><div class="wrap doc-grid">
 ${intro ? `<div class="doc-intro">${intro}</div>` : ''}
-<nav class="toc" aria-label="On this page"><b>On this page</b><ol>${toc.map(([sid, h]) => `<li><a href="#${sid}">${esc(h)}</a></li>`).join('')}</ol></nav>
+<nav class="toc" aria-label="${tr ? 'Bu sayfada' : 'On this page'}"><b>${tr ? 'Bu sayfada' : 'On this page'}</b><ol>${toc.map(([sid, h]) => `<li><a href="#${sid}">${esc(h)}</a></li>`).join('')}</ol></nav>
 <div class="doc-body">
 ${html}
 ${after}
 </div>
 </div></div>`;
-  return layout({ file, title, description, current, body });
+  return layout({ file, title, description, current, body, lang });
 }
 
 /* Website-only sections. The other sections use the reviewed legal copy. */
@@ -176,6 +181,7 @@ const WEB = {
     ['Privacy at a glance', `<ul><li>Choose audiences for profile sections and photos.</li><li>Community summaries do not name the members who voted on your pairs.</li><li>Use the helper setup to vote without appearing in Discover or pairs, subject to reader eligibility.</li><li>Photo links are short-lived; an issued link or a photo already on a screen may remain visible for a time.</li><li>Export your data or request account deletion in Settings. <a href="/delete-account/">Account deletion instructions</a> explain retained data and the email option.</li></ul>`]
   ],
   privacyOutro: [
+    ['Türkiye: KVKK', '<p lang="tr">Türkiye’deki kişiler için <a href="/kvkk/">KVKK Aydınlatma Metni</a> ve <a href="/acik-riza/">Açık Rıza Metni</a> Türkçe ve bağlayıcıdır.</p>'],
     ['This website', '<p>votebettertogether.com sets no cookies and uses no analytics, ads or trackers. It is hosted on GitHub Pages, which may keep technical logs such as IP addresses to keep the service secure.</p>']
   ],
   termsOutro: [
@@ -277,6 +283,32 @@ pages['delete-account/index.html'] = docPage({
   parts: [{ rows: rowsOf(legal.docs.deletion) }]
 });
 
+/* The KVKK texts for people in Türkiye, in Turkish only (the Privacy
+   Policy's Türkiye section says they are linked here). */
+pages['kvkk/index.html'] = docPage({
+  file: 'kvkk/index.html',
+  lang: 'tr',
+  version: kvkk.version,
+  title: kvkk.docs.kvkk.title,
+  current: '',
+  description: '6698 sayılı KVKK uyarınca Vote: Better Together kullanıcılarına yönelik aydınlatma metni.',
+  lead: 'Kişisel verilerinizin nasıl işlendiği ve KVKK kapsamındaki haklarınız.',
+  intro: '<p class="note">Bu metin Türkçe olarak bağlayıcıdır. Özel nitelikli veriler için <a href="/acik-riza/">Açık Rıza Metni</a>’ne, genel bilgi için <a href="/privacy/">Privacy Policy</a> sayfasına bakabilirsiniz.</p>',
+  parts: [{ rows: rowsOf(kvkk.docs.kvkk) }]
+});
+
+pages['acik-riza/index.html'] = docPage({
+  file: 'acik-riza/index.html',
+  lang: 'tr',
+  version: kvkk.version,
+  title: kvkk.docs.consent.title,
+  current: '',
+  description: 'Vote: Better Together özel nitelikli kişisel veriler için açık rıza metni (KVKK m. 6).',
+  lead: 'Özel nitelikli bilgileriniz için isteğe bağlı açık rıza.',
+  intro: '<p class="note">Bu metin Türkçe olarak bağlayıcıdır. Açık rıza uygulama içinde verilir ve Ayarlar’dan dilediğiniz zaman geri alınabilir. Ayrıntılar: <a href="/kvkk/">KVKK Aydınlatma Metni</a>.</p>',
+  parts: [{ rows: rowsOf(kvkk.docs.consent) }]
+});
+
 /* The page Vote's sign-up and password-reset emails link to (the app
    repo's supabase/templates): it hands the link to the app, or confirms a
    sign-up here on a computer (src/email-link.js, words in
@@ -325,7 +357,7 @@ for (const [file, html] of Object.entries(pages)) {
   fs.writeFileSync(out, html);
 }
 
-const urls = ['', 'privacy/', 'terms/', 'support/', 'delete-account/', 'child-safety/'];
+const urls = ['', 'privacy/', 'terms/', 'support/', 'delete-account/', 'child-safety/', 'kvkk/', 'acik-riza/'];
 fs.writeFileSync(path.join(root, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${SITE}/${u}</loc></url>`).join('\n')}
