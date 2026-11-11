@@ -54,7 +54,7 @@ const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
 
 /* The app's mark (www/app/ui/icons.js mark): two circles in the ink, the
    lens between them in the Orbit's middle colour. */
-const MARK = `<svg viewBox="0 0 48 32" aria-hidden="true"><path d="M24 7.515A11 11 0 0 1 24 24.485A11 11 0 0 1 24 7.515Z" fill="#6B6A36" fill-opacity=".85"/><circle cx="17" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="31" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
+const MARK = '<img src="/assets/img/app-store-icon.png" width="34" height="34" alt="" decoding="async">';
 
 const digest = value => crypto.createHash('sha256').update(value).digest('base64');
 const cssIntegrity = `sha256-${digest(fs.readFileSync(path.join(root, 'assets/site.css')))}`;
@@ -86,19 +86,18 @@ ${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, in
 <meta property="og:title" content="${esc(title || NAME)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE}/assets/img/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Vote: Better Together brand artwork">
+<meta property="og:image" content="${SITE}/assets/img/app-store-icon.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="Vote: Better Together official App Store icon">
 <meta property="og:locale" content="${lang === 'tr' ? 'tr_TR' : 'en_CA'}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title || NAME)}">
 <meta name="twitter:description" content="${esc(description)}">
-<meta name="twitter:image" content="${SITE}/assets/img/og.jpg">
-<meta name="twitter:image:alt" content="Vote: Better Together brand artwork">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="twitter:image" content="${SITE}/assets/img/app-store-icon.png">
+<meta name="twitter:image:alt" content="Vote: Better Together official App Store icon">
+<link rel="icon" href="/assets/img/app-store-icon.png" type="image/png" sizes="1024x1024">
+<link rel="apple-touch-icon" href="/assets/img/app-store-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -219,7 +218,7 @@ pages['terms/index.html'] = docPage({
   current: '/terms/',
   description: 'The terms for using Vote: Better Together, including subscriptions and the community guidelines.',
   lead: 'The terms for using Vote, and the community guidelines everyone agrees to.',
-  intro: '<p class="note">Vote is in development. References to store purchases apply only where those purchases are offered. These terms are available in English on this website.</p>',
+  intro: '<p class="note">Vote is available on iPhone. Subscription purchases apply only where offered. These terms are available in English on this website.</p>',
   parts: [
     { title: 'Terms', rows: rowsOf(legal.docs.terms) },
     { title: legal.docs.guidelines.title, rows: rowsOf(legal.docs.guidelines) },
@@ -370,7 +369,7 @@ fs.writeFileSync(path.join(root, 'robots.txt'), `User-agent: *\nAllow: /\nSitema
 fs.writeFileSync(path.join(root, 'app-ads.txt'), 'google.com, pub-8547648770010342, DIRECT, f08c47fec0942fa0\n');
 fs.writeFileSync(path.join(root, 'site.webmanifest'), JSON.stringify({
   name: NAME, short_name: 'Vote', start_url: '/', display: 'browser', background_color: '#FFFFFF', theme_color: '#FFFFFF',
-  icons: [{ src: '/assets/img/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/assets/img/icon-512.png', sizes: '512x512', type: 'image/png' }]
+  icons: [{ src: '/assets/img/app-store-icon.png', sizes: '1024x1024', type: 'image/png' }]
 }, null, 2) + '\n');
 
 const securityTxt = `Contact: mailto:${EMAIL}
