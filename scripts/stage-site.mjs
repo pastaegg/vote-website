@@ -19,6 +19,7 @@ const files = [
   'assets/fonts/fraunces-italic-latin.woff2', 'assets/fonts/fraunces-latin-ext.woff2',
   'assets/fonts/fraunces-latin.woff2', 'assets/fonts/inter-latin-ext.woff2',
   'assets/fonts/inter-latin.woff2', 'assets/email/vote-icon-144.png',
+  'assets/img/app-store-icon.png',
   'assets/img/icon-192.png', 'assets/img/icon-512.png', 'assets/img/og.jpg',
   'assets/img/screen-vote.webp', 'assets/img/glass-circles.webp',
   'assets/img/screen-your-pairs.webp', 'assets/img/screen-chat.webp'
