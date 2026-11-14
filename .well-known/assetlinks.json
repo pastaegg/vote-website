@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.ahmettceren.voteclaude.rn",
+      "sha256_cert_fingerprints": [
+        "D4:CA:39:7B:94:96:AB:94:BC:58:5D:4C:C5:97:69:C7:3D:E5:77:E7:A2:7C:EA:A8:37:B4:13:B8:32:23:4C:B9"
+      ]
+    }
+  }
+]

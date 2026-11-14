@@ -14,7 +14,7 @@ const publicFiles = [
   ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`]),
   '.nojekyll', 'CNAME', 'robots.txt', 'app-ads.txt', 'sitemap.xml', 'site.webmanifest',
   'security.txt', '.well-known/security.txt', 'apple-app-site-association',
-  '.well-known/apple-app-site-association', 'apple-touch-icon.png',
+  '.well-known/apple-app-site-association', '.well-known/assetlinks.json', 'apple-touch-icon.png',
   'favicon-32.png', 'favicon.ico', 'assets/site.css', 'assets/fonts/OFL.txt',
   'assets/fonts/fraunces-italic-latin.woff2', 'assets/fonts/fraunces-latin-ext.woff2',
   'assets/fonts/fraunces-latin.woff2', 'assets/fonts/inter-latin-ext.woff2',
@@ -79,4 +79,16 @@ test('a missing required public file prevents upload of a partial site', t => {
 test('Pages upload keeps dot folders (.well-known/apple-app-site-association, security.txt)', () => {
   const wf = fs.readFileSync(new URL('../.github/workflows/pages.yml', import.meta.url), 'utf8');
   assert.match(wf, /upload-pages-artifact@[0-9a-f]{40}[^\n]*\n\s+with:\n(?:\s+[^\n]*\n)*?\s+include-hidden-files: true/);
+});
+
+// Android App Links: email links to /auth/confirm open Vote on Android. The
+// Play app signing key's SHA-256 (Play Console, 14 Nov 2026); the app's
+// intent filter sets autoVerify.
+test('.well-known/assetlinks.json names the Android app and its Play signing key', () => {
+  const links = JSON.parse(fs.readFileSync(new URL('../.well-known/assetlinks.json', import.meta.url), 'utf8'));
+  assert.equal(links.length, 1);
+  assert.deepEqual(links[0].relation, ['delegate_permission/common.handle_all_urls']);
+  assert.equal(links[0].target.namespace, 'android_app');
+  assert.equal(links[0].target.package_name, 'com.ahmettceren.voteclaude.rn');
+  for (const f of links[0].target.sha256_cert_fingerprints) assert.match(f, /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/);
 });
