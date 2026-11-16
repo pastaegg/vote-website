@@ -14,11 +14,12 @@ const files = [
   ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`]),
   '.nojekyll', 'CNAME', 'robots.txt', 'app-ads.txt', 'sitemap.xml', 'site.webmanifest',
   'security.txt', '.well-known/security.txt', 'apple-app-site-association',
-  '.well-known/apple-app-site-association', 'apple-touch-icon.png',
+  '.well-known/apple-app-site-association', '.well-known/assetlinks.json', 'apple-touch-icon.png',
   'favicon-32.png', 'favicon.ico', 'assets/site.css', 'assets/fonts/OFL.txt',
   'assets/fonts/fraunces-italic-latin.woff2', 'assets/fonts/fraunces-latin-ext.woff2',
   'assets/fonts/fraunces-latin.woff2', 'assets/fonts/inter-latin-ext.woff2',
   'assets/fonts/inter-latin.woff2', 'assets/email/vote-icon-144.png',
+  'assets/img/app-store-icon.png',
   'assets/img/icon-192.png', 'assets/img/icon-512.png', 'assets/img/og.jpg',
   'assets/img/screen-vote.webp', 'assets/img/hero-cupid.webp', 'assets/img/orb-disc.png',
   'assets/img/screen-your-pairs.webp', 'assets/img/screen-chat.webp'

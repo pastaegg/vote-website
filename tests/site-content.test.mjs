@@ -68,3 +68,20 @@ test('footer identifies the operator and exposes required support and identity d
   assert.ok(home.includes('itemprop="legalName">VOTEBT'));
   assert.ok(home.includes('itemprop="foundingDate">2026'));
 });
+
+test('all published pages use the current App Store artwork and link to the iOS listing', () => {
+  const icon = '/assets/img/app-store-icon.png';
+  assert.ok(fs.existsSync(path.join(root, icon.slice(1))), 'official iOS icon file is present');
+  for (const file of requiredPages.filter(f => f === 'index.html' || f.endsWith('/index.html') || f === '404.html')) {
+    const html = read(file);
+    assert.ok(html.includes('href="' + icon + '" type="image/png"'), file + ': current favicon');
+    assert.ok(html.includes('src="' + icon + '"'), file + ': current brand');
+    assert.ok(!html.includes('/assets/img/og.jpg'), file + ': old social artwork no longer referenced');
+  }
+  const home = read('index.html');
+  assert.ok(home.includes('src="' + icon + '" width="112"'), 'download section uses current iOS icon');
+  assert.ok(home.includes('href="https://apps.apple.com/app/id6817733699"'), 'official App Store link');
+  assert.ok(!home.includes('The Vote app icon: two overlapping circles'), 'obsolete icon description removed');
+  const manifest = JSON.parse(read('site.webmanifest'));
+  assert.ok(manifest.icons.every(iconEntry => iconEntry.src === icon), 'manifest icon stays current');
+});
