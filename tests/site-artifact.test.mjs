@@ -22,7 +22,7 @@ const publicFiles = [
   'assets/img/app-store-icon.png',
   'assets/img/icon-192.png', 'assets/img/icon-512.png', 'assets/img/og.jpg',
   'assets/img/screen-vote.webp', 'assets/img/hero-cupid.webp', 'assets/img/orb-disc.png',
-  'assets/img/screen-your-pairs.webp', 'assets/img/screen-chat.webp'
+  'assets/img/screen-introduction.webp', 'assets/img/screen-chat.webp'
 ];
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'vote-artifact-'));
