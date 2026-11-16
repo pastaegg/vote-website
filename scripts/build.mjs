@@ -54,6 +54,7 @@ const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
 
 /* The app's mark (www/app/ui/icons.js mark): two circles in the ink, the
    lens between them in the Orbit's middle colour. */
+// The app icon (the 1.1.1 Cupid painting), small, beside the name.
 const MARK = '<img src="/assets/img/app-store-icon.png" width="34" height="34" alt="" decoding="async">';
 
 const digest = value => crypto.createHash('sha256').update(value).digest('base64');
