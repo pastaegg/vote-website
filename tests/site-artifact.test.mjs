@@ -20,7 +20,7 @@ const publicFiles = [
   'assets/fonts/fraunces-latin.woff2', 'assets/fonts/inter-latin-ext.woff2',
   'assets/fonts/inter-latin.woff2', 'assets/email/vote-icon-144.png',
   'assets/img/icon-192.png', 'assets/img/icon-512.png', 'assets/img/og.jpg',
-  'assets/img/screen-vote.webp', 'assets/img/glass-circles.webp',
+  'assets/img/screen-vote.webp', 'assets/img/hero-cupid.webp', 'assets/img/orb-disc.png',
   'assets/img/screen-your-pairs.webp', 'assets/img/screen-chat.webp'
 ];
 function fixture(t) {

@@ -54,7 +54,8 @@ const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
 
 /* The app's mark (www/app/ui/icons.js mark): two circles in the ink, the
    lens between them in the Orbit's middle colour. */
-const MARK = `<svg viewBox="0 0 48 32" aria-hidden="true"><path d="M24 7.515A11 11 0 0 1 24 24.485A11 11 0 0 1 24 7.515Z" fill="#6B6A36" fill-opacity=".85"/><circle cx="17" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="31" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
+// The app icon (the 1.1.1 Cupid painting), small, beside the name.
+const MARK = `<img src="/assets/img/icon-192.png" width="34" height="34" alt="">`;
 
 const digest = value => crypto.createHash('sha256').update(value).digest('base64');
 const cssIntegrity = `sha256-${digest(fs.readFileSync(path.join(root, 'assets/site.css')))}`;
