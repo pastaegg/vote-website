@@ -274,33 +274,44 @@ main:focus { outline: none; }
 }
 .promise :focus-visible { outline-color: var(--on-orbit); }
 
-/* Coming soon */
-.coming { padding-block: var(--section); }
-.coming-grid { row-gap: var(--space-lg); align-items: center; }
-.app-icon { width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 0 0 1px rgba(128, 118, 100, .22); }
-.coming h2 { font-size: var(--text-section); max-width: 16ch; }
-.coming p { margin-top: var(--space-md); color: var(--ink-2); font-size: var(--text-card); line-height: 1.5; max-width: 32em; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md) var(--space-lg); margin-top: var(--space-xl); }
+/* A compact final invitation, carrying the app's olive and gold identity. */
+.coming { padding-block: clamp(48px, 7vw, 96px); }
+.coming-grid { row-gap: var(--space-lg); align-items: center; padding: clamp(24px, 5vw, 64px); border-radius: var(--r-xl); background: radial-gradient(100% 140% at 90% 0%, #53621A, #344009 65%, #283206); color: #F7F5F1; }
+.app-icon { width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 0 0 1px rgba(247,245,241,.3), 0 10px 30px rgba(0,0,0,.2); }
+.coming h2 { color: #F7F5F1; font-size: clamp(2rem, 1.5rem + 2vw, 3.125rem); max-width: 16ch; }
+.coming p { margin-top: var(--space-sm); color: #E1E7C9; font-size: var(--text-body); line-height: 1.55; max-width: 34em; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-lg); margin-top: var(--space-lg); }
+.coming .btn.solid { background: #F7F5F1; border-color: #F7F5F1; color: #283206; }
+.coming .contact-link { color: #F7F5F1; font-size: var(--text-small); text-underline-offset: .25em; text-decoration-color: #D9BC7E; }
+.coming :focus-visible { outline-color: #F7F5F1; }
 @media (min-width: 960px) {
-  .app-icon { grid-column: 1 / span 2; width: 112px; height: 112px; border-radius: 26px; align-self: start; }
-  .coming-copy { grid-column: 3 / span 8; }
+  .app-icon { grid-column: 2 / span 2; width: 112px; height: 112px; border-radius: 26px; align-self: center; }
+  .coming-copy { grid-column: 4 / span 7; }
+}
+@media (max-width: 540px) {
+  .coming { padding-block: var(--space-xl); }
+  .coming-grid { border-radius: var(--r-lg); }
+  .coming .actions { align-items: stretch; flex-direction: column; }
+  .coming .btn { width: 100%; white-space: normal; text-align: center; }
+  .coming .contact-link { align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; }
 }
 
 /* Footer */
-.foot { border-top: 1px solid var(--rule); padding-block: var(--space-2xl) var(--space-xl); font-size: var(--text-small); color: var(--muted); }
-.foot .wrap { display: grid; gap: var(--space-xl); }
-.foot-identity { display: grid; gap: var(--space-2xs); }
+.foot { border-top: 1px solid var(--rule); padding-block: var(--space-xl); font-size: var(--text-small); color: var(--muted); }
+.foot .wrap { display: grid; gap: var(--space-lg); }
+.foot-identity { display: grid; gap: var(--space-2xs); align-content: start; }
 .foot-identity p { margin: 0; }
 .foot-identity p:first-child { color: var(--ink); font-weight: 600; }
-.foot a { color: var(--ink-2); font-weight: 400; text-decoration: none; }
+.foot a { color: var(--ink-2); font-weight: 400; text-decoration: none; overflow-wrap: anywhere; }
 .foot a:hover { color: var(--ink); text-decoration: underline; }
-.foot nav { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); }
-.foot nav a { min-height: 44px; display: inline-flex; align-items: center; }
-.foot-identity a { min-height: 44px; display: inline-flex; align-items: center; justify-self: start; }
+.foot nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-md); }
+.foot nav a { min-height: 42px; display: inline-flex; align-items: center; line-height: 1.4; }
+.foot-identity a { min-height: 42px; display: inline-flex; align-items: center; justify-self: start; }
+.foot .foot-social { border-top: 1px solid var(--rule); padding-top: var(--space-xs); }
 @media (min-width: 960px) {
   .foot .wrap { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr); align-items: start; }
-  .foot nav { display: grid; grid-template-columns: repeat(2, max-content); gap: 0 var(--space-xl); }
-  .foot-social { grid-template-columns: max-content !important; }
+  .foot nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot .foot-social { border-top: 0; padding-top: 0; grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Document pages: Privacy, Terms, Support, Delete account, Child safety.
