@@ -23,6 +23,7 @@ const svgTags = new Set(['svg', 'circle', 'defs', 'path', 'radialgradient', 'rec
 const resources = new Set(['link', 'img', 'script', 'svg']);
 const space = /[\t\n\f\r ]/;
 export const digest = value => crypto.createHash('sha256').update(value).digest('base64');
+export const cssHref = value => `/assets/site.css?v=${crypto.createHash('sha256').update(value).digest('hex').slice(0,16)}`;
 
 function decodeAttribute(value) {
   return value.replace(/&(#(?:[xX][0-9a-fA-F]+|[0-9]+)|[a-zA-Z][a-zA-Z0-9]*);?/g, (_, entity) => {
@@ -217,7 +218,7 @@ export function checkSecurityPage(html, file, css) {
   const styles = starts.filter(t => t.name === 'link' && (t.attributes.get('rel') || '').toLowerCase().split(/\s+/).includes('stylesheet'));
   assert.equal(styles.length, aliases.has(file) ? 0 : 1, `${file}: expected stylesheet count`);
   for (const style of styles) {
-    assert.equal(style.attributes.get('href'), '/assets/site.css', `${file}: fixed stylesheet`);
+    assert.equal(style.attributes.get('href'), cssHref(css), `${file}: versioned stylesheet`);
     assert.equal(style.attributes.get('integrity'), `sha256-${digest(css)}`, `${file}: stylesheet integrity`);
     assert.equal(style.attributes.get('crossorigin'), 'anonymous', `${file}: stylesheet CORS`);
   }

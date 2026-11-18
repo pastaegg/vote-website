@@ -4,13 +4,13 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { checkSecurityPage, digest, discoverPages, requiredPages } from '../scripts/security-policy.mjs';
+import { checkSecurityPage, cssHref, digest, discoverPages, requiredPages } from '../scripts/security-policy.mjs';
 
 const css = 'body { color: white; }';
 const authScript = 'window.example = true;';
 const policy = (auth = false) => `default-src 'none'; script-src ${auth ? `'sha256-${digest(authScript)}'` : "'none'"}; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; connect-src ${auth ? 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout' : "'none'"}; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests`;
 const csp = auth => `<meta http-equiv="Content-Security-Policy" content="${policy(auth)}">`;
-const stylesheet = `<link rel="stylesheet" href="/assets/site.css" integrity="sha256-${digest(css)}" crossorigin="anonymous">`;
+const stylesheet = `<link rel="stylesheet" href="${cssHref(css)}" integrity="sha256-${digest(css)}" crossorigin="anonymous">`;
 const page = (auth = false) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="referrer" content="no-referrer">${csp(auth)}<title>Test</title>${auth ? `<meta name="robots" content="noindex, nofollow, noarchive"><script>${authScript}</script>` : ''}${stylesheet}</head><body><main data-vote-email-link><a href="/support/">Support</a></main></body></html>`;
 const normal = page(), auth = page(true), authFile = 'auth/confirm/index.html';
 const inject = markup => normal.replace('</main>', `${markup}</main>`);
@@ -60,7 +60,8 @@ test('non-whitespace before the head is rejected', () => reject(normal.replace('
 test('text hidden before a comment cannot force the browser out of head', () => reject(normal.replace(csp(false), `unexpected<!-- comment -->${csp(false)}`), /unexpected text/));
 test('direct resource child of html is rejected', () => reject(normal.replace('<head>', '<img src="/image.png"><head>'), /only head and body/));
 test('rejects stylesheet integrity mismatch and missing integrity', () => {
-  reject(normal, /stylesheet integrity/, 'index.html', css + 'changed');
+  reject(normal, /versioned stylesheet/, 'index.html', css + 'changed');
+  reject(normal.replace(/ integrity="sha256-[^"]+"/, ' integrity="sha256-invalid"'), /stylesheet integrity/);
   reject(normal.replace(/ integrity="[^"]+"/, ''), /stylesheet integrity/);
 });
 test('auth has exactly one plain inline script with its own content hash', () => {
