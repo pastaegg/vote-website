@@ -58,7 +58,9 @@ const read = f => fs.readFileSync(path.join(root, 'src', f), 'utf8');
 const MARK = '<img src="/assets/img/app-store-icon.png" width="34" height="34" alt="" decoding="async">';
 
 const digest = value => crypto.createHash('sha256').update(value).digest('base64');
-const cssIntegrity = `sha256-${digest(fs.readFileSync(path.join(root, 'assets/site.css')))}`;
+const cssBytes = fs.readFileSync(path.join(root, 'assets/site.css'));
+const cssIntegrity = `sha256-${digest(cssBytes)}`;
+const cssHref = `/assets/site.css?v=${crypto.createHash('sha256').update(cssBytes).digest('hex').slice(0,16)}`;
 // GitHub Pages does not apply custom response headers from this repository.
 // Put the policies before *any* resource; header-only controls are documented
 // in SECURITY.md rather than represented by ineffective http-equiv tags.
@@ -102,7 +104,7 @@ ${securityHead(csp)}${head}<meta name="viewport" content="width=device-width, in
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css" integrity="${cssIntegrity}" crossorigin="anonymous">
+<link rel="stylesheet" href="${cssHref}" integrity="${cssIntegrity}" crossorigin="anonymous">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
