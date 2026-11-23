@@ -221,7 +221,7 @@ pages['terms/index.html'] = docPage({
   current: '/terms/',
   description: 'The terms for using Vote: Better Together, including subscriptions and the community guidelines.',
   lead: 'The terms for using Vote, and the community guidelines everyone agrees to.',
-  intro: '<p class="note">Vote is available on iPhone. Subscription purchases apply only where offered. These terms are available in English on this website.</p>',
+  intro: '<p class="note">Vote is available on iPhone and Android. Subscription purchases apply only where offered. These terms are available in English on this website.</p>',
   parts: [
     { title: 'Terms', rows: rowsOf(legal.docs.terms) },
     { title: legal.docs.guidelines.title, rows: rowsOf(legal.docs.guidelines) },
