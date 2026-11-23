@@ -8,12 +8,14 @@ import path from 'node:path';
 export const requiredPages = ['index.html', '404.html', 'auth/confirm/index.html', 'child-safety/index.html', ...['privacy', 'terms', 'support', 'delete-account'].flatMap(p => [`${p}.html`, `${p}/index.html`])];
 export const excludedDirectories = new Set(['.git', 'node_modules', 'src', 'scripts', 'tests', '_site']);
 const site = 'https://votebettertogether.com';
-// Only the two official identity links may leave the site. These are
-// navigation destinations, never asset, script or API permissions.
+// Only the two official identity links and the app's two store listings may
+// leave the site. These are navigation destinations, never asset, script or
+// API permissions.
 const externalLinks = new Set([
   'https://www.linkedin.com/in/ahmetfceren',
   'https://www.linkedin.com/company/vote-better-together/',
-  'https://apps.apple.com/app/id6817733699'
+  'https://apps.apple.com/app/id6817733699',
+  'https://play.google.com/store/apps/details?id=com.ahmettceren.voteclaude.rn'
 ]);
 const authConnections = 'https://usuyyubmjwayrliadrax.supabase.co/auth/v1/verify https://usuyyubmjwayrliadrax.supabase.co/auth/v1/logout';
 const aliases = new Map(['privacy', 'terms', 'support', 'delete-account'].map(p => [`${p}.html`, `0; url=/${p}/`]));

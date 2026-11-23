@@ -69,7 +69,7 @@ test('footer identifies the operator and exposes required support and identity d
   assert.ok(home.includes('itemprop="foundingDate">2026'));
 });
 
-test('all published pages use the current App Store artwork and link to the iOS listing', () => {
+test('all published pages use the current App Store artwork, and the homepage links to both store listings', () => {
   const icon = '/assets/img/app-store-icon.png';
   assert.ok(fs.existsSync(path.join(root, icon.slice(1))), 'official iOS icon file is present');
   for (const file of requiredPages.filter(f => f === 'index.html' || f.endsWith('/index.html') || f === '404.html')) {
@@ -81,6 +81,11 @@ test('all published pages use the current App Store artwork and link to the iOS 
   const home = read('index.html');
   assert.ok(home.includes('src="' + icon + '" width="112"'), 'download section uses current iOS icon');
   assert.ok(home.includes('href="https://apps.apple.com/app/id6817733699"'), 'official App Store link');
+  // Google Play, live since November 2026: the hero pill and the closing button both lead to the listing.
+  const play = 'href="https://play.google.com/store/apps/details?id=com.ahmettceren.voteclaude.rn"';
+  assert.equal(home.split(play).length - 1, 2, 'official Google Play link, in the hero and in the closing section');
+  assert.ok(!/coming soon/i.test(home), 'no store is announced as coming soon');
+  assert.ok(read('terms/index.html').includes('Vote is available on iPhone and Android.'), 'terms name both platforms');
   assert.ok(!home.includes('The Vote app icon: two overlapping circles'), 'obsolete icon description removed');
   const manifest = JSON.parse(read('site.webmanifest'));
   assert.ok(manifest.icons.every(iconEntry => iconEntry.src === icon), 'manifest icon stays current');

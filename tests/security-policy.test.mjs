@@ -86,6 +86,16 @@ for (const url of ['https://www.linkedin.com/in/ahmetfceren', 'https://www.linke
     reject(inject(`<link rel="preload" href="${url}">`), /this HTTPS origin/);
   });
 }
+for (const url of ['https://apps.apple.com/app/id6817733699', 'https://play.google.com/store/apps/details?id=com.ahmettceren.voteclaude.rn']) {
+  test(`allows the official store listing: ${url}`, () => {
+    checkSecurityPage(inject(`<a href="${url}" rel="noopener noreferrer">Store</a>`), 'index.html', css);
+    reject(inject(`<a href="${url}">Store</a>`), /external link protection/);
+    reject(inject(`<img src="${url}">`), /this HTTPS origin/);
+  });
+}
+for (const url of ['https://play.google.com/store/apps/details?id=com.ahmettceren.voteclaude.rn.other', 'https://play.google.com/store/apps/details?id=com.ahmettceren.voteclaude.rn&amp;referrer=x', 'https://play.google.com/store/apps/details?id=com.example.app', 'https://play.google.com.evil.invalid/store/apps/details?id=com.ahmettceren.voteclaude.rn', 'https://apps.apple.com/app/id1']) {
+  test(`rejects store-link lookalike: ${url}`, () => reject(inject(`<a href="${url}" rel="noopener noreferrer">Store</a>`)));
+}
 for (const url of ['https://www.linkedin.com/in/ahmetfceren?redirect=bad', 'https://www.linkedin.com/in/ahmetfceren/other', 'https://www.linkedin.com.evil.invalid/in/ahmetfceren', 'https://www.linkedin.com/company/another-business/']) {
   test(`rejects identity-link lookalike: ${url}`, () => reject(inject(`<a href="${url}" rel="noopener noreferrer">LinkedIn</a>`)));
 }
